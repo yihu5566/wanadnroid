@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseFragment;
@@ -17,16 +18,22 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.paginate.Paginate;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.yyydjk.library.BannerLayout;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import cn.bingoogolapple.bgabanner.BGABanner;
 import test.juyoufuli.com.myapplication.R;
+import test.juyoufuli.com.myapplication.app.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils;
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent;
 import test.juyoufuli.com.myapplication.di.module.MainModule;
+import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter;
 
@@ -44,10 +51,11 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.toolbar_title)
     TextView toolbar_title;
-    @BindView(R.id.banner)
-    BannerLayout bannerLayout;
+    @BindView(R.id.banner_guide_content)
+    BGABanner bannerGuideContent;
 
-
+    @Inject
+    List<BannerInfor> mBannerList;
     @Inject
     RxPermissions mRxPermissions;
     @Inject
@@ -71,10 +79,26 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initRecyclerView();
-        mRecyclerView.setAdapter(mAdapter);
         initPaginate();
     }
 
+    private void initBanner() {
+        ArrayList<String> imagePath = new ArrayList<>();
+        ArrayList<String> imageTitle = new ArrayList<>();
+        for (BannerInfor testResponse : mBannerList) {
+            imagePath.add(testResponse.getImagePath());
+            imageTitle.add(testResponse.getTitle());
+        }
+        bannerGuideContent.setAdapter(new BGABanner.Adapter() {
+            @Override
+            public void fillBannerItem(BGABanner banner, View itemView, @Nullable Object model, int position) {
+                ImageLoaderUtils.loadImage((ImageView) itemView,model,getContext());
+
+            }
+        });
+
+        bannerGuideContent.setData(imagePath,imageTitle);
+    }
 
 
     private void initPaginate() {
@@ -106,6 +130,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     private void initRecyclerView() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+
     }
 
     @Override
@@ -171,6 +198,12 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         mPresenter.requestUsers(true);//打开 App 时自动加载列表
+        mPresenter.requestBannerDataList();
         toolbar_title.setText("首页");
+    }
+
+    @Override
+    public void updateBanner() {
+        initBanner();
     }
 }
