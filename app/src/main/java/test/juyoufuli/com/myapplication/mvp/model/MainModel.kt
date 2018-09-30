@@ -2,9 +2,12 @@ package test.juyoufuli.com.myapplication.mvp.model
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
+import com.jess.arms.di.scope.ActivityScope
+import com.jess.arms.di.scope.FragmentScope
 
 import com.jess.arms.integration.IRepositoryManager
 import com.jess.arms.mvp.BaseModel
+import dagger.Module
 
 import javax.inject.Inject
 
@@ -27,6 +30,7 @@ import timber.log.Timber
  * Created Time : 2018-09-27  17:08
  * Description:
  */
+@FragmentScope
 class MainModel @Inject
 constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), MainContract.Model {
     override fun getBanner(): Observable<BannerResponse> {

@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.juyoufuli.com.myapplication.app.ui.home.adapter;
+package test.juyoufuli.com.myapplication.mvp.ui.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseHolder;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.http.imageloader.ImageLoader;
-import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Data;
 import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 
 /**
@@ -59,7 +56,6 @@ public class ArticleItemHolder extends BaseHolder<Datas> {
         //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
         mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.getContext());
         mImageLoader = mAppComponent.imageLoader();
-        itemView.setOnClickListener(this);
     }
 
     @SuppressLint("CheckResult")

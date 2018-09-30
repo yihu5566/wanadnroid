@@ -63,10 +63,10 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
      * 使用 2017 Google IO 发布的 Architecture Components 中的 Lifecycles 的新特性 (此特性已被加入 Support library)
      * 使 {@code Presenter} 可以与 {@link SupportActivity} 和 {@link Fragment} 的部分生命周期绑定
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     void onCreate() {
-        requestUsers(true);//打开 App 时自动加载列表
-        requestBannerDataList();
+//        requestUsers(true);//打开 App 时自动加载列表
+//        requestBannerDataList();
     }
 
     public void requestUsers(final boolean pullToRefresh) {
@@ -148,9 +148,9 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
 
                     @Override
                     public void onNext(BannerResponse systemDataResponse) {
+                        mBannerList.clear();
                         mBannerList.addAll(systemDataResponse.getData());
                         mRootView.updateBanner();
-//                        bannerGuideContent.setAdapter(null);
 
                     }
                 });

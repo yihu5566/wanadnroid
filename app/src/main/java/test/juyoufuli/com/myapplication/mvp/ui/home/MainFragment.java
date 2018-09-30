@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.app.ui.home;
+package test.juyoufuli.com.myapplication.mvp.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseFragment;
+import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.paginate.Paginate;
@@ -29,13 +31,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.app.ui.home.adapter.ArticleAdapter;
 import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils;
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent;
 import test.juyoufuli.com.myapplication.di.module.MainModule;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
+import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity;
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -44,7 +49,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * Created Time : 2018-09-27  15:50
  * Description:
  */
-public class MainFragment extends BaseFragment<MainPresenter> implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment<MainPresenter> implements MainContract.View, SwipeRefreshLayout.OnRefreshListener{
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
@@ -53,6 +58,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     TextView toolbar_title;
     @BindView(R.id.banner_guide_content)
     BGABanner bannerGuideContent;
+    @BindView(R.id.toolbar_search)
+    RelativeLayout toolbar_search;
 
     @Inject
     List<BannerInfor> mBannerList;
@@ -63,8 +70,10 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     @Inject
     RecyclerView.Adapter mAdapter;
 
+
     private Paginate mPaginate;
     private boolean isLoadingMore;
+
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
@@ -78,8 +87,19 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        toolbar_title.setText("首页");
+        toolbar_search.setVisibility(View.VISIBLE);
+        toolbar_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity(new Intent(getActivity(), SearchViewActivity.class));
+
+            }
+        });
         initRecyclerView();
         initPaginate();
+        mPresenter.requestUsers(true);
+        mPresenter.requestBannerDataList();
     }
 
     private void initBanner() {
@@ -92,12 +112,21 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         bannerGuideContent.setAdapter(new BGABanner.Adapter() {
             @Override
             public void fillBannerItem(BGABanner banner, View itemView, @Nullable Object model, int position) {
-                ImageLoaderUtils.loadImage((ImageView) itemView,model,getContext());
+                ImageLoaderUtils.loadImage((ImageView) itemView, model, getContext());
 
             }
         });
 
-        bannerGuideContent.setData(imagePath,imageTitle);
+        bannerGuideContent.setData(imagePath, imageTitle);
+        bannerGuideContent.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+            @Override
+            public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("link", mBannerList.get(position).getUrl());
+                intent.putExtra("title", mBannerList.get(position).getTitle());
+                launchActivity(intent);
+            }
+        });
     }
 
 
@@ -131,7 +160,18 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
+        if (mAdapter instanceof ArticleAdapter) {
+            ((ArticleAdapter) mAdapter).setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(View view, int viewType, Object data, int position) {
+//                     LogUtils.debugInfo(((Datas)data).getLink()+position);
+                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("link", ((Datas) data).getLink());
+                    intent.putExtra("title", ((Datas) data).getTitle());
+                    launchActivity(intent);
+                }
+            });
+        }
 
     }
 
@@ -197,8 +237,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        mPresenter.requestUsers(true);//打开 App 时自动加载列表
-        mPresenter.requestBannerDataList();
+//        mPresenter.requestUsers(true);//打开 App 时自动加载列表
+//        mPresenter.requestBannerDataList();
         toolbar_title.setText("首页");
     }
 
@@ -206,4 +246,22 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     public void updateBanner() {
         initBanner();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+
 }

@@ -16,11 +16,11 @@
 package test.juyoufuli.com.myapplication.di.component;
 
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.di.scope.FragmentScope;
+import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
-import test.juyoufuli.com.myapplication.di.module.MainModule;
-import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment;
+import test.juyoufuli.com.myapplication.app.ui.home.MainActivity;
+import test.juyoufuli.com.myapplication.di.module.HomeModule;
 
 /**
  * ================================================
@@ -32,8 +32,8 @@ import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@FragmentScope
-@Component(modules = MainModule.class, dependencies = AppComponent.class)
-public interface MainComponent {
-    void inject(MainFragment activity);
+@ActivityScope
+@Component(modules = HomeModule.class, dependencies = AppComponent.class)
+public interface HomeComponent {
+    void inject(MainActivity activity);
 }

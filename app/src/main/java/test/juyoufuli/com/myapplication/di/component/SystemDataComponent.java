@@ -19,8 +19,8 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.FragmentScope;
 
 import dagger.Component;
-import test.juyoufuli.com.myapplication.app.ui.tab.SystemDataFragment;
 import test.juyoufuli.com.myapplication.di.module.SystemDataModule;
+import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment;
 
 /**
  * ================================================

@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.app.ui.home.adapter;
+package test.juyoufuli.com.myapplication.mvp.ui.tab.adapter;
 
 import android.view.View;
 
@@ -8,22 +8,21 @@ import com.jess.arms.base.DefaultAdapter;
 import java.util.List;
 
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Data;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 
 /**
  * Author : ludf
  * Created Time : 2018-09-27  14:57
  * Description:
  */
-public class ArticleAdapter extends DefaultAdapter<Datas> {
-    public ArticleAdapter(List<Datas> infos) {
+public class SystemDataAdapter extends DefaultAdapter<SystemBean> {
+    public SystemDataAdapter(List<SystemBean> infos) {
         super(infos);
     }
 
     @Override
-    public BaseHolder<Datas> getHolder(View v, int viewType) {
-        return new ArticleItemHolder(v);
+    public BaseHolder<SystemBean> getHolder(View v, int viewType) {
+        return new SystemDataItemHolder(v);
     }
 
     @Override

@@ -26,11 +26,10 @@ import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
-import test.juyoufuli.com.myapplication.app.ui.tab.adapter.SystemDataAdapter;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
-import test.juyoufuli.com.myapplication.mvp.model.MainModel;
 import test.juyoufuli.com.myapplication.mvp.model.SystemDataModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
+import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * ================================================

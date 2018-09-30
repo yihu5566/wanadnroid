@@ -35,7 +35,8 @@
             android:name="test.juyoufuli.com.myapplication.app.GlobalConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".app.ui.home.MainActivity"
+        <activity
+            android:name=".app.ui.home.MainActivity"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +44,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".mvp.ui.webview.WebViewActivity" />
+        <activity android:name=".mvp.ui.searchview.SearchViewActivity"/>
     </application>
 
 </manifest>

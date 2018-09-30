@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.juyoufuli.com.myapplication.app.ui.tab.adapter;
+package test.juyoufuli.com.myapplication.mvp.ui.tab.adapter;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +33,6 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import test.juyoufuli.com.myapplication.R;
 import test.juyoufuli.com.myapplication.mvp.entity.Children;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 
 /**

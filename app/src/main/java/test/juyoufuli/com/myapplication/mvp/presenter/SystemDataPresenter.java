@@ -47,10 +47,11 @@ public class SystemDataPresenter extends BasePresenter<SystemDataContract.Model,
         super(model, rootView);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     void onCreate() {
         requestSystemDataList();//打开 App 时自动加载列表
     }
+
     public void requestSystemDataList() {
         mModel.getSystemData()
                 .subscribeOn(Schedulers.io())
