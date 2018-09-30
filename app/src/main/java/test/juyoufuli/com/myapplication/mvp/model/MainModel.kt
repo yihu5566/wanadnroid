@@ -17,6 +17,7 @@ import io.rx_cache2.EvictDynamicKey
 import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import timber.log.Timber
@@ -28,6 +29,16 @@ import timber.log.Timber
  */
 class MainModel @Inject
 constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), MainContract.Model {
+    override fun getBanner(): Observable<BannerResponse> {
+        return Observable.just(mRepositoryManager
+                .obtainRetrofitService(MainService::class.java)
+                .getBannerList())
+                .flatMap { listObservable ->
+                    mRepositoryManager.obtainCacheService(CommonCache::class.java)
+                            .getBannerData(listObservable)
+                            .map { listReply -> listReply.data }
+                }
+    }
 
     override fun getUsers(lastIdQueried: Int, update: Boolean): Observable<ArticleResponse> {
         //使用rxcache缓存,上拉刷新则不读取缓存,加载更多读取缓存

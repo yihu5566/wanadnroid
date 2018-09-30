@@ -20,22 +20,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.yyydjk.library.BannerLayout
-                android:id="@+id/banner"
+            <cn.bingoogolapple.bgabanner.BGABanner
+                android:id="@+id/banner_guide_content"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:autoPlayDuration="5000"
-                app:indicatorMargin="10dp"
-                app:indicatorPosition="rightBottom"
-                app:indicatorShape="rect"
-                app:indicatorSpace="3dp"
-                app:scrollDuration="1100"
-                app:selectedIndicatorColor="?attr/colorPrimary"
-                app:selectedIndicatorHeight="6dp"
-                app:selectedIndicatorWidth="6dp"
-                app:unSelectedIndicatorColor="#99ffffff"
-                app:unSelectedIndicatorHeight="6dp"
-                app:unSelectedIndicatorWidth="6dp" />\
+                app:banner_pageChangeDuration="1000"
+                app:banner_indicatorGravity="right"
+                app:banner_pointAutoPlayAble="true"
+                app:banner_pointContainerBackground="@android:color/transparent"
+                app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+                app:banner_pointTopBottomMargin="15dp"
+                app:banner_transitionEffect="alpha" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"

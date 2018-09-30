@@ -64,8 +64,7 @@ dependencies {
     implementation rootProject.ext.dependencies["paginate"]
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'com.github.dongjunkun:BannerLayout:1.0.6'
-
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4'
 }
 repositories {
     mavenCentral()

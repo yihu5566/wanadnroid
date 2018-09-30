@@ -23,8 +23,9 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
+import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.Datas;
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 
 /**
@@ -44,7 +45,10 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     @Inject
     List<Datas> mUsers;
     @Inject
+    List<BannerInfor> mBannerList;
+    @Inject
     RecyclerView.Adapter mAdapter;
+
     private int lastUserId = 1;
     private boolean isFirst = true;
     private int preEndIndex;
@@ -62,6 +66,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     void onCreate() {
         requestUsers(true);//打开 App 时自动加载列表
+        requestBannerDataList();
     }
 
     public void requestUsers(final boolean pullToRefresh) {
@@ -132,21 +137,23 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     }
 
 
-    public void requestSystemDataList() {
-//        mModel.getSystemData()
-//                .subscribeOn(Schedulers.io())
-//                .retryWhen(new RetryWithDelay(3, 2))
-//                .subscribeOn(AndroidSchedulers.mainThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
-//                .subscribe(new ErrorHandleSubscriber<SystemDataResponse>(mErrorHandler) {
-//
-//                    @Override
-//                    public void onNext(SystemDataResponse systemDataResponse) {
-//                        mSystemData.addAll(systemDataResponse.getData());
-//                        mAdapter.notifyDataSetChanged();
-//                    }
-//                });
+    public void requestBannerDataList() {
+        mModel.getBanner()
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BannerResponse>(mErrorHandler) {
+
+                    @Override
+                    public void onNext(BannerResponse systemDataResponse) {
+                        mBannerList.addAll(systemDataResponse.getData());
+                        mRootView.updateBanner();
+//                        bannerGuideContent.setAdapter(null);
+
+                    }
+                });
     }
 
 
@@ -158,5 +165,6 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
         this.mErrorHandler = null;
         this.mAppManager = null;
         this.mApplication = null;
+        this.mBannerList=null;
     }
 }

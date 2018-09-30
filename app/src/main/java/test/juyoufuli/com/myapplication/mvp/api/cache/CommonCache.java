@@ -24,6 +24,7 @@ import io.rx_cache2.LifeCache;
 import io.rx_cache2.Reply;
 import io.rx_cache2.internal.RxCache;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
 
@@ -37,10 +38,12 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
  * ================================================
  */
 public interface CommonCache {
-
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<ArticleResponse>> getUsers(Observable<ArticleResponse> users, DynamicKey idLastUserQueried, EvictProvider evictProvider);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<SystemDataResponse>> getSystemData(Observable<SystemDataResponse> users);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Observable<Reply<BannerResponse>> getBannerData(Observable<BannerResponse> users);
 }

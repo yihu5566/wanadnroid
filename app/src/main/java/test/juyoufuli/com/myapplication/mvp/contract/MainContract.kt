@@ -7,6 +7,7 @@ import com.jess.arms.mvp.IView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 
 /**
  * Author : ludf
@@ -21,10 +22,12 @@ class MainContract {
         val rxPermissions: RxPermissions
         fun startLoadMore()
         fun endLoadMore()
+        fun updateBanner()
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,如是否使用缓存
     interface Model : IModel {
         fun getUsers(lastIdQueried: Int, update: Boolean): Observable<ArticleResponse>
+        fun getBanner(): Observable<BannerResponse>
     }
 }

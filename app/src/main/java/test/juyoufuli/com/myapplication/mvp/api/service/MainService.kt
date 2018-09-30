@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 
 /**
  * Author : ludf
@@ -13,4 +14,6 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 interface MainService {
     @GET("article/list/{index}/json")
     fun getArticleList(@Path("index") index: String): Observable<ArticleResponse>
+    @GET("banner/json")
+    fun getBannerList(): Observable<BannerResponse>
 }

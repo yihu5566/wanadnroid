@@ -6,4 +6,6 @@ package test.juyoufuli.com.myapplication.app.utils;
  * Description:
  */
 public interface OnItemClickListener {
+
+    void itemClickListener();
 }

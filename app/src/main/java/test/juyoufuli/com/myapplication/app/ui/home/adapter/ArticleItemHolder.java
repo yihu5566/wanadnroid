@@ -59,6 +59,7 @@ public class ArticleItemHolder extends BaseHolder<Datas> {
         //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
         mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.getContext());
         mImageLoader = mAppComponent.imageLoader();
+        itemView.setOnClickListener(this);
     }
 
     @SuppressLint("CheckResult")
