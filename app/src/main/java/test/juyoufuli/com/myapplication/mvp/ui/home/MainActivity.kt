@@ -41,12 +41,12 @@ class MainActivity : BaseActivity<HomePresenter>(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tv_tab_1 -> {
-                supportFragmentManager.beginTransaction().add(R.id.fl_content, MainFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_content, MainFragment()).commit()
                 tv_tab_1.isSelected = true
                 tv_tab_2.isSelected = false
             }
             R.id.tv_tab_2 -> {
-                supportFragmentManager.beginTransaction().add(R.id.fl_content, SystemDataFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_content, SystemDataFragment()).commit()
                 tv_tab_1.isSelected = false
                 tv_tab_2.isSelected = true
             }

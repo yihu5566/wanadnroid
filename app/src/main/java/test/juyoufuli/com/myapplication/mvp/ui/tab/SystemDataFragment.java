@@ -83,11 +83,11 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
                 @Override
                 public void onItemClick(View view, int viewType, Object data, int position) {
 //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
-                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("link", ((Datas) data).getLink());
-                    intent.putExtra("title", ((Datas) data).getTitle());
-
-                    launchActivity(intent);
+//                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+//                    intent.putExtra("link", ((Datas) data).getLink());
+//                    intent.putExtra("title", ((Datas) data).getTitle());
+//
+//                    launchActivity(intent);
                 }
             });
         }

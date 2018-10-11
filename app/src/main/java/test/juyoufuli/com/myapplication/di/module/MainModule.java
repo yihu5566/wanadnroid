@@ -93,7 +93,7 @@ public class MainModule {
 
     @FragmentScope
     @Provides
-    RecyclerView.Adapter provideUserAdapter(List<Datas> list){
+    ArticleAdapter provideUserAdapter(List<Datas> list){
         return new ArticleAdapter(list);
     }
 }

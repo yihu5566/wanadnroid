@@ -68,7 +68,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     @Inject
     RecyclerView.LayoutManager mLayoutManager;
     @Inject
-    RecyclerView.Adapter mAdapter;
+    ArticleAdapter mAdapter;
 
 
     private Paginate mPaginate;
@@ -160,8 +160,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        if (mAdapter instanceof ArticleAdapter) {
-            ((ArticleAdapter) mAdapter).setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
+            mAdapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
                 @Override
                 public void onItemClick(View view, int viewType, Object data, int position) {
 //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
@@ -173,7 +172,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
             });
         }
 
-    }
 
     @Override
     public void setData(@Nullable Object data) {

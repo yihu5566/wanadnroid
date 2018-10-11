@@ -46,4 +46,6 @@ public interface CommonCache {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<BannerResponse>> getBannerData(Observable<BannerResponse> users);
+
+    Observable<Reply<ArticleResponse>> getSerach(Observable<ArticleResponse> users);
 }

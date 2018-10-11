@@ -27,6 +27,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
 
 /**
  * Author : ludf
@@ -47,7 +48,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     @Inject
     List<BannerInfor> mBannerList;
     @Inject
-    RecyclerView.Adapter mAdapter;
+    ArticleAdapter mAdapter;
 
     private int lastUserId = 1;
     private boolean isFirst = true;

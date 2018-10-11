@@ -17,11 +17,14 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 class SearchContract {
 
     interface View : IView {
-
+        fun getActivity(): Activity
+        fun refreshList( list:ArticleResponse)
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,如是否使用缓存
     interface Model : IModel {
+
+        fun getSearchResult(index: Int, result: String): Observable<ArticleResponse>
 
     }
 }
