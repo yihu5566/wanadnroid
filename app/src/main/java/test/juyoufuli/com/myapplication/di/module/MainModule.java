@@ -26,8 +26,8 @@ import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.MainModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
@@ -81,7 +81,7 @@ public class MainModule {
 
     @FragmentScope
     @Provides
-    List<Datas> provideUserList() {
+    List<ArticleBean> provideUserList() {
         return new ArrayList<>();
     }
 
@@ -93,7 +93,7 @@ public class MainModule {
 
     @FragmentScope
     @Provides
-    ArticleAdapter provideUserAdapter(List<Datas> list){
+    ArticleAdapter provideUserAdapter(List<ArticleBean> list){
         return new ArticleAdapter(list);
     }
 }

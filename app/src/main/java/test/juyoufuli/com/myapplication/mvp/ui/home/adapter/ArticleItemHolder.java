@@ -29,7 +29,7 @@ import com.jess.arms.utils.ArmsUtils;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 
 /**
  * ================================================
@@ -40,7 +40,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.Datas;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class ArticleItemHolder extends BaseHolder<Datas> {
+public class ArticleItemHolder extends BaseHolder<ArticleBean> {
 
     @BindView(R.id.tv_chapterName)
     TextView mName;
@@ -60,7 +60,7 @@ public class ArticleItemHolder extends BaseHolder<Datas> {
 
     @SuppressLint("CheckResult")
     @Override
-    public void setData(Datas data, int position) {
+    public void setData(ArticleBean data, int position) {
         Observable.just(data.getAuthor())
                 .subscribe(s -> mName.setText(s));
         Observable.just(data.getTitle())

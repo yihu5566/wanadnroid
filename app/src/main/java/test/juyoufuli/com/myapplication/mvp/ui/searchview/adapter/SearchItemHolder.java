@@ -15,22 +15,14 @@
  */
 package test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter;
 
-import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseHolder;
-import com.jess.arms.base.DefaultAdapter;
-import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.http.imageloader.ImageLoader;
-import com.jess.arms.utils.ArmsUtils;
 
-import butterknife.BindView;
-import io.reactivex.Observable;
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 
 /**
  * ================================================

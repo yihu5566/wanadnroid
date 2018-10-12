@@ -2,10 +2,8 @@ package test.juyoufuli.com.myapplication.di.module;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.di.scope.FragmentScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
@@ -13,15 +11,10 @@ import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.model.SearchViewModel;
-import test.juyoufuli.com.myapplication.mvp.model.SystemDataModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract;
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter;
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * Author : dongfang
@@ -67,7 +60,7 @@ public class SearchModule {
 
     @ActivityScope
     @Provides
-    List<Datas> provideSystemList() {
+    List<ArticleBean> provideSystemList() {
         return new ArrayList<>();
     }
 

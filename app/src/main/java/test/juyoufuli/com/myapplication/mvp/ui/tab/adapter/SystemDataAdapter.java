@@ -27,6 +27,6 @@ public class SystemDataAdapter extends DefaultAdapter<SystemBean> {
 
     @Override
     public int getLayoutId(int viewType) {
-        return R.layout.article_item;
+        return R.layout.article_system_item;
     }
 }

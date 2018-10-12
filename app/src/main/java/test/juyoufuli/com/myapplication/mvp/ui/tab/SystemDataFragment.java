@@ -16,9 +16,12 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.LogUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -26,12 +29,11 @@ import butterknife.BindView;
 import test.juyoufuli.com.myapplication.R;
 import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataComponent;
 import test.juyoufuli.com.myapplication.di.module.SystemDataModule;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataPresenter;
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity;
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -53,7 +55,9 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
     @Inject
     RecyclerView.LayoutManager mLayoutManager;
     @Inject
-    RecyclerView.Adapter mAdapter;
+    SystemDataAdapter mAdapter;
+    @Inject
+    ArrayList<String> tagName;
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
@@ -78,19 +82,20 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
     private void initRecyclerView() {
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
 
-        if (mAdapter instanceof SystemDataAdapter) {
-            ((SystemDataAdapter) mAdapter).setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int viewType, Object data, int position) {
-//                     LogUtils.debugInfo(((Datas)data).getLink()+position);
-//                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
-//                    intent.putExtra("link", ((Datas) data).getLink());
-//                    intent.putExtra("title", ((Datas) data).getTitle());
-//
-//                    launchActivity(intent);
+        mAdapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int viewType, Object data, int position) {
+                LogUtils.debugInfo(((SystemBean) data).getName() + position);
+                SystemBean data1 = (SystemBean) data;
+                Intent intent = new Intent(getActivity(), SystemDataDetailsActivity.class);
+                for (int i = 0; i < data1.getChildren().size(); i++) {
+                    tagName.add(data1.getChildren().get(i).getName());
                 }
-            });
-        }
+                intent.putStringArrayListExtra("tagName", tagName);
+
+                launchActivity(intent);
+            }
+        });
     }
 
     @Override

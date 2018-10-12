@@ -86,7 +86,13 @@ public class SystemDataModule {
 
     @FragmentScope
     @Provides
-    RecyclerView.Adapter provideSystemAdapter(List<SystemBean> list){
+    ArrayList<String> provideSystemNameList() {
+        return new ArrayList<>();
+    }
+
+    @FragmentScope
+    @Provides
+    SystemDataAdapter provideSystemAdapter(List<SystemBean> list){
         return new SystemDataAdapter(list);
     }
 }

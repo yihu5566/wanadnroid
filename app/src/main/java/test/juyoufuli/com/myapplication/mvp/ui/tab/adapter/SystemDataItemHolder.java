@@ -50,8 +50,6 @@ public class SystemDataItemHolder extends BaseHolder<SystemBean> {
     TextView mName;
     @BindView(R.id.tv_desc)
     TextView mDesc;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
     private AppComponent mAppComponent;
     private ImageLoader mImageLoader;//用于加载图片的管理类,默认使用 Glide,使用策略模式,可替换框架
 
@@ -82,7 +80,6 @@ public class SystemDataItemHolder extends BaseHolder<SystemBean> {
                 .subscribe(s -> mDesc.setText(s));
 
 
-        tvTime.setVisibility(View.GONE);
     }
 
 

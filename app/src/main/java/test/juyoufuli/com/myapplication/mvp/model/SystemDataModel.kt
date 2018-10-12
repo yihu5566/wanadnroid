@@ -6,7 +6,7 @@ import com.jess.arms.mvp.BaseModel
 import dagger.Module
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
-import test.juyoufuli.com.myapplication.mvp.api.service.SystemDataService
+import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class SystemDataModel @Inject constructor(repositoryManager: IRepositoryManager)
 
     override fun getSystemData(): Observable<SystemDataResponse> {
         return Observable.just(mRepositoryManager
-                .obtainRetrofitService(SystemDataService::class.java)
+                .obtainRetrofitService(MainService::class.java)
                 .getSystemDataList())
                 .flatMap { listObservable ->
                     mRepositoryManager

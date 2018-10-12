@@ -3,8 +3,8 @@ package test.juyoufuli.com.myapplication.mvp.presenter;
 import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.support.v7.widget.RecyclerView;
 
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
@@ -19,9 +19,13 @@ import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
+import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsContract;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
@@ -29,8 +33,8 @@ import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
  * Created Time : 2018-09-29  13:34
  * Description:
  */
-@FragmentScope
-public class SystemDataPresenter extends BasePresenter<SystemDataContract.Model, SystemDataContract.View> {
+@ActivityScope
+public class SystemDataDetailsPresenter extends BasePresenter<SystemDataDetailsContract.Model, SystemDataDetailsContract.View> {
 
     @Inject
     RxErrorHandler mErrorHandler;
@@ -39,32 +43,28 @@ public class SystemDataPresenter extends BasePresenter<SystemDataContract.Model,
     @Inject
     Application mApplication;
     @Inject
-    List<SystemBean> mSystemData;
+    List<ArticleBean> mSystemData;
     @Inject
-    SystemDataAdapter mAdapter;
+    ArticleAdapter mAdapter;
 
     @Inject
-    public SystemDataPresenter(SystemDataContract.Model model, SystemDataContract.View rootView) {
+    public SystemDataDetailsPresenter(SystemDataDetailsContract.Model model, SystemDataDetailsContract.View rootView) {
         super(model, rootView);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void onCreate() {
-        requestSystemDataList();//打开 App 时自动加载列表
-    }
 
-    public void requestSystemDataList() {
-        mModel.getSystemData()
+    public void requestSystemDataList(String index, String cid) {
+        mModel.getSystemData(index, cid)
                 .subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(3, 2))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
-                .subscribe(new ErrorHandleSubscriber<SystemDataResponse>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<ArticleResponse>(mErrorHandler) {
 
                     @Override
-                    public void onNext(SystemDataResponse systemDataResponse) {
-                        mSystemData.addAll(systemDataResponse.getData());
+                    public void onNext(ArticleResponse systemDataResponse) {
+                        mSystemData.addAll(systemDataResponse.getData().getDatas());
                         mAdapter.notifyDataSetChanged();
                     }
                 });

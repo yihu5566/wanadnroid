@@ -8,20 +8,20 @@ import com.jess.arms.base.DefaultAdapter;
 import java.util.List;
 
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 
 /**
  * Author : ludf
  * Created Time : 2018-09-27  14:57
  * Description:
  */
-public class ArticleAdapter extends DefaultAdapter<Datas> {
-    public ArticleAdapter(List<Datas> infos) {
+public class ArticleAdapter extends DefaultAdapter<ArticleBean> {
+    public ArticleAdapter(List<ArticleBean> infos) {
         super(infos);
     }
 
     @Override
-    public BaseHolder<Datas> getHolder(View v, int viewType) {
+    public BaseHolder<ArticleBean> getHolder(View v, int viewType) {
         ArticleItemHolder articleItemHolder = new ArticleItemHolder(v);
         return articleItemHolder;
     }

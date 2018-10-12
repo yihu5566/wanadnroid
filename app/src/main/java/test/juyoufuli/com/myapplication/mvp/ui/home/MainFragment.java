@@ -34,8 +34,8 @@ import test.juyoufuli.com.myapplication.R;
 import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils;
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent;
 import test.juyoufuli.com.myapplication.di.module.MainModule;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
@@ -165,8 +165,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
                 public void onItemClick(View view, int viewType, Object data, int position) {
 //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
                     Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("link", ((Datas) data).getLink());
-                    intent.putExtra("title", ((Datas) data).getTitle());
+                    intent.putExtra("link", ((ArticleBean) data).getLink());
+                    intent.putExtra("title", ((ArticleBean) data).getTitle());
                     launchActivity(intent);
                 }
             });

@@ -46,6 +46,7 @@
         </activity>
         <activity android:name=".mvp.ui.webview.WebViewActivity" />
         <activity android:name=".mvp.ui.searchview.SearchViewActivity"/>
+        <activity android:name=".mvp.ui.tab.SystemDataDetailsActivity"/>
     </application>
 
 </manifest>

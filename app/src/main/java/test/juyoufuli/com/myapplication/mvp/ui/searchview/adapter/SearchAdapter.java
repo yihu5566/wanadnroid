@@ -6,21 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jess.arms.base.BaseHolder;
-import com.jess.arms.base.DefaultAdapter;
-
-import java.util.List;
-
-import io.reactivex.Observable;
 import test.juyoufuli.com.myapplication.R;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 
 /**
  * Author : ludf
  * Created Time : 2018-09-27  14:57
  * Description:
  */
-public class SearchAdapter extends BaseRecyclerViewAdapter<Datas> {
+public class SearchAdapter extends BaseRecyclerViewAdapter<ArticleBean> {
 
     public SearchAdapter(Context context) {
         super(context);
@@ -36,7 +30,7 @@ public class SearchAdapter extends BaseRecyclerViewAdapter<Datas> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SearchItemHolder mHolder = (SearchItemHolder) holder;
-        Datas data = getList().get(position);
+        ArticleBean data = getList().get(position);
         mHolder.mName.setText(data.getAuthor());
         mHolder.mDesc.setText(data.getTitle());
         mHolder.tvTime.setText(data.getNiceDate());

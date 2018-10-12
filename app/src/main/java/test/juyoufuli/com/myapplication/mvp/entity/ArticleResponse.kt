@@ -16,7 +16,7 @@ data class ArticleResponse(
 
 data class Data(
     val curPage: Int,
-    val datas: List<Datas>,
+    val datas: List<ArticleBean>,
     val offset: Int,
     val over: Boolean,
     val pageCount: Int,
@@ -24,7 +24,7 @@ data class Data(
     val total: Int
 )
 
-data class Datas(
+data class ArticleBean(
     val apkLink: String,
     val author: String,
     val chapterId: Int,

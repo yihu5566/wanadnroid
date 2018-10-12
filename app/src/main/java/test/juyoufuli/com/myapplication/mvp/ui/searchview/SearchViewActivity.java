@@ -25,8 +25,8 @@ import butterknife.BindView;
 import test.juyoufuli.com.myapplication.R;
 import test.juyoufuli.com.myapplication.di.component.DaggerSearchComponent;
 import test.juyoufuli.com.myapplication.di.module.SearchModule;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.SearchViewPresenter;
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter;
@@ -119,9 +119,9 @@ public class SearchViewActivity extends BaseActivity<SearchViewPresenter> implem
         ArmsUtils.configRecyclerView(rlvSearchResult, mLayoutManager);
         rlvSearchResult.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<Datas>() {
+        mAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<ArticleBean>() {
             @Override
-            public void onItemClick(int clickId, int position, Datas item) {
+            public void onItemClick(int clickId, int position, ArticleBean item) {
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("link", item.getLink());
                 intent.putExtra("title", item.getTitle());

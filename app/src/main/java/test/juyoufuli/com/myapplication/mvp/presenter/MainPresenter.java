@@ -5,7 +5,6 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SupportActivity;
-import android.support.v7.widget.RecyclerView;
 
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.AppManager;
@@ -22,10 +21,10 @@ import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
-import test.juyoufuli.com.myapplication.mvp.entity.Datas;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
 
@@ -44,7 +43,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     @Inject
     Application mApplication;
     @Inject
-    List<Datas> mUsers;
+    List<ArticleBean> mUsers;
     @Inject
     List<BannerInfor> mBannerList;
     @Inject

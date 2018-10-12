@@ -1,16 +1,12 @@
 package test.juyoufuli.com.myapplication.mvp.model
 
-import android.telecom.Call
 import com.jess.arms.di.scope.ActivityScope
 import com.jess.arms.integration.IRepositoryManager
 import com.jess.arms.mvp.BaseModel
 import io.reactivex.Observable
-import io.reactivex.functions.Function
-import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
-import test.juyoufuli.com.myapplication.mvp.api.service.SearchService
+import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -26,7 +22,7 @@ constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager
 //       val map = HashMap<String,String>()
 //        map.put("K",result)
 
-        return mRepositoryManager.obtainRetrofitService(SearchService::class.java)
+        return mRepositoryManager.obtainRetrofitService(MainService::class.java)
                 .getArticleList(index.toString(),result)
 
 

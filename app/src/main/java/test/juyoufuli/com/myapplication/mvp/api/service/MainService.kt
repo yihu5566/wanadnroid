@@ -1,10 +1,10 @@
 package test.juyoufuli.com.myapplication.mvp.api.service
 
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
+import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse
 
 /**
  * Author : ludf
@@ -16,4 +16,14 @@ interface MainService {
     fun getArticleList(@Path("index") index: String): Observable<ArticleResponse>
     @GET("banner/json")
     fun getBannerList(): Observable<BannerResponse>
+
+    @FormUrlEncoded
+    @POST("article/query/{index}/json")
+    fun getArticleList(@Path("index") index: String,@Field("k") map:String): Observable<ArticleResponse>
+
+    @GET("tree/json")
+    fun getSystemDataList(): Observable<SystemDataResponse>
+
+    @GET("article/list/{index}/json")
+    fun getSystemDataDetailsList(@Path("index") index: String,@Path("cid")cid:String): Observable<ArticleResponse>
 }
