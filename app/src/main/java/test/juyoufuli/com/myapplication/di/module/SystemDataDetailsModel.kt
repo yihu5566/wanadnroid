@@ -39,7 +39,7 @@ class SystemDataDetailsModel
     @ActivityScope
     @Provides
     internal fun provideRxPermissions(): RxPermissions {
-        return RxPermissions(view.activity!!)
+        return RxPermissions(view.activity)
     }
 
     @ActivityScope

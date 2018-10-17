@@ -3,11 +3,11 @@ package test.juyoufuli.com.myapplication.mvp.model
 import com.jess.arms.di.scope.FragmentScope
 import com.jess.arms.integration.IRepositoryManager
 import com.jess.arms.mvp.BaseModel
-import dagger.Module
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse
+import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @FragmentScope
 class SystemDataModel @Inject constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), SystemDataContract.Model {
 
-    override fun getSystemData(): Observable<SystemDataResponse> {
+    override fun getSystemData(): Observable<BaseResponse<List<SystemBean>>> {
         return Observable.just(mRepositoryManager
                 .obtainRetrofitService(MainService::class.java)
                 .getSystemDataList())
@@ -29,5 +29,6 @@ class SystemDataModel @Inject constructor(repositoryManager: IRepositoryManager)
                             .getSystemData(listObservable)
                             .map { listReply -> listReply.data }
                 }
+
     }
 }

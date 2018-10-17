@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">玩Android</string>
+    <string name="main_tab_cash_text">主页</string>
+    <string name="main_tab_service_text">体系</string>
 </resources>

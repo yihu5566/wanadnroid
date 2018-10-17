@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.di.component
 
-import android.support.v7.app.AppCompatActivity
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.di.scope.ActivityScope
 import dagger.Component

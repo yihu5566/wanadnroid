@@ -15,6 +15,7 @@
  */
 package test.juyoufuli.com.myapplication.mvp.api.cache;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -25,8 +26,8 @@ import io.rx_cache2.Reply;
 import io.rx_cache2.internal.RxCache;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse;
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
+import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 
 /**
  * ================================================
@@ -42,10 +43,9 @@ public interface CommonCache {
     Observable<Reply<ArticleResponse>> getUsers(Observable<ArticleResponse> users, DynamicKey idLastUserQueried, EvictProvider evictProvider);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
-    Observable<Reply<SystemDataResponse>> getSystemData(Observable<SystemDataResponse> users);
+    Observable<Reply<BaseResponse<List<SystemBean>>>> getSystemData(Observable<BaseResponse<List<SystemBean>>> users);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<BannerResponse>> getBannerData(Observable<BannerResponse> users);
 
-    Observable<Reply<ArticleResponse>> getSerach(Observable<ArticleResponse> users);
 }

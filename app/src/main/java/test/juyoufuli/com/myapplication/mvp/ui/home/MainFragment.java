@@ -36,6 +36,7 @@ import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent;
 import test.juyoufuli.com.myapplication.di.module.MainModule;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
+import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
@@ -49,7 +50,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * Created Time : 2018-09-27  15:50
  * Description:
  */
-public class MainFragment extends BaseFragment<MainPresenter> implements MainContract.View, SwipeRefreshLayout.OnRefreshListener{
+public class MainFragment extends BaseFragment<MainPresenter> implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
@@ -61,8 +62,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     @BindView(R.id.toolbar_search)
     RelativeLayout toolbar_search;
 
-    @Inject
-    List<BannerInfor> mBannerList;
     @Inject
     RxPermissions mRxPermissions;
     @Inject
@@ -102,7 +101,7 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         mPresenter.requestBannerDataList();
     }
 
-    private void initBanner() {
+    private void initBanner(List<BannerInfor> mBannerList) {
         ArrayList<String> imagePath = new ArrayList<>();
         ArrayList<String> imageTitle = new ArrayList<>();
         for (BannerInfor testResponse : mBannerList) {
@@ -160,17 +159,17 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-            mAdapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int viewType, Object data, int position) {
+        mAdapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int viewType, Object data, int position) {
 //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
-                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("link", ((ArticleBean) data).getLink());
-                    intent.putExtra("title", ((ArticleBean) data).getTitle());
-                    launchActivity(intent);
-                }
-            });
-        }
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("link", ((ArticleBean) data).getLink());
+                intent.putExtra("title", ((ArticleBean) data).getTitle());
+                launchActivity(intent);
+            }
+        });
+    }
 
 
     @Override
@@ -240,10 +239,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         toolbar_title.setText("首页");
     }
 
-    @Override
-    public void updateBanner() {
-        initBanner();
-    }
 
     @Override
     public void onPause() {
@@ -262,4 +257,9 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     }
 
 
+    @Override
+    public void updateBanner(@NotNull BannerResponse systemDataResponse) {
+        initBanner(systemDataResponse.getData());
+
+    }
 }

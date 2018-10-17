@@ -6,7 +6,7 @@ package test.juyoufuli.com.myapplication.mvp.entity
  * Description:
  */
 
-data class SystemDataResponse(
+data class SystemDataRespons(
     val data: List<SystemBean>,
     val errorCode: Int,
     val errorMsg: String

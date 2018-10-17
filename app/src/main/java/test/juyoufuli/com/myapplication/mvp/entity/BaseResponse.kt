@@ -15,6 +15,7 @@
  */
 package test.juyoufuli.com.myapplication.mvp.entity
 
+import okhttp3.Response
 import test.juyoufuli.com.myapplication.mvp.api.Api
 import java.io.Serializable
 
@@ -32,7 +33,7 @@ import java.io.Serializable
  */
 class BaseResponse<T> : Serializable {
     val data: T? = null
-    val errorCode: String? = null
+    val errorCode: Int? = null
     val errorMsg: String? = null
 
     /**

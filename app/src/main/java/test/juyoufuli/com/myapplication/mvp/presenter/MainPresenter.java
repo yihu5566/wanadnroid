@@ -23,7 +23,6 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
@@ -44,8 +43,6 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     Application mApplication;
     @Inject
     List<ArticleBean> mUsers;
-    @Inject
-    List<BannerInfor> mBannerList;
     @Inject
     ArticleAdapter mAdapter;
 
@@ -148,9 +145,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
 
                     @Override
                     public void onNext(BannerResponse systemDataResponse) {
-                        mBannerList.clear();
-                        mBannerList.addAll(systemDataResponse.getData());
-                        mRootView.updateBanner();
+                        mRootView.updateBanner(systemDataResponse);
 
                     }
                 });
@@ -165,6 +160,5 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
         this.mErrorHandler = null;
         this.mAppManager = null;
         this.mApplication = null;
-        this.mBannerList=null;
     }
 }

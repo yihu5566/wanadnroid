@@ -3,10 +3,16 @@ package test.juyoufuli.com.myapplication.app.net;
 import com.jess.arms.mvp.IView;
 import com.jess.arms.utils.RxLifecycleUtils;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
+import test.juyoufuli.com.myapplication.app.BaseRequest;
+import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 
 /**
  * Author : dongfang
@@ -15,14 +21,15 @@ import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
  */
 public class HttpUtil {
 
+    public static void executeHttpRequest(Observable observable, IView mRootView, ErrorHandleSubscriber handleSubscriber) {
 
-    public static Observable executeHttpRequest(Observable observable,IView mRootView){
-
-       return observable.subscribeOn(Schedulers.io())
+        observable.subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(3, 2))
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView));
+                .map(new BaseRequest())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(handleSubscriber);
+
     }
 
 }

@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/include_title" />
+
+
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/riv_system_details_top"
         android:layout_width="match_parent"

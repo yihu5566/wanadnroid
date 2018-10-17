@@ -2,9 +2,7 @@ package test.juyoufuli.com.myapplication.mvp.api.service
 
 import io.reactivex.Observable
 import retrofit2.http.*
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataResponse
+import test.juyoufuli.com.myapplication.mvp.entity.*
 
 /**
  * Author : ludf
@@ -22,7 +20,7 @@ interface MainService {
     fun getArticleList(@Path("index") index: String,@Field("k") map:String): Observable<ArticleResponse>
 
     @GET("tree/json")
-    fun getSystemDataList(): Observable<SystemDataResponse>
+    fun getSystemDataList(): Observable<BaseResponse<List<SystemBean>>>
 
     @GET("article/list/{index}/json")
     fun getSystemDataDetailsList(@Path("index") index: String,@Path("cid")cid:String): Observable<ArticleResponse>

@@ -15,22 +15,13 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
 import com.jess.arms.di.scope.FragmentScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dagger.Module;
 import dagger.Provides;
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
-import test.juyoufuli.com.myapplication.mvp.model.MainModel;
-import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.model.SystemDataDetailsItemModel;
+import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract;
 
 /**
  * ================================================
@@ -43,52 +34,28 @@ import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
  * ================================================
  */
 @Module
-public class MainModule {
-    private MainContract.View view;
+public class SystemDataItemModule {
+    private SystemDataDetailsItemContract.View view;
 
     /**
-     * 构建 UserModule 时,将 View 的实现类传进来,这样就可以提供 View 的实现类给 Presenter
+     * 将 View 的实现类传进来,这样就可以提供 View 的实现类给 Presenter
      *
      * @param view
      */
-    public MainModule(MainContract.View view) {
+    public SystemDataItemModule(SystemDataDetailsItemContract.View view) {
         this.view = view;
     }
 
     @FragmentScope
     @Provides
-    MainContract.View provideUserView() {
+    SystemDataDetailsItemContract.View provideSystemView() {
         return this.view;
     }
 
     @FragmentScope
     @Provides
-    MainContract.Model provideUserModel(MainModel model) {
+    SystemDataDetailsItemContract.Model provideSystemModel(SystemDataDetailsItemModel model) {
         return model;
     }
 
-    @FragmentScope
-    @Provides
-    RxPermissions provideRxPermissions() {
-        return new RxPermissions(view.getFragment().getActivity());
-    }
-
-    @FragmentScope
-    @Provides
-    RecyclerView.LayoutManager provideLayoutManager() {
-        return new LinearLayoutManager(view.getFragment().getContext());
-    }
-
-    @FragmentScope
-    @Provides
-    List<ArticleBean> provideUserList() {
-        return new ArrayList<>();
-    }
-
-
-    @FragmentScope
-    @Provides
-    ArticleAdapter provideUserAdapter(List<ArticleBean> list) {
-        return new ArticleAdapter(list);
-    }
 }

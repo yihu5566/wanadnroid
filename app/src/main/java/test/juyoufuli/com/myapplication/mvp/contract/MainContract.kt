@@ -22,7 +22,7 @@ class MainContract {
         val rxPermissions: RxPermissions
         fun startLoadMore()
         fun endLoadMore()
-        fun updateBanner()
+        fun updateBanner( systemDataResponse:BannerResponse)
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,如是否使用缓存

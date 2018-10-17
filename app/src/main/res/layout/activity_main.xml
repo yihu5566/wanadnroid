@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     android:orientation="vertical"
     tools:context=".app.ui.home.MainActivity">
 
@@ -15,57 +14,13 @@
         android:layout_weight="1"
         android:background="@color/colorPrimaryDark" />
 
-    <LinearLayout
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/tv_tab_1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/main_tab_bg"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/main_tab" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="首页"
-                android:textColor="@drawable/main_tab_text_color"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tv_tab_2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/main_tab_bg"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/tab" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="体系"
-                android:textColor="@drawable/main_tab_text_color"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        app:itemTextColor="@drawable/main_tab_text_color"
+        app:menu="@menu/bottom_navigation_main" />
 
 
 </LinearLayout>

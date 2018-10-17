@@ -88,8 +88,14 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
                 LogUtils.debugInfo(((SystemBean) data).getName() + position);
                 SystemBean data1 = (SystemBean) data;
                 Intent intent = new Intent(getActivity(), SystemDataDetailsActivity.class);
+                StringBuffer stringb;
                 for (int i = 0; i < data1.getChildren().size(); i++) {
-                    tagName.add(data1.getChildren().get(i).getName());
+                    stringb = new StringBuffer();
+                    stringb.append(data1.getChildren().get(i).getId());
+                    stringb.append("*");
+                    stringb.append(data1.getChildren().get(i).getName());
+
+                    tagName.add(stringb.toString());
                 }
                 intent.putStringArrayListExtra("tagName", tagName);
 
