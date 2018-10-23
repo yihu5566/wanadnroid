@@ -1,57 +1,64 @@
 package test.juyoufuli.com.myapplication.app.ui.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
+import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.widget.DrawerLayout
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.View
+import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.TextView
 import com.jess.arms.base.BaseActivity
-import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
+import com.jess.arms.integration.RepositoryManager
+import com.jess.arms.utils.ArmsUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.include_title.*
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
+import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import test.juyoufuli.com.myapplication.di.module.HomeModule
+import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
+import test.juyoufuli.com.myapplication.mvp.model.HomeModel
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
+import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
+import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 
 
 class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
-    override fun showLoading() {
+    override fun getActivity(): Activity {
+      return  this
     }
 
-    override fun launchActivity(intent: Intent) {
-    }
-
-    override fun hideLoading() {
-    }
-
-    override fun killMyself() {
-        finish()
-    }
-
-    override fun showMessage(message: String) {
-    }
 
     private var flContent: FrameLayout? = null
     var currentFragment: Fragment? = null
+    var dl_main_tab: DrawerLayout? = null
+    var screenWidth: Int? = null
+    var mNavigationView: NavigationView? = null
+    var tvPersonLogin: TextView? = null
+    var tvPersonName: TextView? = null
+    var isLogin: Boolean = false
 
-
-    override fun initData(savedInstanceState: Bundle?) {
-        flContent = findViewById(R.id.fl_content)
-        add(MainFragment(), R.id.fl_content, "main")
-
-    }
 
     override fun setupActivityComponent(appComponent: AppComponent) {
-
+//        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
+        mPresenter = HomePresenter(HomeModel(RepositoryManager()), this)
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -65,11 +72,31 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     }
 
+    @SuppressLint("ResourceAsColor")
+    override fun initData(savedInstanceState: Bundle?) {
+        flContent = findViewById(R.id.fl_content)
+        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
+        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
+        var headerLayout = mNavigationView!!.getHeaderView(0); // 0-index header
+        tvPersonName = headerLayout!!.findViewById<TextView>(R.id.tv_person_name)
+
+        tvPersonLogin = headerLayout!!.findViewById<TextView>(R.id.tv_person_login)
+
+        add(MainFragment(), R.id.fl_content, "main")
+
+        var window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        screenWidth = window.defaultDisplay.width
+//        StatusBarUtil.setColor(this, R.color.colorPrimary)
+//        StatusBarUtil.setTranslucentForDrawerLayout(this, dl_main_tab)
+    }
+
     override fun onStart() {
         super.onStart()
         LogUtils.d("onStart...")
         navigation.menu.getItem(1).isChecked = true
         navigation.menu.getItem(0).isChecked = false
+        isLogin = SPUtils.get(this, "isLogin", false) as Boolean
+
 
         navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
@@ -77,17 +104,66 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
                 R.id.bottom_menu_home -> {
                     add(MainFragment(), R.id.fl_content, "main")
                     navigation.menu.getItem(0).isChecked = false
+                    toolbar_title.text = ("首页")
                     true
                 }
                 R.id.bottom_menu_found -> {
                     add(SystemDataFragment(), R.id.fl_content, "system")
                     navigation.menu.getItem(1).isChecked = false
+                    toolbar_title.text = ("知识体系")
                     true
                 }
             }
             false
         }
 
+        mNavigationView!!.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_History -> {
+//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    true
+                }
+                R.id.menu_Setting -> {
+//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    true
+                }
+                R.id.menu_AboutUs -> {
+//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    true
+                }
+            }
+            false
+        }
+        toolbar_title.text = ("首页")
+        toolbar_search.visibility = (View.VISIBLE)
+        toolbar_menu.visibility = (View.VISIBLE)
+        toolbar_menu.setOnClickListener {
+            dl_main_tab!!.openDrawer(Gravity.LEFT)
+        }
+        toolbar_search.setOnClickListener { launchActivity(Intent(this, SearchViewActivity::class.java)) }
+
+        tvPersonLogin!!.setOnClickListener {
+            if (isLogin) {
+                mPresenter!!.LoginOut()
+
+            } else {
+                launchActivity(Intent(this, LoginActivity::class.java))
+            }
+        }
+
+
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (TextUtils.isEmpty(intent!!.getStringExtra("username")) || TextUtils.isEmpty(intent!!.getStringExtra("password"))) {
+            isLogin = false
+            return
+        }
+        isLogin = true
+        SPUtils.put(this, "isLogin", isLogin)
+        tvPersonName!!.text = intent!!.getStringExtra("username")
+        tvPersonLogin!!.text = "退出登录"
     }
 
 
@@ -128,6 +204,44 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     override fun onResume() {
         super.onResume()
         LogUtils.d("onResume...")
+
+        dl_main_tab!!.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                println("----onDrawerSlide-  $slideOffset")
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                println("----onDrawerOpened-")
+
+                val user = SPUtils.get(this@MainActivity, "user", "") as String
+                if (!TextUtils.isEmpty(user)) {
+                    val fromJsonToBean = JsonUtils.fromJsonToBean(user, LoginResponse::class.java) as LoginResponse
+                    isLogin = true
+
+                    tvPersonName!!.text = fromJsonToBean.data.username
+                    tvPersonLogin!!.text = "退出登录"
+
+                } else {
+                    isLogin = false
+                    tvPersonName!!.text = "用户名"
+                    tvPersonLogin!!.text = "前往登陆"
+
+                }
+                SPUtils.put(this@MainActivity, "isLogin", isLogin)
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                println("----onDrawerClosed-")
+
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+                println("----onDrawerStateChanged-  $newState")
+
+            }
+        })
 
     }
 
@@ -176,4 +290,28 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     }
 
+    override fun loginOutSucceed() {
+        isLogin = false
+        SPUtils.put(this, "isLogin", isLogin)
+        tvPersonName!!.text = "用户名"
+        tvPersonLogin!!.text = "前往登陆"
+        SPUtils.clear(this)
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun launchActivity(intent: Intent) {
+        ArmsUtils.startActivity(intent)
+    }
+
+    override fun hideLoading() {
+    }
+
+    override fun killMyself() {
+        finish()
+    }
+
+    override fun showMessage(message: String) {
+    }
 }

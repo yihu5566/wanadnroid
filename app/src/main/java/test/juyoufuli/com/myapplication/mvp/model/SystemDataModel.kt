@@ -8,6 +8,7 @@ import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
+import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @FragmentScope
 class SystemDataModel @Inject constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), SystemDataContract.Model {
 
-    override fun getSystemData(): Observable<BaseResponse<List<SystemBean>>> {
+    override fun getSystemData(): Observable<SystemDataRespons> {
         return Observable.just(mRepositoryManager
                 .obtainRetrofitService(MainService::class.java)
                 .getSystemDataList())

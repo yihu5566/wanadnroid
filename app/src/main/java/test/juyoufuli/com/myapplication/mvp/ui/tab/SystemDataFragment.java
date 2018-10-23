@@ -42,14 +42,9 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * Created Time : 2018-09-29  11:20
  * Description:
  */
-public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implements SystemDataContract.View, View.OnClickListener {
+public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implements SystemDataContract.View {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.toolbar_title)
-    TextView toolbar_title;
-    @BindView(R.id.toolbar_search)
-    RelativeLayout toolbar_search;
-
     @Inject
     RxPermissions mRxPermissions;
     @Inject
@@ -72,11 +67,10 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        toolbar_title.setText("系统架构");
-        toolbar_search.setVisibility(View.VISIBLE);
-        toolbar_search.setOnClickListener(this);
         initRecyclerView();
         mRecyclerView.setAdapter(mAdapter);
+        mPresenter.requestSystemDataList();//打开 App 时自动加载列表
+
     }
 
     private void initRecyclerView() {
@@ -88,6 +82,7 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
                 LogUtils.debugInfo(((SystemBean) data).getName() + position);
                 SystemBean data1 = (SystemBean) data;
                 Intent intent = new Intent(getActivity(), SystemDataDetailsActivity.class);
+                tagName.clear();
                 StringBuffer stringb;
                 for (int i = 0; i < data1.getChildren().size(); i++) {
                     stringb = new StringBuffer();
@@ -152,16 +147,7 @@ public class SystemDataFragment extends BaseFragment<SystemDataPresenter> implem
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         mPresenter.requestSystemDataList();//打开 App 时自动加载列表
-        toolbar_title.setText("系统架构");
+
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_search:
-                launchActivity(new Intent(getActivity(), SearchViewActivity.class));
-                break;
-            default:
-        }
-    }
 }

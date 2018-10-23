@@ -15,13 +15,24 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
 import com.jess.arms.di.scope.FragmentScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dagger.Module;
 import dagger.Provides;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 import test.juyoufuli.com.myapplication.mvp.model.SystemDataDetailsItemModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * ================================================
@@ -58,4 +69,21 @@ public class SystemDataItemModule {
         return model;
     }
 
+    @FragmentScope
+    @Provides
+    RecyclerView.LayoutManager provideLayoutManager() {
+        return new LinearLayoutManager(view.getFragment().getContext());
+    }
+
+    @FragmentScope
+    @Provides
+    SearchAdapter provideSystemAdapter() {
+        return new SearchAdapter(view.getFragment().getContext());
+    }
+
+    @FragmentScope
+    @Provides
+    List<ArticleBean> provideSystemNameList() {
+        return new ArrayList<>();
+    }
 }

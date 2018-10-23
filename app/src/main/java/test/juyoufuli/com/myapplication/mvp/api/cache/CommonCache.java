@@ -28,6 +28,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons;
 
 /**
  * ================================================
@@ -43,9 +44,12 @@ public interface CommonCache {
     Observable<Reply<ArticleResponse>> getUsers(Observable<ArticleResponse> users, DynamicKey idLastUserQueried, EvictProvider evictProvider);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
-    Observable<Reply<BaseResponse<List<SystemBean>>>> getSystemData(Observable<BaseResponse<List<SystemBean>>> users);
+    Observable<Reply<SystemDataRespons>> getSystemData(Observable<SystemDataRespons> users);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<BannerResponse>> getBannerData(Observable<BannerResponse> users);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Observable<Reply<ArticleResponse>> getSystemDetailsData(Observable<ArticleResponse> users);
 
 }

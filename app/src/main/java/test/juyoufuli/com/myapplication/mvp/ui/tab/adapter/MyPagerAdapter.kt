@@ -3,6 +3,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.tab.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.view.ViewGroup
 
 /**
  * Author : dongfang
@@ -18,5 +19,10 @@ class MyPagerAdapter
 
     override fun getCount(): Int {
         return mData.size
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+
+
     }
 }

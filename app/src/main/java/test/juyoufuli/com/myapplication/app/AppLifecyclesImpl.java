@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.Stetho;
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.utils.ArmsUtils;
 import com.squareup.leakcanary.LeakCanary;
@@ -50,7 +51,10 @@ public class AppLifecyclesImpl implements AppLifecycles {
 //                        }
 //                    });
             ButterKnife.setDebug(true);
+
         }
+        Stetho.initializeWithDefaults(application);
+
         //LeakCanary 内存泄露检查
         ArmsUtils.obtainAppComponentFromContext(application).extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
         //扩展 AppManager 的远程遥控功能
@@ -65,6 +69,7 @@ public class AppLifecyclesImpl implements AppLifecycles {
         //Message msg = new Message();
         //msg.what = 0;
         //AppManager.post(msg); like EventBus
+
     }
 
     @Override

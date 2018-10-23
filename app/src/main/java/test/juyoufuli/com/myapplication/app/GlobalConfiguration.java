@@ -13,10 +13,14 @@ import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.utils.ArmsUtils;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.JavaNetCookieJar;
 import test.juyoufuli.com.myapplication.BuildConfig;
+import test.juyoufuli.com.myapplication.app.net.InDiskCookieStore;
 import test.juyoufuli.com.myapplication.mvp.api.Api;
 
 /**
@@ -39,6 +43,7 @@ public final class GlobalConfiguration implements ConfigModule {
         if (!BuildConfig.LOG_DEBUG) { //Release 时,让框架不再打印 Http 请求和响应的信息
             builder.printHttpLogLevel(RequestInterceptor.Level.NONE);
         }
+        CookieManager cookieManager = new java.net.CookieManager(new InDiskCookieStore(context), CookiePolicy.ACCEPT_ORIGINAL_SERVER);
 
         builder.baseurl(Api.Companion.getAPP_DOMAIN())
                 //强烈建议自己自定义图片加载逻辑,因为默认提供的 GlideImageLoaderStrategy 并不能满足复杂的需求
@@ -115,6 +120,7 @@ public final class GlobalConfiguration implements ConfigModule {
                 .okhttpConfiguration((context1, okhttpBuilder) -> {//这里可以自己自定义配置Okhttp的参数
 //                    okhttpBuilder.sslSocketFactory(); //支持 Https,详情请百度
                     okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
+                    okhttpBuilder.cookieJar(new JavaNetCookieJar(cookieManager));
                     //使用一行代码监听 Retrofit／Okhttp 上传下载进度监听,以及 Glide 加载进度监听 详细使用方法查看 https://github.com/JessYanCoding/ProgressManager
 //                    ProgressManager.getInstance().with(okhttpBuilder);
                     //让 Retrofit 同时支持多个 BaseUrl 以及动态改变 BaseUrl. 详细使用请方法查看 https://github.com/JessYanCoding/RetrofitUrlManager

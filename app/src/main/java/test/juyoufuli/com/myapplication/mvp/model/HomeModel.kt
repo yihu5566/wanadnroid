@@ -30,9 +30,13 @@ import timber.log.Timber
  * Created Time : 2018-09-27  17:08
  * Description:
  */
-@ActivityScope
-class HomeModel @Inject
-constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), HomeContract.Model {
+//@ActivityScope @Inject
+class HomeModel
+constructor(private var repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), HomeContract.Model {
+    override fun loginOut(): Observable<String> {
+        return repositoryManager.obtainRetrofitService(MainService::class.java)
+                .loginOut()
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     internal fun onPause() {

@@ -5,17 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.BindView
 import com.jess.arms.base.BaseActivity
+import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.system_data_details_activity.*
+import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -24,6 +25,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.EventBusTags
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataDetailsPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
@@ -37,17 +39,13 @@ import javax.inject.Inject
  */
 class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), SystemDataDetailsContract.View, View.OnClickListener {
 
-
-    @Inject
-    var mRxPermissions: RxPermissions? = null
-//    @Inject
-//    var mErrorHandler: RxErrorHandler? = null
-
     var tagNameList: ArrayList<String>? = null
-    var fragmentList: ArrayList<Fragment>? = null
+    var fragmentList: ArrayList<RecyclerViewFragment>? = null
 
     var toolbarBack: RelativeLayout? = null
     var toolbarTitle: TextView? = null
+    var mViewPager: ViewPager? = null
+    var magicIndicator: MagicIndicator? = null
 
     override fun setupActivityComponent(appComponent: AppComponent) {
 
@@ -60,13 +58,13 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
     override fun initData(savedInstanceState: Bundle?) {
         toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
         toolbarBack = findViewById<RelativeLayout>(R.id.toolbar_back)
+        mViewPager = findViewById<ViewPager>(R.id.vp_system_details_content)
+        magicIndicator = findViewById<MagicIndicator>(R.id.riv_system_details_top)
 
         toolbarBack!!.setVisibility(View.VISIBLE)
         toolbarBack!!.setOnClickListener(this)
         tagNameList = intent.getStringArrayListExtra("tagName")
-
-        toolbarTitle!!.setText(tagNameList!!.get(0).split("*").get(1))
-        fragmentList = ArrayList<Fragment>()
+        fragmentList = ArrayList<RecyclerViewFragment>()
 
         for (ddd in (tagNameList)!!) {
             var recyclerViewFragment = RecyclerViewFragment()
@@ -77,6 +75,8 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
 
             fragmentList!!.add(recyclerViewFragment)
         }
+
+        initFirst()
 
         val supportFragmentManager = supportFragmentManager
 
@@ -96,7 +96,7 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
                 colorTransitionPagerTitleView.setText(tagNameList!!.get(index).split("*").get(1))
                 colorTransitionPagerTitleView.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(view: View) {
-                        vp_system_details_content.setCurrentItem(index)
+                        mViewPager!!.setCurrentItem(index)
                     }
                 })
 
@@ -111,19 +111,25 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
         }
 
 
-        riv_system_details_top.setNavigator(commonNavigator)
+        magicIndicator!!.setNavigator(commonNavigator)
 
-        ViewPagerHelper.bind(riv_system_details_top, vp_system_details_content)
+        ViewPagerHelper.bind(magicIndicator, mViewPager)
 
-        vp_system_details_content.adapter = myPagerAdapter
+        mViewPager!!.adapter = myPagerAdapter
 
-        vp_system_details_content.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        mViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
                 toolbarTitle!!.setText(tagNameList!!.get(position).split("*").get(1))
+                var get = fragmentList!!.get(position)
+                var value = Message()
+                var bundle = Bundle()
+                bundle.putString("cid", tagNameList!!.get(position).split("*").get(0))
+                value.data = bundle
+                get.setData(value)
 
             }
 
@@ -133,14 +139,22 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
         })
     }
 
+    private fun initFirst() {
+        toolbarTitle!!.setText(tagNameList!!.get(0).split("*").get(1))
+//        var get = fragmentList!!.get(0)
+//        var value = Message()
+//        var bundle = Bundle()
+//        bundle.putString("cid", tagNameList!!.get(0).split("*").get(0))
+//        value.data = bundle
+//        get.setData(value)
+    }
+
     override fun onClick(p0: View?) {
         killMyself()
     }
 
     override val activity: Activity
         get() = this
-    override val rxPermissions: RxPermissions
-        get() = this.mRxPermissions!!
 
     override fun showLoading() {
 

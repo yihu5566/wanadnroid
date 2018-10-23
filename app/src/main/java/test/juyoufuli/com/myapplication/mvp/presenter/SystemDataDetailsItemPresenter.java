@@ -22,6 +22,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsContract;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter;
 
 /**
  * Author : ludf
@@ -37,11 +38,37 @@ public class SystemDataDetailsItemPresenter extends BasePresenter<SystemDataDeta
     AppManager mAppManager;
     @Inject
     Application mApplication;
+    @Inject
+    List<ArticleBean> mSystemData;
+    @Inject
+    SearchAdapter mAdapter;
+
 
     @Inject
     public SystemDataDetailsItemPresenter(SystemDataDetailsItemContract.Model model, SystemDataDetailsItemContract.View rootView) {
         super(model, rootView);
     }
 
+    public void requestSystemDataList(String index, String cid) {
+        mModel.getSystemData(index, cid)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ArticleResponse>(mErrorHandler) {
 
+                    @Override
+                    public void onNext(ArticleResponse response) {
+                        mRootView.refreshData(response);
+
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 }

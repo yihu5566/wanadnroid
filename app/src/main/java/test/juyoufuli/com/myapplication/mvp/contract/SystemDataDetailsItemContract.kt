@@ -16,9 +16,12 @@ class SystemDataDetailsItemContract {
 
     interface View : IView {
         val fragment: Fragment
+        fun refreshData(response: ArticleResponse)
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,如是否使用缓存
     interface Model : IModel {
+        fun getSystemData(index: String, result: String): Observable<ArticleResponse>
+
     }
 }

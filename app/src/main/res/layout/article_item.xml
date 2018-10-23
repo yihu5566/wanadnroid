@@ -31,6 +31,16 @@
             android:layout_below="@+id/tv_chapterName"
             android:layout_marginTop="5dp"
             android:text="标题" />
+
+        <CheckBox
+            android:id="@+id/iv_favorite_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_time"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:button="@drawable/main_favorite_icon_select" />
     </RelativeLayout>
 
 

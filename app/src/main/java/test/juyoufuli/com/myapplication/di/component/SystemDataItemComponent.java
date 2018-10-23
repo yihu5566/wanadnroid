@@ -20,9 +20,7 @@ import com.jess.arms.di.scope.FragmentScope;
 
 import dagger.Component;
 import test.juyoufuli.com.myapplication.di.module.SystemDataItemModule;
-import test.juyoufuli.com.myapplication.di.module.SystemDataModule;
 import test.juyoufuli.com.myapplication.mvp.ui.tab.RecyclerViewFragment;
-import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment;
 
 /**
  * ================================================

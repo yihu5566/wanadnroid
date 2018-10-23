@@ -2,4 +2,12 @@
     <string name="app_name">玩Android</string>
     <string name="main_tab_cash_text">主页</string>
     <string name="main_tab_service_text">体系</string>
+    <string name="login">登陆OR注册</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="AgainPassword">AgainPassword</string>
+
+    <string name="go">登陆</string>
+    <string name="register">注册</string>
+
 </resources>

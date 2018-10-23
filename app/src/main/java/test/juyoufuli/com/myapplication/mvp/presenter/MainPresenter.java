@@ -24,6 +24,7 @@ import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
+import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
 
@@ -146,6 +147,40 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
                     @Override
                     public void onNext(BannerResponse systemDataResponse) {
                         mRootView.updateBanner(systemDataResponse);
+
+                    }
+                });
+    }
+
+
+    public void collectArticle(String id) {
+        mModel.collectArticle(id)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<LoginResponse>(mErrorHandler) {
+
+                    @Override
+                    public void onNext(LoginResponse systemDataResponse) {
+
+                    }
+                });
+    }
+
+
+    public void cancelCollectArticle(String id) {
+        mModel.collectArticle(id)
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<LoginResponse>(mErrorHandler) {
+
+                    @Override
+                    public void onNext(LoginResponse systemDataResponse) {
 
                     }
                 });

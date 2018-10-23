@@ -22,6 +22,7 @@ import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
+import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import timber.log.Timber
 
@@ -33,6 +34,11 @@ import timber.log.Timber
 @FragmentScope
 class MainModel @Inject
 constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), MainContract.Model {
+    override fun collectArticle(id: String): Observable<LoginResponse> {
+       return mRepositoryManager
+                .obtainRetrofitService(MainService::class.java)
+                .collectArticle(id,id)    }
+
     override fun getBanner(): Observable<BannerResponse> {
         return Observable.just(mRepositoryManager
                 .obtainRetrofitService(MainService::class.java)
@@ -56,6 +62,8 @@ constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager
                 }
 
     }
+
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     internal fun onPause() {

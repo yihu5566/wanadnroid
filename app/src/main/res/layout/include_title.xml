@@ -24,6 +24,22 @@
             android:src="@drawable/ic_arrow_back_white_24dp" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/toolbar_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="left"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="30px"
+            android:src="@drawable/ic_reorder_black_24dp" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
@@ -48,7 +64,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30px"
             android:layout_marginRight="30px"
-            android:src="@drawable/search_icon" />
+            android:src="@drawable/ic_search_black_24dp" />
     </RelativeLayout>
 
 

@@ -32,7 +32,7 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@Module
+//@Module
 public class HomeModule {
     private HomeContract.View view;
 
@@ -45,14 +45,14 @@ public class HomeModule {
         this.view = view;
     }
 
-    @ActivityScope
-    @Provides
+//    @ActivityScope
+//    @Provides
     HomeContract.View provideUserView() {
         return this.view;
     }
 
-    @ActivityScope
-    @Provides
+//    @ActivityScope
+//    @Provides
     HomeContract.Model provideUserModel(HomeModel model) {
         return model;
     }

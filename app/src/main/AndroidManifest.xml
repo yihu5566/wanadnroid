@@ -47,6 +47,7 @@
         <activity android:name=".mvp.ui.webview.WebViewActivity" />
         <activity android:name=".mvp.ui.searchview.SearchViewActivity"/>
         <activity android:name=".mvp.ui.tab.SystemDataDetailsActivity"/>
+        <activity android:name=".mvp.ui.account.LoginActivity"/>
     </application>
 
 </manifest>

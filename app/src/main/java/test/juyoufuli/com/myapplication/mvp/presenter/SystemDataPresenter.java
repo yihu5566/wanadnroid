@@ -7,15 +7,21 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxLifecycleUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 import test.juyoufuli.com.myapplication.app.net.HttpUtil;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse;
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons;
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
@@ -43,21 +49,29 @@ public class SystemDataPresenter extends BasePresenter<SystemDataContract.Model,
         super(model, rootView);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void onCreate() {
-        requestSystemDataList();//打开 App 时自动加载列表
-    }
-
 
     public void requestSystemDataList() {
 
-        HttpUtil.executeHttpRequest(mModel.getSystemData(), mRootView, new ErrorHandleSubscriber<List<SystemBean>>(mErrorHandler) {
-            @Override
-            public void onNext(List<SystemBean> systemDataResponse) {
-                mSystemData.addAll(systemDataResponse);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        mModel.getSystemData()
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<SystemDataRespons>(mErrorHandler) {
+
+                    @Override
+                    public void onNext(SystemDataRespons response) {
+                        mSystemData.addAll(response.getData());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+//        HttpUtil.executeHttpRequest(mModel.getSystemData(), mRootView, new ErrorHandleSubscriber<List<SystemBean>>(mErrorHandler) {
+//            @Override
+//            public void onNext(List<SystemBean> systemDataResponse) {
+//
+//            }
+//        });
 
     }
 }

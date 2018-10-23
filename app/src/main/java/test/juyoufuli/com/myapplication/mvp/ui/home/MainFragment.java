@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.LogUtils;
 import com.paginate.Paginate;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -40,6 +42,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder;
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity;
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity;
 
@@ -55,13 +58,8 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.toolbar_title)
-    TextView toolbar_title;
     @BindView(R.id.banner_guide_content)
     BGABanner bannerGuideContent;
-    @BindView(R.id.toolbar_search)
-    RelativeLayout toolbar_search;
-
     @Inject
     RxPermissions mRxPermissions;
     @Inject
@@ -86,15 +84,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        toolbar_title.setText("首页");
-        toolbar_search.setVisibility(View.VISIBLE);
-        toolbar_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchActivity(new Intent(getActivity(), SearchViewActivity.class));
-
-            }
-        });
         initRecyclerView();
         initPaginate();
         mPresenter.requestUsers(true);
@@ -158,15 +147,35 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
     private void initRecyclerView() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         ArmsUtils.configRecyclerView(mRecyclerView, mLayoutManager);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()){
+//            @Override
+//            public boolean canScrollVertically() {
+//                //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
+//                //如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
+//                return false;
+//            }
+//        });
+
+
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int viewType, Object data, int position) {
+        mAdapter.setOnItemClickListener((view, viewType, data, position) -> {
 //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("link", ((ArticleBean) data).getLink());
-                intent.putExtra("title", ((ArticleBean) data).getTitle());
-                launchActivity(intent);
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra("link", ((ArticleBean) data).getLink());
+            intent.putExtra("title", ((ArticleBean) data).getTitle());
+            launchActivity(intent);
+        });
+
+        mAdapter.setChildClickListener(new ArticleItemHolder.ChildClickListener() {
+            @Override
+            public void viewClick(int viewid, int position, ArticleBean data) {
+                if (data.isCheck()) {
+                    LogUtils.debugInfo((data).getId() + "--true--" + position);
+                } else {
+                    LogUtils.debugInfo((data).getId() + "--false--" + position);
+
+                }
+//                mPresenter.collectArticle(data.getId()+"");
             }
         });
     }
@@ -236,7 +245,6 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
         super.onHiddenChanged(hidden);
 //        mPresenter.requestUsers(true);//打开 App 时自动加载列表
 //        mPresenter.requestBannerDataList();
-        toolbar_title.setText("首页");
     }
 
 

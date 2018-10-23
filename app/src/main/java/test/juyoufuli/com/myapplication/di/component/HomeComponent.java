@@ -32,8 +32,8 @@ import test.juyoufuli.com.myapplication.di.module.HomeModule;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@ActivityScope
-@Component(modules = HomeModule.class, dependencies = AppComponent.class)
+//@ActivityScope
+//@Component(modules = HomeModule.class, dependencies = AppComponent.class)
 public interface HomeComponent {
     void inject(MainActivity activity);
 }

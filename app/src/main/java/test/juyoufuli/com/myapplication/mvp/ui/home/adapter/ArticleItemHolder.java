@@ -18,6 +18,9 @@ package test.juyoufuli.com.myapplication.mvp.ui.home.adapter;
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseHolder;
@@ -48,14 +51,25 @@ public class ArticleItemHolder extends BaseHolder<ArticleBean> {
     TextView mDesc;
     @BindView(R.id.tv_time)
     TextView tvTime;
+    @BindView(R.id.iv_favorite_article)
+    CheckBox ivFavoriteArticle;
     private AppComponent mAppComponent;
     private ImageLoader mImageLoader;//用于加载图片的管理类,默认使用 Glide,使用策略模式,可替换框架
+    private ChildClickListener mChildClickListener;
 
     public ArticleItemHolder(View itemView) {
         super(itemView);
         //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
         mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.getContext());
         mImageLoader = mAppComponent.imageLoader();
+    }
+
+    public ArticleItemHolder(View itemView, ChildClickListener mChildClickListener) {
+        super(itemView);
+        //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
+        mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.getContext());
+        mImageLoader = mAppComponent.imageLoader();
+        this.mChildClickListener = mChildClickListener;
     }
 
     @SuppressLint("CheckResult")
@@ -67,6 +81,18 @@ public class ArticleItemHolder extends BaseHolder<ArticleBean> {
                 .subscribe(s -> mDesc.setText(s));
         Observable.just(data.getNiceDate())
                 .subscribe(s -> tvTime.setText(s));
+        ivFavoriteArticle.setChecked(data.isCheck());
+        ivFavoriteArticle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                data.setCheck(b);
+                mChildClickListener.viewClick(R.id.iv_favorite_article, position, data);
+            }
+        });
+    }
+
+    public interface ChildClickListener {
+        void viewClick(int viewid, int position, ArticleBean data);
     }
 
 

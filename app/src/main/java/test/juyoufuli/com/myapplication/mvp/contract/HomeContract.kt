@@ -17,11 +17,13 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 class HomeContract {
 
     interface View : IView {
-
+        fun getActivity():Activity
+        fun loginOutSucceed()
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,如是否使用缓存
     interface Model : IModel {
+        fun loginOut(): Observable<String>
 
     }
 }
