@@ -19,8 +19,8 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
-import test.juyoufuli.com.myapplication.app.ui.home.MainActivity;
-import test.juyoufuli.com.myapplication.di.module.HomeModule;
+import test.juyoufuli.com.myapplication.di.module.CollectArticleModule;
+import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity;
 
 /**
  * ================================================
@@ -33,7 +33,7 @@ import test.juyoufuli.com.myapplication.di.module.HomeModule;
  * ================================================
  */
 @ActivityScope
-@Component(modules = HomeModule.class, dependencies = AppComponent.class)
-public interface HomeComponent {
-    void inject(MainActivity activity);
+@Component(modules = CollectArticleModule.class, dependencies = AppComponent.class)
+public interface CollectArticleComponent {
+    void inject(CollectArticleActivity activity);
 }

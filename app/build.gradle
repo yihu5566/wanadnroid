@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'kotlin-kapt'				//添加
-
+apply plugin: 'kotlin-kapt'				//添加
+kapt {
+    generateStubs = true
+}
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -53,12 +55,12 @@ dependencies {
     implementation 'me.jessyan:arms:+'
     //view
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
+    kapt(rootProject.ext.dependencies["butterknife-compiler"]) {
         exclude module: 'support-annotations'
     }
     //tools
-    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-//    kapt 'com.google.dagger:dagger-compiler:2.15'
+//    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+    kapt 'com.google.dagger:dagger-compiler:2.15'
 
     //test
     debugImplementation rootProject.ext.dependencies["canary-debug"]

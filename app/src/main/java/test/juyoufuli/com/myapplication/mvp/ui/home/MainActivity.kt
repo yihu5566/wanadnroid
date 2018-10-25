@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
@@ -18,47 +19,64 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
+import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
-import com.jess.arms.integration.RepositoryManager
 import com.jess.arms.utils.ArmsUtils
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.include_title.*
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import test.juyoufuli.com.myapplication.di.component.DaggerHomeComponent
 import test.juyoufuli.com.myapplication.di.module.HomeModule
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
-import test.juyoufuli.com.myapplication.mvp.model.HomeModel
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
+import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
 class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
-    override fun getActivity(): Activity {
-      return  this
-    }
-
-
-    private var flContent: FrameLayout? = null
-    var currentFragment: Fragment? = null
-    var dl_main_tab: DrawerLayout? = null
-    var screenWidth: Int? = null
+    @JvmField
+    @BindView(R.id.fl_content)
+    internal var flContent: FrameLayout? = null
+    @JvmField
+    @BindView(R.id.dl_main_tab)
+    internal var dl_main_tab: DrawerLayout? = null
+    @JvmField
+    @BindView(R.id.navigationView)
     var mNavigationView: NavigationView? = null
+    @JvmField
+    @BindView(R.id.navigation)
+    internal var navigation: BottomNavigationView? = null
+    @JvmField
+    @BindView(R.id.toolbar_title)
+    internal var toolbar_title: TextView? = null
+    @JvmField
+    @BindView(R.id.toolbar_menu)
+    internal var toolbar_menu: RelativeLayout? = null
+    @JvmField
+    @BindView(R.id.toolbar_search)
+    internal var toolbar_search: RelativeLayout? = null
+
+    var currentFragment: Fragment? = null
+    var screenWidth: Int? = null
     var tvPersonLogin: TextView? = null
     var tvPersonName: TextView? = null
     var isLogin: Boolean = false
 
-
     override fun setupActivityComponent(appComponent: AppComponent) {
-//        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
-        mPresenter = HomePresenter(HomeModel(RepositoryManager()), this)
+        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
+    }
+
+    override fun getActivity(): Activity {
+        return this
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -74,9 +92,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     @SuppressLint("ResourceAsColor")
     override fun initData(savedInstanceState: Bundle?) {
-        flContent = findViewById(R.id.fl_content)
-        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
-        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
+//        flContent = findViewById(R.id.fl_content)
+//        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
+//        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
         var headerLayout = mNavigationView!!.getHeaderView(0); // 0-index header
         tvPersonName = headerLayout!!.findViewById<TextView>(R.id.tv_person_name)
 
@@ -93,24 +111,24 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     override fun onStart() {
         super.onStart()
         LogUtils.d("onStart...")
-        navigation.menu.getItem(1).isChecked = true
-        navigation.menu.getItem(0).isChecked = false
+        navigation!!.menu.getItem(1).isChecked = true
+        navigation!!.menu.getItem(0).isChecked = false
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
 
 
-        navigation.setOnNavigationItemSelectedListener { item ->
+        navigation!!.setOnNavigationItemSelectedListener { item ->
             item.isChecked = true
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
                     add(MainFragment(), R.id.fl_content, "main")
-                    navigation.menu.getItem(0).isChecked = false
-                    toolbar_title.text = ("首页")
+                    navigation!!.menu.getItem(0).isChecked = false
+                    toolbar_title!!.text = ("首页")
                     true
                 }
                 R.id.bottom_menu_found -> {
                     add(SystemDataFragment(), R.id.fl_content, "system")
-                    navigation.menu.getItem(1).isChecked = false
-                    toolbar_title.text = ("知识体系")
+                    navigation!!.menu.getItem(1).isChecked = false
+                    toolbar_title!!.text = ("知识体系")
                     true
                 }
             }
@@ -118,35 +136,41 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
         }
 
         mNavigationView!!.setNavigationItemSelectedListener { item ->
+
+            dl_main_tab!!.closeDrawer(Gravity.LEFT)
             when (item.itemId) {
                 R.id.menu_History -> {
-//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    launchActivity(Intent(this, CollectArticleActivity::class.java))
                     true
                 }
                 R.id.menu_Setting -> {
-//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    ArmsUtils.makeText(this, "开发中，敬请期待")
                     true
                 }
                 R.id.menu_AboutUs -> {
-//                    launchActivity(Intent(this, LoginActivity::class.java))
+                    var intent = Intent(this, WebViewActivity::class.java)
+                    intent.putExtra("link", "https://www.github.com/yihu5566")
+                    intent.putExtra("title", "yihu5566")
+                    launchActivity(intent)
                     true
                 }
             }
             false
         }
-        toolbar_title.text = ("首页")
-        toolbar_search.visibility = (View.VISIBLE)
-        toolbar_menu.visibility = (View.VISIBLE)
-        toolbar_menu.setOnClickListener {
+        toolbar_title!!.text = ("首页")
+        toolbar_search!!.visibility = (View.VISIBLE)
+        toolbar_menu!!.visibility = (View.VISIBLE)
+        toolbar_menu!!.setOnClickListener {
             dl_main_tab!!.openDrawer(Gravity.LEFT)
         }
-        toolbar_search.setOnClickListener { launchActivity(Intent(this, SearchViewActivity::class.java)) }
+        toolbar_search!!.setOnClickListener { launchActivity(Intent(this, SearchViewActivity::class.java)) }
 
         tvPersonLogin!!.setOnClickListener {
             if (isLogin) {
+                dl_main_tab!!.closeDrawer(Gravity.LEFT)
                 mPresenter!!.LoginOut()
-
             } else {
+                dl_main_tab!!.closeDrawer(Gravity.LEFT)
                 launchActivity(Intent(this, LoginActivity::class.java))
             }
         }
@@ -270,7 +294,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     @SuppressLint("RestrictedApi")
     private fun disableShiftMode() {
-        val menuView = navigation.getChildAt(0) as BottomNavigationMenuView
+        val menuView = navigation!!.getChildAt(0) as BottomNavigationMenuView
         try {
             val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
             shiftingMode.isAccessible = true
@@ -302,6 +326,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     }
 
     override fun launchActivity(intent: Intent) {
+        checkNotNull(intent)
         ArmsUtils.startActivity(intent)
     }
 
@@ -309,7 +334,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     }
 
     override fun killMyself() {
-        finish()
+        ArmsUtils.exitApp()
     }
 
     override fun showMessage(message: String) {

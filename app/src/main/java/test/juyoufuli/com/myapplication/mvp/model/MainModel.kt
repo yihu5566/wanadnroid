@@ -35,9 +35,16 @@ import timber.log.Timber
 class MainModel @Inject
 constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), MainContract.Model {
     override fun collectArticle(id: String): Observable<LoginResponse> {
-       return mRepositoryManager
+        return mRepositoryManager
                 .obtainRetrofitService(MainService::class.java)
-                .collectArticle(id,id)    }
+                .collectArticle(id, id)
+    }
+
+    override fun cancelCollectArticle(id: String): Observable<LoginResponse> {
+        return mRepositoryManager
+                .obtainRetrofitService(MainService::class.java)
+                .cancelCollectArticle(id, id)
+    }
 
     override fun getBanner(): Observable<BannerResponse> {
         return Observable.just(mRepositoryManager
@@ -52,17 +59,11 @@ constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager
 
     override fun getUsers(lastIdQueried: Int, update: Boolean): Observable<ArticleResponse> {
         //使用rxcache缓存,上拉刷新则不读取缓存,加载更多读取缓存
-        return Observable.just(mRepositoryManager
+        return mRepositoryManager
                 .obtainRetrofitService(MainService::class.java)
-                .getArticleList(lastIdQueried.toString() + ""))
-                .flatMap { listObservable ->
-                    mRepositoryManager.obtainCacheService(CommonCache::class.java)
-                            .getUsers(listObservable, DynamicKey(lastIdQueried), EvictDynamicKey(update))
-                            .map { listReply -> listReply.data }
-                }
+                .getArticleList(lastIdQueried.toString() + "")
 
     }
-
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

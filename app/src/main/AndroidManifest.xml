@@ -48,6 +48,7 @@
         <activity android:name=".mvp.ui.searchview.SearchViewActivity"/>
         <activity android:name=".mvp.ui.tab.SystemDataDetailsActivity"/>
         <activity android:name=".mvp.ui.account.LoginActivity"/>
+        <activity android:name=".mvp.ui.account.CollectArticleActivity"/>
     </application>
 
 </manifest>

@@ -15,12 +15,26 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.di.scope.FragmentScope;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
+import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
+import test.juyoufuli.com.myapplication.mvp.model.CollectArticleModel;
 import test.juyoufuli.com.myapplication.mvp.model.HomeModel;
+import test.juyoufuli.com.myapplication.mvp.model.contract.CollectArticleContract;
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract;
+import test.juyoufuli.com.myapplication.mvp.ui.account.adapter.ArticleCollectAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * ================================================
@@ -33,29 +47,49 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract;
  * ================================================
  */
 @Module
-public class HomeModule {
-    private HomeContract.View view;
+public class CollectArticleModule {
+    private CollectArticleContract.View view;
 
     /**
      * 构建 UserModule 时,将 View 的实现类传进来,这样就可以提供 View 的实现类给 Presenter
      *
      * @param view
      */
-    public HomeModule(HomeContract.View view) {
+    public CollectArticleModule(CollectArticleContract.View view) {
         this.view = view;
     }
 
     @ActivityScope
     @Provides
-    HomeContract.View provideUserView() {
+    CollectArticleContract.View provideUserView() {
         return this.view;
     }
 
     @ActivityScope
     @Provides
-    HomeContract.Model provideUserModel(HomeModel model) {
+    CollectArticleContract.Model provideUserModel(CollectArticleModel model) {
         return model;
     }
 
+
+    @ActivityScope
+    @Provides
+    RecyclerView.LayoutManager provideLayoutManager() {
+        return new LinearLayoutManager(view.getActivity());
+    }
+
+
+    @ActivityScope
+    @Provides
+    ArrayList<ArticleBean> provideSystemList() {
+        return new ArrayList<>();
+    }
+
+
+    @ActivityScope
+    @Provides
+    ArticleCollectAdapter provideSystemAdapter(ArrayList<ArticleBean> list) {
+        return new ArticleCollectAdapter(list);
+    }
 
 }

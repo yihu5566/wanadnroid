@@ -3,17 +3,15 @@
 
     <item
         android:id="@+id/menu_History"
-
-        android:title="    识别历史"/>
+        android:title="    收藏文章" />
     <item
         android:id="@+id/menu_Setting"
-
-        android:title="    相关设置"/>
+        android:title="    相关设置" />
 
     <item
         android:id="@+id/menu_AboutUs"
         android:actionLayout="@layout/layout_head"
-        android:title="    关于我们"/>
+        android:title="    关于我们" />
 
 </menu>
 

@@ -22,6 +22,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
+import test.juyoufuli.com.myapplication.mvp.model.contract.CollectArticleContract
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import timber.log.Timber
@@ -32,15 +33,18 @@ import timber.log.Timber
  * Description:
  */
 @ActivityScope
-class HomeModel @Inject
-constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), HomeContract.Model {
-    override fun loginOut(): Observable<LoginResponse> {
-        return mRepositoryManager.obtainRetrofitService(MainService::class.java)
-                .loginOut()
+class CollectArticleModel @Inject
+constructor(repositoryManager: IRepositoryManager) : BaseModel(repositoryManager), CollectArticleContract.Model {
+    override fun cancelCollectArticle(id: String, originId: String): Observable<LoginResponse> {
+        return mRepositoryManager
+                .obtainRetrofitService(MainService::class.java)
+                .cancelCollectArticleForMy(id, originId,id)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    internal fun onPause() {
-        Timber.d("Release Resource")
+    override fun getArticleCollect(page:String): Observable<ArticleResponse> {
+        return mRepositoryManager.obtainRetrofitService(MainService::class.java)
+                .getArticleCollectList(page)
     }
+
+
 }

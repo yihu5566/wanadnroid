@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.mvp.model.contract
 
-import android.app.Activity
 import android.support.v4.app.Fragment
 import com.jess.arms.mvp.IModel
 import com.jess.arms.mvp.IView
@@ -32,6 +31,7 @@ class MainContract {
         fun getUsers(lastIdQueried: Int, update: Boolean): Observable<ArticleResponse>
         fun getBanner(): Observable<BannerResponse>
         fun collectArticle(id: String): Observable<LoginResponse>
+        fun cancelCollectArticle(id: String): Observable<LoginResponse>
 
     }
 }

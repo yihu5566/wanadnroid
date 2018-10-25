@@ -17,6 +17,14 @@ interface MainService {
     @POST("lg/collect/{index}/json")
     fun collectArticle(@Path("index") id: String, @Field("index") index: String): Observable<LoginResponse>
 
+    @FormUrlEncoded
+    @POST("lg/uncollect_originId/{id}/json")
+    fun cancelCollectArticle(@Path("id") id: String, @Field("originId") index: String): Observable<LoginResponse>
+
+    @FormUrlEncoded
+    @POST("lg/uncollect/{id}/json")
+    fun cancelCollectArticleForMy(@Path("id") id: String, @Field("originId") index: String, @Field("id") id1: String): Observable<LoginResponse>
+
     @GET("article/list/{index}/json")
     fun getArticleList(@Path("index") index: String): Observable<ArticleResponse>
 
@@ -33,7 +41,6 @@ interface MainService {
     @GET("article/list/{index}/json")
     fun getSystemDataDetailsList(@Path("index") index: String, @Query("cid") cid: String): Observable<ArticleResponse>
 
-
     @FormUrlEncoded
     @POST("user/login")
     fun login(@Field("username") index: String, @Field("password") map: String): Observable<LoginResponse>
@@ -43,5 +50,8 @@ interface MainService {
     fun register(@FieldMap map: Map<String, String>): Observable<LoginResponse>
 
     @GET("user/logout/json")
-    fun loginOut(): Observable<String>
+    fun loginOut(): Observable<LoginResponse>
+
+    @GET("lg/collect/list/{index}/json")
+    fun getArticleCollectList(@Path("index") index: String): Observable<ArticleResponse>
 }

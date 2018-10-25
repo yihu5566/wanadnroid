@@ -26,6 +26,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.EventBusTags
+import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataDetailsComponent
+import test.juyoufuli.com.myapplication.di.module.SystemDataDetailsModule
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataDetailsPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
@@ -48,7 +50,7 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
     var magicIndicator: MagicIndicator? = null
 
     override fun setupActivityComponent(appComponent: AppComponent) {
-
+        DaggerSystemDataDetailsComponent.builder().appComponent(appComponent).systemDataDetailsModule(SystemDataDetailsModule(this)).build().inject(this)
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {
