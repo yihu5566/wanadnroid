@@ -20,14 +20,10 @@
 
 #### 主要截图
 
-![主页](https://github.com/yihu5566/wanadnroid/tree/master/image/Screenshot_1540885372.png)
+![主页](image/Screenshot_1540885372.png)
 
-![体系](https://github.com/yihu5566/wanadnroid/tree/master/image/Screenshot_1540885709.png)
+![体系](image/Screenshot_1540885709.png)
 
+![账户](image/Screenshot_1540885378.png)
 
-
-![账户](https://github.com/yihu5566/wanadnroid/tree/master/image/Screenshot_1540885378.png)
-
-
-
-![搜索](https://github.com/yihu5566/wanadnroid/tree/master/image/Screenshot_1540885390.png)
+![搜索](image/Screenshot_1540885390.png)
