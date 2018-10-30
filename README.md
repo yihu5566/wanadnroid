@@ -20,7 +20,7 @@
 
 #### 主要截图
 
-![主页](/Users/dongfang/Documents/android_studio_project/wanadnroid/image/Screenshot_1540885372.png)
+![主页](/wanadnroid/image/Screenshot_1540885372.png)
 
 ![体系](/Users/dongfang/Documents/android_studio_project/wanadnroid/image/Screenshot_1540885709.png)
 
