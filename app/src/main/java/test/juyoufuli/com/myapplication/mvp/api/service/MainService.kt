@@ -54,4 +54,10 @@ interface MainService {
 
     @GET("lg/collect/list/{index}/json")
     fun getArticleCollectList(@Path("index") index: String): Observable<ArticleResponse>
+
+    @GET("project/tree/json")
+    fun getProjectList(): Observable<ProjectResponse>
+
+    @GET("project/list/{index}/json")
+    fun getProjectDetailsList(@Path("index") page: String, @Query("cid") cid: String): Observable<ProjectDetailsResponse>
 }

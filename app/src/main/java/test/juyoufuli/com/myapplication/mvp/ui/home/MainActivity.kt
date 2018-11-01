@@ -37,6 +37,7 @@ import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
+import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
@@ -70,6 +71,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     var tvPersonLogin: TextView? = null
     var tvPersonName: TextView? = null
     var isLogin: Boolean = false
+    var isSelect: Int = R.id.bottom_menu_home
 
     override fun setupActivityComponent(appComponent: AppComponent) {
         DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
@@ -106,32 +108,44 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
         screenWidth = window.defaultDisplay.width
 //        StatusBarUtil.setColor(this, R.color.colorPrimary)
 //        StatusBarUtil.setTranslucentForDrawerLayout(this, dl_main_tab)
+
+        init()
     }
 
-    override fun onStart() {
+    fun init() {
         super.onStart()
         LogUtils.d("onStart...")
-        navigation!!.menu.getItem(1).isChecked = true
-        navigation!!.menu.getItem(0).isChecked = false
+//        navigation!!.menu.getItem(0).isChecked = true
+//        navigation!!.menu.getItem(1).isChecked = false
+//        navigation!!.menu.getItem(2).isChecked = false
+
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
 
-
         navigation!!.setOnNavigationItemSelectedListener { item ->
-            item.isChecked = true
+
+            item.isChecked = item.itemId == isSelect
+
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
                     add(MainFragment(), R.id.fl_content, "main")
-                    navigation!!.menu.getItem(0).isChecked = false
+//                    navigation!!.menu.getItem(0).isChecked = false
                     toolbar_title!!.text = ("首页")
                     true
                 }
                 R.id.bottom_menu_found -> {
                     add(SystemDataFragment(), R.id.fl_content, "system")
-                    navigation!!.menu.getItem(1).isChecked = false
+//                    navigation!!.menu.getItem(1).isChecked = false
                     toolbar_title!!.text = ("知识体系")
                     true
                 }
+                R.id.bottom_menu_project -> {
+                    add(ProjectFragment(), R.id.fl_content, "project")
+//                    navigation!!.menu.getItem(2).isChecked = false
+                    toolbar_title!!.text = ("项目")
+                    true
+                }
             }
+            isSelect = item.itemId
             false
         }
 

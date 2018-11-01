@@ -106,7 +106,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                     else
                         mRootView.endLoadMore()//隐藏上拉加载更多的进度条
                 }
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用 Rxlifecycle,使 Disposable 和 Activity 一起销毁
+                .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))//使用 Rxlifecycle,使 Disposable 和 Activity 一起销毁
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
                     override fun onNext(users: ArticleResponse) {
                         lastUserId = users.data.curPage//记录最后一个id,用于下一次请求
@@ -128,7 +128,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                 .retryWhen(RetryWithDelay(3, 2))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<BannerResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<BannerResponse>(mErrorHandler!!) {
 
                     override fun onNext(systemDataResponse: BannerResponse) {
@@ -143,7 +143,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
         mModel.collectArticle(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<LoginResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<LoginResponse>(mErrorHandler!!) {
 
                     override fun onNext(systemDataResponse: LoginResponse) {
@@ -157,7 +157,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
         mModel.cancelCollectArticle(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<LoginResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<LoginResponse>(mErrorHandler!!) {
 
                     override fun onNext(systemDataResponse: LoginResponse) {

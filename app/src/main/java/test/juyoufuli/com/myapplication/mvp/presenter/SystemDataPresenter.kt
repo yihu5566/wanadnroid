@@ -48,7 +48,7 @@ constructor(model: SystemDataContract.Model, rootView: SystemDataContract.View) 
                 .subscribeOn(Schedulers.io())
                 .retryWhen(RetryWithDelay(3, 2))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<SystemDataRespons>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<SystemDataRespons>(mErrorHandler!!) {
 
                     override fun onNext(response: SystemDataRespons) {

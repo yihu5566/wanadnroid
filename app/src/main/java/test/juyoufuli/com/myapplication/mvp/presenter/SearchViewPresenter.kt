@@ -36,7 +36,7 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
                 //                .retryWhen(new RetryWithDelay(3, 2))
                 //                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
 
                     override fun onNext(response: ArticleResponse) {

@@ -41,7 +41,7 @@ constructor(model: HomeContract.Model, rootView: HomeContract.View) : BasePresen
                 .subscribeOn(Schedulers.io())
                 .retryWhen(RetryWithDelay(3, 2))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindToLifecycle<LoginResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<LoginResponse>(mErrorHandler!!) {
 
                     override fun onNext(response: LoginResponse) {
