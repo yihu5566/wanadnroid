@@ -20,5 +20,10 @@
         android:icon="@drawable/main_tab_project_icon_select"
         android:title="@string/main_tab_project_text" />
 
+    <item
+        android:id="@+id/bottom_menu_navigation"
+        android:icon="@drawable/main_tab_navigation_icon_select"
+        android:title="@string/main_tab_navigation_text" />
+
 
 </menu>

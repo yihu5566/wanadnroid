@@ -37,6 +37,7 @@ import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
+import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
@@ -118,7 +119,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 //        navigation!!.menu.getItem(0).isChecked = true
 //        navigation!!.menu.getItem(1).isChecked = false
 //        navigation!!.menu.getItem(2).isChecked = false
-
+        disableShiftMode();
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
 
         navigation!!.setOnNavigationItemSelectedListener { item ->
@@ -142,6 +143,12 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
                     add(ProjectFragment(), R.id.fl_content, "project")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("项目")
+                    true
+                }
+                R.id.bottom_menu_navigation -> {
+                    add(NavigationFragment(), R.id.fl_content, "navigation")
+//                    navigation!!.menu.getItem(2).isChecked = false
+                    toolbar_title!!.text = ("导航")
                     true
                 }
             }

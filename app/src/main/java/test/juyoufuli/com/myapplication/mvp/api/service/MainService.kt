@@ -60,4 +60,7 @@ interface MainService {
 
     @GET("project/list/{index}/json")
     fun getProjectDetailsList(@Path("index") page: String, @Query("cid") cid: String): Observable<ProjectDetailsResponse>
+
+    @GET("navi/json")
+    fun getNavigation(): Observable<NavigationResponse>
 }
