@@ -18,6 +18,10 @@
 
 6.文章搜索
 
+7.导航tab
+
+8.项目tab
+
 #### 主要截图
 
 ![主页](image/Screenshot_1540885372.png)
@@ -27,3 +31,9 @@
 ![账户](image/Screenshot_1540885378.png)
 
 ![搜索](image/Screenshot_1540885390.png)
+
+![项目](image/Screenshot_1542275240.png)
+
+![导航](image/Screenshot_1542275253.png)
+
+
