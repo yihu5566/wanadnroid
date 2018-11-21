@@ -63,4 +63,7 @@ interface MainService {
 
     @GET("navi/json")
     fun getNavigation(): Observable<NavigationResponse>
+
+    @GET("hotkey/json")
+    fun getHotWord(): Observable<HotWordResponse>
 }

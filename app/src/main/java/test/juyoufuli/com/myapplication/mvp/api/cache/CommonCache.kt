@@ -23,11 +23,7 @@ import io.rx_cache2.EvictProvider
 import io.rx_cache2.LifeCache
 import io.rx_cache2.Reply
 import io.rx_cache2.internal.RxCache
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
-import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
+import test.juyoufuli.com.myapplication.mvp.entity.*
 
 /**
  * ================================================
@@ -52,4 +48,6 @@ interface CommonCache {
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     fun getSystemDetailsData(users: Observable<ArticleResponse>): Observable<Reply<ArticleResponse>>
 
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    fun getHotWord(users: Observable<HotWordResponse>): Observable<Reply<HotWordResponse>>
 }

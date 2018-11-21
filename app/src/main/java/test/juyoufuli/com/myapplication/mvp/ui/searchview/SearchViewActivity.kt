@@ -5,31 +5,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
-
+import android.widget.*
+import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
+import com.jess.arms.utils.LogUtils
+import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
-
-import javax.inject.Inject
-
-import butterknife.BindView
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.view.LabelsView
 import test.juyoufuli.com.myapplication.di.component.DaggerSearchComponent
 import test.juyoufuli.com.myapplication.di.module.SearchModule
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SearchViewPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-
-import com.jess.arms.utils.Preconditions.checkNotNull
+import javax.inject.Inject
 
 /**
  * Author : ludf
@@ -37,6 +33,7 @@ import com.jess.arms.utils.Preconditions.checkNotNull
  * Description:
  */
 class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.View, View.OnClickListener {
+
     @JvmField
     @BindView(R.id.toolbar_back)
     internal var toolbar_back: RelativeLayout? = null
@@ -53,11 +50,16 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     @BindView(R.id.btn_search_word)
     internal var btnSearchWord: Button? = null
     @JvmField
+    @BindView(R.id.lbv_search)
+    var lbvSearch: LabelsView? = null
+    @JvmField
     @Inject
     internal var mAdapter: SearchAdapter? = null
     @JvmField
     @Inject
     internal var mLayoutManager: RecyclerView.LayoutManager? = null
+
+    var hotWordList: ArrayList<String>? = null
 
     private var searchWord: String = ""
 
@@ -77,14 +79,28 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        hotWordList = ArrayList()
         initRecyclerView()
         initPaginate()
+    }
+
+
+    private fun searchHotWord(string: String) {
+        if (mAdapter != null) {
+            mAdapter!!.clearList()
+            page = 0
+        }
+        searchWord=string
+        isLoadingMore = true
+        mPresenter!!.getSearchResult(page, string)
+
     }
 
     private fun initPaginate() {
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
+                    LogUtils.debugInfo("onLoadMore：" + page.toString() + "totalPage：" + totalPage)
                     if (!isFirst) {
                         if (totalPage > page) {
                             isLoadingMore = true
@@ -97,11 +113,16 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
                 }
 
                 override fun isLoading(): Boolean {
+                    LogUtils.debugInfo("isLoading：" + isLoadingMore)
                     return isLoadingMore
                 }
 
                 override fun hasLoadedAllItems(): Boolean {
-                    return page == totalPage
+                    LogUtils.debugInfo("hasLoadedAllItems" + page.toString() + "totalPage：" + totalPage)
+//                    if (page == totalPage || totalPage == 0) {
+//                        Toast.makeText(applicationContext, "没有更多数据", Toast.LENGTH_SHORT).show()
+//                    }
+                    return page == totalPage || (totalPage == 0&&page==1)
                 }
             }
 
@@ -133,7 +154,19 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
         toolbar_back!!.visibility = View.VISIBLE
         toolbar_back!!.setOnClickListener(this)
         btnSearchWord!!.setOnClickListener(this)
+        mPresenter!!.getHotWordResult()
 
+        lbvSearch!!.setChildClickListener { view: View, item: String, position: Int ->
+
+            searchHotWord(item)
+
+
+        }
+//        labelsView.setChildClickListener(object : LabelsView.MyChildClickListener() {
+//            fun onChildClick(view: View, `object`: Any, position: Int) {
+//                Toast.makeText(this@MainActivity, `object`.toString() + "第几个：" + position, Toast.LENGTH_SHORT).show()
+//            }
+//        })
 
     }
 
@@ -175,10 +208,12 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     }
 
     override fun refreshList(response: ArticleResponse) {
+        lbvSearch!!.visibility = View.GONE
+        rlvSearchResult!!.visibility = View.VISIBLE
         page = response.data.curPage
-
         if (response.data.curPage == 1) {
             mAdapter!!.list = response.data.datas
+
             totalPage = response.data.pageCount
         } else {
             mAdapter!!.appendData(response.data.datas)
@@ -188,4 +223,13 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
 
 
     }
+
+    override fun refreshHotWord(response: HotWordResponse) {
+        lbvSearch!!.setModel(LabelsView.Model.CLICK)
+        for (item in response.data) {
+            hotWordList!!.add(item.name)
+        }
+        lbvSearch!!.setTextList(hotWordList)
+    }
+
 }

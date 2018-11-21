@@ -11,7 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
+import me.jessyan.rxerrorhandler.handler.RetryWithDelay
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
 
@@ -33,8 +35,6 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
     fun getSearchResult(page: Int, result: String) {
         mModel.getSearchResult(page, result)
                 .subscribeOn(Schedulers.io())
-                //                .retryWhen(new RetryWithDelay(3, 2))
-                //                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
@@ -42,6 +42,24 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
                     override fun onNext(response: ArticleResponse) {
                         LogUtils.debugInfo(page.toString() + "--------------url")
                         mRootView.refreshList(response)
+
+                    }
+                })
+
+    }
+
+
+    fun getHotWordResult() {
+        mModel.getHotWordResult()
+                .subscribeOn(Schedulers.io())
+                 .retryWhen( RetryWithDelay(3, 2))
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle<HotWordResponse>(mRootView))
+                .subscribe(object : ErrorHandleSubscriber<HotWordResponse>(mErrorHandler!!) {
+
+                    override fun onNext(response: HotWordResponse) {
+                        LogUtils.debugInfo(response.toString() + "--------------url")
+                        mRootView.refreshHotWord(response)
 
                     }
                 })
