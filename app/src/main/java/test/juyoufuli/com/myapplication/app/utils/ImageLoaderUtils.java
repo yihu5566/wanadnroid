@@ -26,8 +26,8 @@ public class ImageLoaderUtils {
     public static void loadImage(ImageView imageView, Object objUrl, Context context) {
 
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.leak_canary_icon)// 正在加载中的图片
-                .error(R.drawable.leak_canary_icon) // 加载失败的图片
+                .placeholder(R.drawable.main_tab)// 正在加载中的图片
+                .error(R.drawable.tab) // 加载失败的图片
                 .diskCacheStrategy(DiskCacheStrategy.ALL); // 磁盘缓存策略
         Glide.with(context)
                 .load(objUrl) // 图片地址
