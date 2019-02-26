@@ -4,6 +4,9 @@
 
 其中使用的三方库是armmvp来完成,项目中大部分代码使用kotlin来完成
 
+### 下面是我的博客地址，欢迎围观
+[我的博客地址](https://blog.csdn.net/shayubuhuifei/article/details/87939344)
+
 #### 主要功能
 
 1.首页轮播图
@@ -24,16 +27,9 @@
 
 #### 主要截图
 
-![主页](image/device-2019-02-26-152344.png)
+![账户](image/pager.png)
 
-![体系](image/device-2019-02-26-152412.png)
 
-![账户](image/Screenshot_1540885378.png)
 
-![搜索](image/device-2019-02-26-164044.png)
-
-![项目](image/Screenshot_1542275240.png)
-
-![导航](image/Screenshot_1542275253.png)
 
 
