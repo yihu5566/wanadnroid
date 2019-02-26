@@ -7,25 +7,36 @@
     <RelativeLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="80dp"
+        android:layout_height="80dp"
         android:background="@drawable/item_circle_bg"
+        android:minHeight="80dp"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tv_chapterName"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="分类" />
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_chapterName"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="分类" />
 
 
-        <TextView
-            android:id="@+id/tv_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:text="标题" />
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_chapterName"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="标题" />
+        </LinearLayout>
+
 
         <ImageView
             android:layout_width="20dp"

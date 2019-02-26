@@ -8,6 +8,7 @@ import butterknife.BindView
 import com.jess.arms.base.BaseHolder
 import com.jess.arms.base.DefaultAdapter
 import com.jess.arms.di.component.AppComponent
+import com.jess.arms.http.imageloader.ImageConfig
 import com.jess.arms.http.imageloader.ImageLoader
 import com.jess.arms.http.imageloader.glide.ImageConfigImpl
 import com.jess.arms.utils.ArmsUtils
@@ -72,7 +73,7 @@ class ProjectDetailsAdapter @Inject constructor(mList: ArrayList<ProjectDatas>) 
         }
 
         override fun setData(data: ProjectDatas, position: Int) {
-            val configImpl = ImageConfigImpl
+            val configImpl =  ImageConfigImpl
                     .builder()
                     .url(data.envelopePic)
                     .imageView(iv_project_details_icon)

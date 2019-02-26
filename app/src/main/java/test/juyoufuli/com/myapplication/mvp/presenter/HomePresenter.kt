@@ -1,27 +1,16 @@
 package test.juyoufuli.com.myapplication.mvp.presenter
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.OnLifecycleEvent
-import android.content.Context
-import android.view.View
-
 import com.jess.arms.di.scope.ActivityScope
 import com.jess.arms.mvp.BasePresenter
-import com.jess.arms.utils.ArmsUtils
-import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.RxLifecycleUtils
-
-import javax.inject.Inject
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
-import test.juyoufuli.com.myapplication.app.ResponseErrorListenerImpl
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
-import test.juyoufuli.com.myapplication.mvp.model.HomeModel
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
+import javax.inject.Inject
 
 /**
  * Author : ludf

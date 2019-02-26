@@ -1,5 +1,6 @@
 package test.juyoufuli.com.myapplication.di.module;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -51,7 +52,7 @@ public class LoginModule {
     @ActivityScope
     @Provides
     RxPermissions provideRxPermissions() {
-        return new RxPermissions(view.getActivity());
+        return new RxPermissions((FragmentActivity) view.getActivity());
     }
 
 

@@ -224,7 +224,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
             addOrShowFragment(fragmentTransaction, fragment, id, tag);
         } else {
             if (currentFragment != null && currentFragment!!.isAdded()) {
-                fragmentTransaction.hide(currentFragment).add(id, fragment, tag).commit();
+                fragmentTransaction.hide(currentFragment!!).add(id, fragment, tag).commit();
             } else {
                 fragmentTransaction.add(id, fragment, tag).commit();
             }
@@ -236,9 +236,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
         if (currentFragment == fragment)
             return;
         if (!fragment.isAdded()) { // 如果当前fragment未被添加，则添加到Fragment管理器中
-            transaction.hide(currentFragment).add(id, fragment, tag).commit();
+            transaction.hide(currentFragment!!).add(id, fragment, tag).commit();
         } else {
-            transaction.hide(currentFragment).show(fragment).commit();
+            transaction.hide(currentFragment!!).show(fragment).commit();
         }
         currentFragment!!.setUserVisibleHint(false);
         currentFragment = fragment;
@@ -324,7 +324,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
             for (i in 0 until menuView.childCount) {
                 val itemView = menuView.getChildAt(i) as BottomNavigationItemView
-                itemView.setShiftingMode(false)
+//                itemView.setShiftingMode(false)
                 itemView.setChecked(itemView.itemData.isChecked)
             }
         } catch (e: IllegalAccessException) {

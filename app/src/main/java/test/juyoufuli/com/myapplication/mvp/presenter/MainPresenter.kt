@@ -78,7 +78,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
         }, mRootView.rxPermissions, mErrorHandler)
     }
 
-    private fun requestFromModel(pullToRefresh: Boolean) {
+    public fun requestFromModel(pullToRefresh: Boolean) {
         if (pullToRefresh) lastUserId = 0//下拉刷新默认只请求第一页
 
         //关于RxCache缓存库的使用请参考 http://www.jianshu.com/p/b58ef6b0624b

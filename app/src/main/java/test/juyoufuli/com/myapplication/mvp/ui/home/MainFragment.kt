@@ -82,7 +82,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
-        mPresenter!!.requestUsers(true)
+        mPresenter!!.requestFromModel(true)
         mPresenter!!.requestBannerDataList()
     }
 
@@ -112,7 +112,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
-                    mPresenter!!.requestUsers(false)
+                    mPresenter!!.requestFromModel(false)
                 }
 
                 override fun isLoading(): Boolean {
@@ -207,7 +207,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     }
 
     override fun onRefresh() {
-        mPresenter!!.requestUsers(true)
+        mPresenter!!.requestFromModel(true)
     }
 
 

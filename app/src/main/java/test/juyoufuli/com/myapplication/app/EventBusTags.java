@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.app;
 
-import org.simple.eventbus.EventBus;
 
 /**
  * ================================================

@@ -45,7 +45,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     }
 
-    override fun onDraw(c: Canvas?, parent: RecyclerView?, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent!!.getLayoutManager() == null || mDivider == null) {
             return
         }
@@ -75,7 +75,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     }
 
-    private fun drawVertical(canvas: Canvas?, parent: RecyclerView?) {
+    private fun drawVertical(canvas: Canvas, parent: RecyclerView) {
         val left = parent!!.paddingLeft
         val right = parent.width - parent.paddingRight
         val childCount = parent.childCount
@@ -95,7 +95,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     }
 
-    override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if (mOrientation == VERTICAL_LIST) {
             outRect!!.set(0, 0, 0, mDivider!!.intrinsicHeight);
         } else {

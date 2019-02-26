@@ -6,8 +6,6 @@ import com.jess.arms.mvp.BaseModel
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
-import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
 import javax.inject.Inject

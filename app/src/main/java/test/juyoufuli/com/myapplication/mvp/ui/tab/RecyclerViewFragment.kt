@@ -14,7 +14,6 @@ import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
 import com.paginate.Paginate
-import org.simple.eventbus.EventBus
 
 import javax.inject.Inject
 

@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_project_details_title"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/iv_project_details_icon"
             android:ellipsize="end"
             android:maxLines="2"
@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
             android:layout_toRightOf="@+id/tv_project_details_time"
             android:text="洪洋" />
 
@@ -59,8 +60,8 @@
             android:id="@+id/tv_project_details_collect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="10dp"
             android:background="@null"
             android:button="@drawable/main_favorite_icon_select" />

@@ -24,13 +24,13 @@
 
 #### 主要截图
 
-![主页](image/Screenshot_1540885372.png)
+![主页](image/device-2019-02-26-152344.png)
 
-![体系](image/Screenshot_1540885709.png)
+![体系](image/device-2019-02-26-152412.png)
 
 ![账户](image/Screenshot_1540885378.png)
 
-![搜索](image/Screenshot_1540885390.png)
+![搜索](image/device-2019-02-26-164044.png)
 
 ![项目](image/Screenshot_1542275240.png)
 
