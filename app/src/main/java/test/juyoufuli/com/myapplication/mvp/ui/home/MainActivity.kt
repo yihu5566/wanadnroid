@@ -14,13 +14,12 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.AppCompatDelegate
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.widget.FrameLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
@@ -36,6 +35,7 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
+import test.juyoufuli.com.myapplication.mvp.ui.account.SettingActivity
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
@@ -68,11 +68,17 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     internal var toolbar_search: RelativeLayout? = null
 
     var currentFragment: Fragment? = null
+    var currentFragmentIndex: Int? = 0
+
     var screenWidth: Int? = null
     var tvPersonLogin: TextView? = null
     var tvPersonName: TextView? = null
     var isLogin: Boolean = false
     var isSelect: Int = R.id.bottom_menu_home
+    var mode: Boolean = false
+    var isFirst: Boolean = true
+    var fragmentTransaction: FragmentTransaction? = null
+    var fragmentList: ArrayList<Fragment> = ArrayList()
 
     override fun setupActivityComponent(appComponent: AppComponent) {
         DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
@@ -87,34 +93,70 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         LogUtils.d("onSaveInstanceState...")
-
+        outState.putInt("currentFragmentIndex", currentFragmentIndex!!)
     }
 
     @SuppressLint("ResourceAsColor")
     override fun initData(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            fragmentList.clear()
+            fragmentList.add(MainFragment())
+            fragmentList.add(SystemDataFragment())
+            fragmentList.add(ProjectFragment())
+            fragmentList.add(NavigationFragment())
+
+            add(fragmentList.get(0), R.id.fl_content, "main")
+        } else {
+            fragmentList.clear()
+            fragmentList.add(MainFragment())
+            fragmentList.add(SystemDataFragment())
+            fragmentList.add(ProjectFragment())
+            fragmentList.add(NavigationFragment())
+            LogUtils.d("initData剩余fragment..." + supportFragmentManager.fragments.size)
+
+            var tagFragment = savedInstanceState.get("currentFragmentIndex") as Int
+//            var fragment = supportFragmentManager.findFragmentByTag(tagFragment)
+//            if (fragment!!.isAdded) {
+//                LogUtils.d("移除当前的fragment...")
+//                supportFragmentManager.beginTransaction()!!.remove(fragment!!)
+//                LogUtils.d("剩余fragment..." + supportFragmentManager.fragments.size)
+//
+//            }
+            currentFragment = fragmentList.get(tagFragment)
+
+            when (tagFragment) {
+                0 -> add(fragmentList.get(tagFragment), R.id.fl_content, "main")
+                1 -> add(fragmentList.get(tagFragment), R.id.fl_content, "system")
+                2 -> add(fragmentList.get(tagFragment), R.id.fl_content, "project")
+                3 -> add(fragmentList.get(tagFragment), R.id.fl_content, "navigation")
+
+            }
+
+
+        }
 //        flContent = findViewById(R.id.fl_content)
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
 //        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
-        var headerLayout = mNavigationView!!.getHeaderView(0); // 0-index header
-        tvPersonName = headerLayout!!.findViewById<TextView>(R.id.tv_person_name)
+        var headerLayout = mNavigationView!!.getHeaderView(0) // 0-index header
 
-        tvPersonLogin = headerLayout!!.findViewById<TextView>(R.id.tv_person_login)
+        tvPersonName = headerLayout!!.findViewById(R.id.tv_person_name)
 
-        add(MainFragment(), R.id.fl_content, "main")
+        tvPersonLogin = headerLayout!!.findViewById(R.id.tv_person_login)
+
+        mNavigationView!!.findViewById<Switch>(R.id.tv_person_name)
+        mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
 
         var window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         screenWidth = window.defaultDisplay.width
 //        StatusBarUtil.setColor(this, R.color.colorPrimary)
 //        StatusBarUtil.setTranslucentForDrawerLayout(this, dl_main_tab)
-
         init()
     }
 
     fun init() {
-        super.onStart()
         LogUtils.d("onStart...")
 //        navigation!!.menu.getItem(0).isChecked = true
 //        navigation!!.menu.getItem(1).isChecked = false
@@ -128,27 +170,33 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
-                    add(MainFragment(), R.id.fl_content, "main")
+                    LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
+
+                    add(fragmentList.get(0), R.id.fl_content, "main")
 //                    navigation!!.menu.getItem(0).isChecked = false
                     toolbar_title!!.text = ("首页")
+                    currentFragmentIndex = 0
                     true
                 }
                 R.id.bottom_menu_found -> {
-                    add(SystemDataFragment(), R.id.fl_content, "system")
+                    add(fragmentList.get(1), R.id.fl_content, "system")
 //                    navigation!!.menu.getItem(1).isChecked = false
                     toolbar_title!!.text = ("知识体系")
+                    currentFragmentIndex = 1
                     true
                 }
                 R.id.bottom_menu_project -> {
-                    add(ProjectFragment(), R.id.fl_content, "project")
+                    add(fragmentList.get(2), R.id.fl_content, "project")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("项目")
+                    currentFragmentIndex = 2
                     true
                 }
                 R.id.bottom_menu_navigation -> {
-                    add(NavigationFragment(), R.id.fl_content, "navigation")
+                    add(fragmentList.get(3), R.id.fl_content, "navigation")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("导航")
+                    currentFragmentIndex = 3
                     true
                 }
             }
@@ -156,19 +204,38 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
             false
         }
 
+
         mNavigationView!!.setNavigationItemSelectedListener { item ->
 
-            dl_main_tab!!.closeDrawer(Gravity.LEFT)
             when (item.itemId) {
                 R.id.menu_History -> {
+                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+
                     launchActivity(Intent(this, CollectArticleActivity::class.java))
                     true
                 }
                 R.id.menu_Setting -> {
-                    ArmsUtils.makeText(this, "开发中，敬请期待")
+                    val mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
+                    //进入方法就先注册上监听
+                    val switch = item.actionView.findViewById(R.id.switchForActionBar) as Switch
+                    //进入方法就先注册上监听
+                    if (mode) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
+                    SPUtils.put(applicationContext, "night_mode", !mode)
+                    switch.isChecked = !mode
+                    recreate()
+//                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+//
+//                    launchActivity(Intent(this, SettingActivity::class.java))
+
                     true
                 }
                 R.id.menu_AboutUs -> {
+                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+
                     var intent = Intent(this, WebViewActivity::class.java)
                     intent.putExtra("link", "https://www.github.com/yihu5566")
                     intent.putExtra("title", "yihu5566")
@@ -199,6 +266,19 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     }
 
+    override fun recreate() {
+        try {//避免重启太快 恢复
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            for (fragment in fragmentList) {
+                fragmentTransaction.remove(fragment)
+            }
+            fragmentTransaction.commitAllowingStateLoss()
+        } catch (e: Exception) {
+        }
+
+        super.recreate()
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (TextUtils.isEmpty(intent!!.getStringExtra("username")) || TextUtils.isEmpty(intent!!.getStringExtra("password"))) {
@@ -212,37 +292,39 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     }
 
 
-    fun add(fragment: Fragment, id: Int, tag: String) {
-        var fragment = fragment
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        //优先检查，fragment是否存在，避免重叠
-        var tempFragment = supportFragmentManager.findFragmentByTag(tag)
-        if (tempFragment != null) {
-            fragment = tempFragment
-        }
-        if (fragment.isAdded()) {
-            addOrShowFragment(fragmentTransaction, fragment, id, tag);
-        } else {
-            if (currentFragment != null && currentFragment!!.isAdded()) {
-                fragmentTransaction.hide(currentFragment!!).add(id, fragment, tag).commit();
-            } else {
-                fragmentTransaction.add(id, fragment, tag).commit();
-            }
-            currentFragment = fragment;
-        }
+    fun add(mFragment: Fragment, id: Int, tag: String) {
+
+        var fragment = mFragment
+        fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction!!.replace(id, fragment, tag).commit()
+//        //优先检查，fragment是否存在，避免重叠
+//        var tempFragment = supportFragmentManager.findFragmentByTag(tag)
+//        if (tempFragment != null) {
+//            fragment = tempFragment
+//        }
+//        if (fragment.isAdded) {
+//            addOrShowFragment(fragmentTransaction!!, fragment, id, tag)
+//        } else {
+//            if (currentFragment != null && currentFragment!!.isAdded()) {
+//                fragmentTransaction!!.hide(currentFragment!!).add(id, fragment, tag).commit()
+//            } else {
+//                fragmentTransaction!!.add(id, fragment, tag).commit()
+//            }
+//            currentFragment = fragment
+//        }
     }
 
     fun addOrShowFragment(transaction: FragmentTransaction, fragment: Fragment, id: Int, tag: String) {
         if (currentFragment == fragment)
-            return;
-        if (!fragment.isAdded()) { // 如果当前fragment未被添加，则添加到Fragment管理器中
-            transaction.hide(currentFragment!!).add(id, fragment, tag).commit();
+            return
+        if (!fragment.isAdded) { // 如果当前fragment未被添加，则添加到Fragment管理器中
+            transaction.hide(currentFragment!!).add(id, fragment, tag).commit()
         } else {
-            transaction.hide(currentFragment!!).show(fragment).commit();
+            transaction.hide(currentFragment!!).show(fragment).commit()
         }
-        currentFragment!!.setUserVisibleHint(false);
-        currentFragment = fragment;
-        currentFragment!!.setUserVisibleHint(true);
+        currentFragment!!.userVisibleHint = false
+        currentFragment = fragment
+        currentFragment!!.userVisibleHint = true
     }
 
 
@@ -253,11 +335,11 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
         dl_main_tab!!.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                println("----onDrawerSlide-  $slideOffset")
+//                println("----onDrawerSlide-  $slideOffset")
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                println("----onDrawerOpened-")
+//                println("----onDrawerOpened-")
 
                 val user = SPUtils.get(this@MainActivity, "user", "") as String
                 if (!TextUtils.isEmpty(user)) {
@@ -302,8 +384,10 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         LogUtils.d("onDestroy...")
+//        fragmentTransaction!!.remove(currentFragment!!).commit()
+
+        super.onDestroy()
 
     }
 
