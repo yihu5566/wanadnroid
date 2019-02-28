@@ -24,6 +24,7 @@ import test.juyoufuli.com.myapplication.mvp.presenter.ProjectPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ProjectAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAdapter
+import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsHolder
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
@@ -62,7 +63,7 @@ class ProjectFragment : BaseFragment<ProjectPresenter>(), ProjectContract.View {
         mList = ArrayList()
         mAdapter = ProjectAdapter(mList!!)
         mRecyclerView!!.layoutManager = LinearLayoutManager(activity)
-        mRecyclerView!!.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
+        mRecyclerView!!.addItemDecoration(ProjectRecycerDecoration(context!!, ProjectRecycerDecoration.VERTICAL_LIST, R.drawable.item_decoration, 5))
         mRecyclerView!!.adapter = mAdapter
         mPresenter!!.getProject()
         mAdapter!!.setOnItemClickListener { view, viewType, data, position ->
@@ -89,7 +90,7 @@ class ProjectFragment : BaseFragment<ProjectPresenter>(), ProjectContract.View {
             launchActivity(intent)
         }
 
-        projectDetailsAdapter!!.setChildClickListener(object : ProjectDetailsAdapter.ProjectDetailsHolder.ChildClickListener {
+        projectDetailsAdapter!!.setChildClickListener(object : ProjectDetailsHolder.ChildClickListener {
             override fun viewClick(viewid: Int, position: Int, data: ProjectDatas) {
                 if (viewid == R.id.tv_project_details_collect) {
                     if (!data.collect) {

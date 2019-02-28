@@ -13,8 +13,8 @@ import test.juyoufuli.com.myapplication.app.utils.SPUtils
  */
 class WanBaseApplication : BaseApplication() {
     override fun onCreate() {
-        init()
         super.onCreate()
+        init()
     }
 
     private fun init() {

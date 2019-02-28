@@ -39,7 +39,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     private fun setOrientation(orientation: Int) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
-            throw  IllegalArgumentException("invalid orientation")
+            throw  IllegalArgumentException("invalid orientation") as Throwable
         }
         mOrientation = orientation
 

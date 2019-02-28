@@ -44,7 +44,9 @@ import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
-class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
+class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+
+
     @JvmField
     @BindView(R.id.fl_content)
     internal var flContent: FrameLayout? = null
@@ -118,15 +120,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
             LogUtils.d("initData剩余fragment..." + supportFragmentManager.fragments.size)
 
             var tagFragment = savedInstanceState.get("currentFragmentIndex") as Int
-//            var fragment = supportFragmentManager.findFragmentByTag(tagFragment)
-//            if (fragment!!.isAdded) {
-//                LogUtils.d("移除当前的fragment...")
-//                supportFragmentManager.beginTransaction()!!.remove(fragment!!)
-//                LogUtils.d("剩余fragment..." + supportFragmentManager.fragments.size)
-//
-//            }
             currentFragment = fragmentList.get(tagFragment)
-
             when (tagFragment) {
                 0 -> add(fragmentList.get(tagFragment), R.id.fl_content, "main")
                 1 -> add(fragmentList.get(tagFragment), R.id.fl_content, "system")
@@ -141,14 +135,13 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
 //        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
         var headerLayout = mNavigationView!!.getHeaderView(0) // 0-index header
-
         tvPersonName = headerLayout!!.findViewById(R.id.tv_person_name)
-
         tvPersonLogin = headerLayout!!.findViewById(R.id.tv_person_login)
 
-        mNavigationView!!.findViewById<Switch>(R.id.tv_person_name)
-        mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
-
+        var item = mNavigationView!!.menu.getItem(1).actionView // 0-index header
+        var switchView = item!!.findViewById<Switch>(R.id.switchForActionBar)
+//        //条目中的控件
+        switchView!!.setOnClickListener(this@MainActivity)
         var window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         screenWidth = window.defaultDisplay.width
 //        StatusBarUtil.setColor(this, R.color.colorPrimary)
@@ -161,7 +154,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 //        navigation!!.menu.getItem(0).isChecked = true
 //        navigation!!.menu.getItem(1).isChecked = false
 //        navigation!!.menu.getItem(2).isChecked = false
-        disableShiftMode();
+        disableShiftMode()
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
 
         navigation!!.setOnNavigationItemSelectedListener { item ->
@@ -215,22 +208,18 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
                     true
                 }
                 R.id.menu_Setting -> {
-                    val mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
+//                    var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
                     //进入方法就先注册上监听
-                    val switch = item.actionView.findViewById(R.id.switchForActionBar) as Switch
+//                    var switch = item.actionView.findViewById(R.id.switchForActionBar) as Switch
                     //进入方法就先注册上监听
-                    if (mode) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    }
-                    SPUtils.put(applicationContext, "night_mode", !mode)
-                    switch.isChecked = !mode
-                    recreate()
+//                    if (!mode) {
+//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                    } else {
+//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                    }
+//                    switch.isChecked = !mode
 //                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
-//
 //                    launchActivity(Intent(this, SettingActivity::class.java))
-
                     true
                 }
                 R.id.menu_AboutUs -> {
@@ -275,7 +264,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
             fragmentTransaction.commitAllowingStateLoss()
         } catch (e: Exception) {
         }
-
+        fragmentList.clear()
         super.recreate()
     }
 
@@ -296,22 +285,22 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
         var fragment = mFragment
         fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction!!.replace(id, fragment, tag).commit()
-//        //优先检查，fragment是否存在，避免重叠
-//        var tempFragment = supportFragmentManager.findFragmentByTag(tag)
-//        if (tempFragment != null) {
-//            fragment = tempFragment
-//        }
-//        if (fragment.isAdded) {
-//            addOrShowFragment(fragmentTransaction!!, fragment, id, tag)
-//        } else {
-//            if (currentFragment != null && currentFragment!!.isAdded()) {
-//                fragmentTransaction!!.hide(currentFragment!!).add(id, fragment, tag).commit()
-//            } else {
-//                fragmentTransaction!!.add(id, fragment, tag).commit()
-//            }
-//            currentFragment = fragment
-//        }
+//        fragmentTransaction!!.replace(id, fragment, tag).commit()
+        //优先检查，fragment是否存在，避免重叠
+        var tempFragment = supportFragmentManager.findFragmentByTag(tag)
+        if (tempFragment != null) {
+            fragment = tempFragment
+        }
+        if (fragment.isAdded) {
+            addOrShowFragment(fragmentTransaction!!, fragment, id, tag)
+        } else {
+            if (currentFragment != null && currentFragment!!.isAdded()) {
+                fragmentTransaction!!.hide(currentFragment!!).add(id, fragment, tag).commit()
+            } else {
+                fragmentTransaction!!.add(id, fragment, tag).commit()
+            }
+            currentFragment = fragment
+        }
     }
 
     fun addOrShowFragment(transaction: FragmentTransaction, fragment: Fragment, id: Int, tag: String) {
@@ -339,7 +328,14 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
             }
 
             override fun onDrawerOpened(drawerView: View) {
-//                println("----onDrawerOpened-")
+                println("----onDrawerOpened-")
+
+                //设置一下状态
+                var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
+                var switchView = drawerView.findViewById<Switch>(R.id.switchForActionBar)
+                switchView!!.isChecked = mode
+//                switchView!!.setOnCheckedChangeListener(this@MainActivity)
+                switchView!!.setOnClickListener(this@MainActivity)
 
                 val user = SPUtils.get(this@MainActivity, "user", "") as String
                 if (!TextUtils.isEmpty(user)) {
@@ -372,6 +368,37 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
 
     }
 
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        //通过switch
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+        LogUtils.d("onDrawerOpened..." + isChecked)
+
+        SPUtils.put(applicationContext, "night_mode", isChecked)
+//        recreate()
+    }
+
+    override fun onClick(v: View) {
+        LogUtils.d("onClick...触发了")
+        if (v.id == R.id.switchForActionBar) {
+            var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
+            var switch = v as Switch
+            //通过switch
+            if (!mode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            switch!!.isChecked = !mode
+            LogUtils.d("onDrawerOpened..." + mode)
+            SPUtils.put(applicationContext, "night_mode", !mode)
+            recreate()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         LogUtils.d("onPause...")
@@ -386,7 +413,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View {
     override fun onDestroy() {
         LogUtils.d("onDestroy...")
 //        fragmentTransaction!!.remove(currentFragment!!).commit()
-
         super.onDestroy()
 
     }
