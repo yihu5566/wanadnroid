@@ -64,9 +64,8 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
         return chain.request().newBuilder().header("token", tokenId)
                               .build(); */
 
-        chain.withWriteTimeout(20, TimeUnit.SECONDS);
+//        chain.withWriteTimeout(20, TimeUnit.SECONDS);
 
-        return chain.request().newBuilder()
-                .build();
+        return request;
     }
 }

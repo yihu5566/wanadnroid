@@ -12,7 +12,7 @@ package test.juyoufuli.com.myapplication.mvp.api
  */
 interface Api {
     companion object {
-        val APP_DOMAIN = "http://www.wanandroid.com/"
+        val APP_DOMAIN = "https://www.wanandroid.com/"
         val RequestSuccess = 0
     }
 

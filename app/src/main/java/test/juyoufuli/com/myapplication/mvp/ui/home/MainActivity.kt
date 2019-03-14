@@ -102,6 +102,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     @SuppressLint("ResourceAsColor")
     override fun initData(savedInstanceState: Bundle?) {
+
         if (savedInstanceState == null) {
             fragmentList.clear()
             fragmentList.add(MainFragment())
@@ -154,10 +155,8 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     fun init() {
         LogUtils.d("onStart...")
-//        navigation!!.menu.getItem(0).isChecked = true
-//        navigation!!.menu.getItem(1).isChecked = false
-//        navigation!!.menu.getItem(2).isChecked = false
-        disableShiftMode()
+
+//        disableShiftMode()
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
 
         navigation!!.setOnNavigationItemSelectedListener { item ->
@@ -245,6 +244,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             false
         }
         toolbar_title!!.text = ("首页")
+
         toolbar_search!!.visibility = (View.VISIBLE)
         toolbar_menu!!.visibility = (View.VISIBLE)
         toolbar_menu!!.setOnClickListener {
@@ -329,6 +329,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     override fun onResume() {
         super.onResume()
         LogUtils.d("onResume...")
+        navigation!!.selectedItemId = isSelect
 
         dl_main_tab!!.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
 
