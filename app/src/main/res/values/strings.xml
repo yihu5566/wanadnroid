@@ -4,6 +4,7 @@
     <string name="main_tab_service_text">体系</string>
     <string name="main_tab_project_text">项目</string>
     <string name="main_tab_navigation_text">导航</string>
+    <string name="main_tab_wechat_text">公众号</string>
 
     <string name="login">登陆OR注册</string>
     <string name="Username">Username</string>

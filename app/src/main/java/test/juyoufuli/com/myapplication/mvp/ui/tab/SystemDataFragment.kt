@@ -99,13 +99,6 @@ class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContra
 
     }
 
-    override fun showLoading() {
-
-    }
-
-    override fun hideLoading() {
-
-    }
 
     override fun showMessage(message: String) {
         checkNotNull(message)
@@ -117,9 +110,6 @@ class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContra
         ArmsUtils.startActivity(intent)
     }
 
-    override fun killMyself() {
-
-    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

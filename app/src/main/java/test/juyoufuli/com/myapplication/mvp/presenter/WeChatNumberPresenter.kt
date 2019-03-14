@@ -8,43 +8,35 @@ import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter
+import test.juyoufuli.com.myapplication.mvp.contract.WeChatNumberContract
+import test.juyoufuli.com.myapplication.mvp.entity.WeChatNumberResponse
 import javax.inject.Inject
 
 /**
- * Author : ludf
- * Created Time : 2018-09-29  13:34
- * Description:
+ * @Author : dongfang
+ * @Created Time : 2019-03-14  10:25
+ * @Description:
  */
 @FragmentScope
-class SystemDataPresenter @Inject
-constructor(model: SystemDataContract.Model, rootView: SystemDataContract.View) : BasePresenter<SystemDataContract.Model, SystemDataContract.View>(model, rootView) {
+class WeChatNumberPresenter @Inject constructor(model: WeChatNumberContract.Model, view: WeChatNumberContract.View) : BasePresenter<WeChatNumberContract.Model, WeChatNumberContract.View>(model, view) {
     @JvmField
     @Inject
     internal var mErrorHandler: RxErrorHandler? = null
-    @JvmField
-    @Inject
-    internal var mSystemData: MutableList<SystemBean>? = null
-    @JvmField
-    @Inject
-    internal var mAdapter: SystemDataAdapter? = null
 
 
     fun requestSystemDataList() {
-
-        mModel.getSystemData()
+        mModel.getWeChatData()
                 .subscribeOn(Schedulers.io())
                 .retryWhen(RetryWithDelay(3, 2))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle<SystemDataRespons>(mRootView))
-                .subscribe(object : ErrorHandleSubscriber<SystemDataRespons>(mErrorHandler!!) {
+                .compose(RxLifecycleUtils.bindToLifecycle<WeChatNumberResponse>(mRootView))
+                .subscribe(object : ErrorHandleSubscriber<WeChatNumberResponse>(mErrorHandler!!) {
 
-                    override fun onNext(response: SystemDataRespons) {
-                        mSystemData!!.addAll(response.data)
-                        mAdapter!!.notifyDataSetChanged()
+                    override fun onNext(response: WeChatNumberResponse) {
+                        if (response != null) {
+                            mRootView.refreshData(response)
+
+                        }
                     }
                 })
 

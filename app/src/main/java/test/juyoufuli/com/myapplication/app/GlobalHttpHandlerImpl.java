@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.jess.arms.http.GlobalHttpHandler;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -61,6 +63,10 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
         /* 如果需要再请求服务器之前做一些操作, 则重新返回一个做过操作的的 Request 如增加 Header, 不做操作则直接返回参数 request
         return chain.request().newBuilder().header("token", tokenId)
                               .build(); */
-        return request;
+
+        chain.withWriteTimeout(20, TimeUnit.SECONDS);
+
+        return chain.request().newBuilder()
+                .build();
     }
 }

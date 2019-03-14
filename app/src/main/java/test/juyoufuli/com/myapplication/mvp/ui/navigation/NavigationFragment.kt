@@ -86,11 +86,6 @@ class NavigationFragment : BaseFragment<NavigationPresenter>(), NavigationContra
 
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-
-    }
-
 
     override val fragment: Fragment
         get() = this

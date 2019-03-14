@@ -50,4 +50,7 @@ interface CommonCache {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     fun getHotWord(users: Observable<HotWordResponse>): Observable<Reply<HotWordResponse>>
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    fun getWeChatArticle(users: Observable<WeChatNumberResponse>): Observable<Reply<WeChatNumberResponse>>
 }

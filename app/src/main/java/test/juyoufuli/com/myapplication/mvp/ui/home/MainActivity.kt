@@ -36,6 +36,7 @@ import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.SettingActivity
+import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
@@ -77,8 +78,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     var tvPersonName: TextView? = null
     var isLogin: Boolean = false
     var isSelect: Int = R.id.bottom_menu_home
-    var mode: Boolean = false
-    var isFirst: Boolean = true
     var fragmentTransaction: FragmentTransaction? = null
     var fragmentList: ArrayList<Fragment> = ArrayList()
 
@@ -109,6 +108,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             fragmentList.add(SystemDataFragment())
             fragmentList.add(ProjectFragment())
             fragmentList.add(NavigationFragment())
+            fragmentList.add(WeChatNumberFragment())
 
             add(fragmentList.get(0), R.id.fl_content, "main")
         } else {
@@ -117,6 +117,8 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             fragmentList.add(SystemDataFragment())
             fragmentList.add(ProjectFragment())
             fragmentList.add(NavigationFragment())
+            fragmentList.add(WeChatNumberFragment())
+
             LogUtils.d("initData剩余fragment..." + supportFragmentManager.fragments.size)
 
             var tagFragment = savedInstanceState.get("currentFragmentIndex") as Int
@@ -126,6 +128,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                 1 -> add(fragmentList.get(tagFragment), R.id.fl_content, "system")
                 2 -> add(fragmentList.get(tagFragment), R.id.fl_content, "project")
                 3 -> add(fragmentList.get(tagFragment), R.id.fl_content, "navigation")
+                4 -> add(fragmentList.get(tagFragment), R.id.fl_content, "wechat")
 
             }
 
@@ -160,11 +163,10 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         navigation!!.setOnNavigationItemSelectedListener { item ->
 
             item.isChecked = item.itemId == isSelect
+            LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
 
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
-                    LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
-
                     add(fragmentList.get(0), R.id.fl_content, "main")
 //                    navigation!!.menu.getItem(0).isChecked = false
                     toolbar_title!!.text = ("首页")
@@ -190,6 +192,14 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("导航")
                     currentFragmentIndex = 3
+                    true
+                }
+
+                R.id.bottom_menu_wechat -> {
+                    add(fragmentList.get(4), R.id.fl_content, "wechat")
+//                    navigation!!.menu.getItem(2).isChecked = false
+                    toolbar_title!!.text = ("公众号")
+                    currentFragmentIndex = 4
                     true
                 }
             }
@@ -285,7 +295,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
         var fragment = mFragment
         fragmentTransaction = supportFragmentManager.beginTransaction()
-//        fragmentTransaction!!.replace(id, fragment, tag).commit()
         //优先检查，fragment是否存在，避免重叠
         var tempFragment = supportFragmentManager.findFragmentByTag(tag)
         if (tempFragment != null) {

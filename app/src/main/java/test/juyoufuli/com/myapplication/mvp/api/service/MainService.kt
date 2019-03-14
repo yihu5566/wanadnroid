@@ -66,4 +66,7 @@ interface MainService {
 
     @GET("hotkey/json")
     fun getHotWord(): Observable<HotWordResponse>
+
+    @GET("wxarticle/chapters/json ")
+    fun getWeChatArticle(): Observable<WeChatNumberResponse>
 }
