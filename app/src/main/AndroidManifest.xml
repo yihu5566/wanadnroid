@@ -38,7 +38,7 @@
             android:value="ConfigModule" />
 
         <activity
-            android:name=".app.ui.home.MainActivity"
+            android:name=".mvp.ui.splash.SplashActivity"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".app.ui.home.MainActivity"/>
         <activity android:name=".mvp.ui.webview.WebViewActivity" />
         <activity android:name=".mvp.ui.searchview.SearchViewActivity"/>
         <activity android:name=".mvp.ui.tab.SystemDataDetailsActivity"/>

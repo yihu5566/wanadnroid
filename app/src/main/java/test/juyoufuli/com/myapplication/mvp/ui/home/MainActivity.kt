@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.design.internal.BottomNavigationItemView
@@ -21,6 +23,9 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import butterknife.BindView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
@@ -76,6 +81,8 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     var screenWidth: Int? = null
     var tvPersonLogin: TextView? = null
     var tvPersonName: TextView? = null
+    var ivPersonPhoto: ImageView? = null
+
     var isLogin: Boolean = false
     var isSelect: Int = R.id.bottom_menu_home
     var fragmentTransaction: FragmentTransaction? = null
@@ -141,6 +148,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         var headerLayout = mNavigationView!!.getHeaderView(0) // 0-index header
         tvPersonName = headerLayout!!.findViewById(R.id.tv_person_name)
         tvPersonLogin = headerLayout!!.findViewById(R.id.tv_person_login)
+        ivPersonPhoto = headerLayout!!.findViewById<ImageView>(R.id.tv_person)
 
         var item = mNavigationView!!.menu.getItem(1).actionView // 0-index header
         var switchView = item!!.findViewById<Switch>(R.id.switchForActionBar)
@@ -354,14 +362,20 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
                     tvPersonName!!.text = fromJsonToBean.data.username
                     tvPersonLogin!!.text = "退出登录"
+                    Glide.with(this@MainActivity)
+                            .load(R.drawable.head_photo)
+                            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                            .into(ivPersonPhoto!!)
 
                 } else {
                     isLogin = false
                     tvPersonName!!.text = "用户名"
                     tvPersonLogin!!.text = "前往登陆"
+                    ivPersonPhoto!!.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
 
                 }
                 SPUtils.put(this@MainActivity, "isLogin", isLogin)
+
 
             }
 
