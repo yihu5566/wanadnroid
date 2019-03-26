@@ -5,21 +5,42 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray">
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/riv_system_details_top"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/backgroundColor"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_system_details_content"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/cdl_wechat"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/riv_system_details_top" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/riv_system_details_top"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/backgroundColor" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_system_details_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_wechat_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_search_black_24dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:elevation="5.0dip"
+            app:fabSize="normal"
+            app:layout_anchor="@id/vp_system_details_content"
+            app:layout_anchorGravity="bottom|right" />
+    </android.support.design.widget.CoordinatorLayout>
 
 
 </android.support.constraint.ConstraintLayout>

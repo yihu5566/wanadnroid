@@ -36,6 +36,8 @@ import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
  * Description:
  */
 class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), SystemDataDetailsItemContract.View {
+
+
     @JvmField
     @BindView(R.id.rlv_pager)
     internal var mRecyclerView: RecyclerView? = null
@@ -75,7 +77,8 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
             cid = arguments!!.getString("cid")
             mRecyclerView!!.layoutManager = layoutManager
             mRecyclerView!!.adapter = mAdapter
-            mPresenter!!.requestSystemDataList(0.toString(), cid)
+            mPresenter!!.requestSystemDataList(page.toString(), cid)
+
             initPaginate()
 
             mAdapter!!.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<ArticleBean> {
@@ -102,8 +105,8 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
+//                    isLoadingMore = true
                     if (totalPage > page) {
-                        isLoadingMore = true
                         mPresenter!!.requestSystemDataList(page.toString(), cid)
                     }
 
@@ -125,25 +128,13 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
         }
     }
 
-    override fun showLoading() {
-
-    }
-
-    override fun hideLoading() {
-
-    }
-
     override fun showMessage(message: String) {
-
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun launchActivity(intent: Intent) {
 
         ArmsUtils.startActivity(intent)
-    }
-
-    override fun killMyself() {
-
     }
 
 
@@ -156,7 +147,7 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
         } else {
             mAdapter!!.appendData(response.data.datas)
         }
-        mRecyclerView!!.adapter = mAdapter
+//        mRecyclerView!!.adapter = mAdapter
         mAdapter!!.notifyDataSetChanged()
     }
 }

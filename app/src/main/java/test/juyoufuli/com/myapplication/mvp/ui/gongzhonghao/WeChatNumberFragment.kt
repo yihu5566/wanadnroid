@@ -5,12 +5,16 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
@@ -39,7 +43,7 @@ import javax.inject.Inject
  * @Created Time : 2019-03-14  10:24
  * @Description:
  */
-class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumberContract.View {
+class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumberContract.View, View.OnClickListener {
 
     @JvmField
     @Inject
@@ -56,6 +60,12 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
     @JvmField
     @BindView(R.id.riv_system_details_top)
     var magicIndicator: MagicIndicator? = null
+    @JvmField
+    @BindView(R.id.fab_wechat_number)
+    var mFloatingActionButton: FloatingActionButton? = null
+    @JvmField
+    @BindView(R.id.cdl_wechat)
+    var mCoordinatorLayout: CoordinatorLayout? = null
 
     override val fragment: Fragment
         get() = this
@@ -89,7 +99,16 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
     override fun initData(savedInstanceState: Bundle?) {
         //获取公众号列表
         mPresenter!!.requestSystemDataList()
+
+        mFloatingActionButton!!.setOnClickListener(this@WeChatNumberFragment)
     }
+
+    override fun onClick(v: View?) =
+            Snackbar.make(mCoordinatorLayout!!, "已删除一个会话", Snackbar.LENGTH_SHORT)
+                    .setAction("撤销") { view ->
+                        Toast.makeText(activity, "撤销了删除", Toast.LENGTH_SHORT).show()
+
+                    }.show()
 
     private fun initDataList() {
         for (ddd in (tagNameList)!!) {
