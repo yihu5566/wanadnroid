@@ -7,18 +7,17 @@ import android.os.Bundle
 import android.os.Message
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
+import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.Preconditions
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -45,6 +44,7 @@ import javax.inject.Inject
  */
 class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumberContract.View, View.OnClickListener {
 
+
     @JvmField
     @Inject
     var tagNameList: ArrayList<String>? = null
@@ -66,6 +66,10 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
     @JvmField
     @BindView(R.id.cdl_wechat)
     var mCoordinatorLayout: CoordinatorLayout? = null
+    /**
+     * 默认的公众号id
+     */
+    lateinit var cid: String
 
     override val fragment: Fragment
         get() = this
@@ -103,12 +107,17 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
         mFloatingActionButton!!.setOnClickListener(this@WeChatNumberFragment)
     }
 
-    override fun onClick(v: View?) =
-            Snackbar.make(mCoordinatorLayout!!, "已删除一个会话", Snackbar.LENGTH_SHORT)
-                    .setAction("撤销") { view ->
-                        Toast.makeText(activity, "撤销了删除", Toast.LENGTH_SHORT).show()
 
-                    }.show()
+    override fun onClick(v: View?) {
+//        Snackbar.make(mCoordinatorLayout!!, "已删除一个会话", Snackbar.LENGTH_SHORT)
+//                .setAction("撤销") { view ->
+//                    Toast.makeText(activity, "撤销了删除", Toast.LENGTH_SHORT).show()
+//
+//                }.show()
+        val intent = Intent(activity, WeChatSearchHistoryActivity::class.java)
+        intent.putExtra("cid", cid)
+        launchActivity(intent)
+    }
 
     private fun initDataList() {
         for (ddd in (tagNameList)!!) {
@@ -120,6 +129,8 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
 
             fragmentList!!.add(recyclerViewFragment)
         }
+        //初始化一下
+        cid = tagNameList!!.get(0).split("*").get(0)
 
 
         val supportFragmentManager = getChildFragmentManager()
@@ -174,7 +185,8 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
                 bundle.putString("cid", tagNameList!!.get(position).split("*").get(0))
                 value.data = bundle
                 get.setData(value)
-
+                cid = tagNameList!!.get(position).split("*").get(0)
+                LogUtils.debugInfo("cid=" + cid)
             }
 
             override fun onPageScrollStateChanged(state: Int) {

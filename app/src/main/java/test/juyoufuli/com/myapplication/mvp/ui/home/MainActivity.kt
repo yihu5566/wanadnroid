@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatDelegate
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -33,6 +34,7 @@ import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import test.juyoufuli.com.myapplication.app.utils.ToastUtils.showToast
 import test.juyoufuli.com.myapplication.di.component.DaggerHomeComponent
 import test.juyoufuli.com.myapplication.di.module.HomeModule
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
@@ -87,6 +89,11 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     var isSelect: Int = R.id.bottom_menu_home
     var fragmentTransaction: FragmentTransaction? = null
     var fragmentList: ArrayList<Fragment> = ArrayList()
+
+
+    private var lastClickTime: Long = 0//上次点击的时间
+
+    private val spaceTime = 2000//时间间隔
 
     override fun setupActivityComponent(appComponent: AppComponent) {
         DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
@@ -477,21 +484,33 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         SPUtils.clear(this)
     }
 
-    override fun showLoading() {
-    }
-
     override fun launchActivity(intent: Intent) {
         checkNotNull(intent)
         ArmsUtils.startActivity(intent)
     }
 
-    override fun hideLoading() {
-    }
 
     override fun killMyself() {
         ArmsUtils.exitApp()
     }
 
     override fun showMessage(message: String) {
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            val currentTime = System.currentTimeMillis()//当前系统时间
+            val tempTime = currentTime - lastClickTime
+            if (tempTime > spaceTime || tempTime < 0) {
+                lastClickTime = currentTime
+                showToast(this, "再点击一次退出")
+                return true//禁用返回键
+            } else {
+                ArmsUtils.exitApp()
+                return false//返回
+            }
+        } else {
+            return super.onKeyDown(keyCode, event)
+        }
     }
 }

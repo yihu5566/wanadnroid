@@ -90,7 +90,7 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
             mAdapter!!.clearList()
             page = 0
         }
-        searchWord=string
+        searchWord = string
         isLoadingMore = true
         mPresenter!!.getSearchResult(page, string)
 
@@ -122,7 +122,7 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
 //                    if (page == totalPage || totalPage == 0) {
 //                        Toast.makeText(applicationContext, "没有更多数据", Toast.LENGTH_SHORT).show()
 //                    }
-                    return page == totalPage || (totalPage == 0&&page==1)
+                    return page == totalPage || (totalPage == 0 && page == 1)
                 }
             }
 
@@ -169,10 +169,6 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
 //        })
 
     }
-
-    override fun showLoading() {}
-
-    override fun hideLoading() {}
 
     override fun showMessage(message: String) {
 

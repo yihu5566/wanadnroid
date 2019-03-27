@@ -88,6 +88,10 @@ dependencies {
 
     implementation 'me.jessyan:arms-imageloader-glide:2.5.0'
 
+    //列表刷新
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-21'
+
+
 }
 repositories {
     mavenCentral()
