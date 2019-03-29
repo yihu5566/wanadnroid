@@ -15,7 +15,6 @@
  */
 package test.juyoufuli.com.myapplication.mvp.entity
 
-import okhttp3.Response
 import test.juyoufuli.com.myapplication.mvp.api.Api
 import java.io.Serializable
 

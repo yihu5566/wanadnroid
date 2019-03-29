@@ -8,7 +8,7 @@ package test.juyoufuli.com.myapplication.mvp.entity
 
 
 data class BannerResponse(
-    val data: List<BannerInfor>,
+    val data: ArrayList<BannerInfor>,
     val errorCode: Int,
     val errorMsg: String
 )

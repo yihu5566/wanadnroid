@@ -18,15 +18,19 @@ class WanBaseApplication : BaseApplication() {
 
     companion object {
         val ui_handler: Handler? = Handler(Looper.getMainLooper())
+        var application: BaseApplication? = null
 
         fun runOnUiThread(runnable: Runnable?) {
             if (runnable != null) {
                 ui_handler!!.post(runnable)
             }
         }
+
+        fun getAppContext(): Application? {
+            return application
+        }
     }
 
-    private var application: BaseApplication? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -48,8 +52,5 @@ class WanBaseApplication : BaseApplication() {
 
     }
 
-    fun getAppContext(): Application? {
-        return application
-    }
 
 }

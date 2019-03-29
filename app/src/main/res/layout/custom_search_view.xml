@@ -2,13 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
     android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bt_shape_black"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,12 +17,12 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_custom_search"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:drawableLeft="@drawable/bt_shape_black"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
             android:imeOptions="actionSearch"
-            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/edittex_cursor_colour" />
 
@@ -30,7 +30,7 @@
             android:id="@+id/iv_custom_close"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/ic_close_off_black_24dp"
             android:visibility="gone" />
     </LinearLayout>

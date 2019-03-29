@@ -12,8 +12,12 @@ import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
+import test.juyoufuli.com.myapplication.app.BaseRequest
+import test.juyoufuli.com.myapplication.app.net.HttpUtil
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
+import test.juyoufuli.com.myapplication.mvp.entity.HotWordData
 import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
 
@@ -37,6 +41,7 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))
+
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
 
                     override fun onNext(response: ArticleResponse) {
@@ -49,21 +54,29 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
     }
 
 
+    fun getHotWordResult2() {
+//        mModel.getHotWordResult()
+//                .subscribeOn(Schedulers.io())
+//                .retryWhen(RetryWithDelay(3, 2))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(RxLifecycleUtils.bindToLifecycle<HotWordResponse>(mRootView))
+//                .subscribe(object : ErrorHandleSubscriber<HotWordResponse>(mErrorHandler!!) {
+//
+//                    override fun onNext(response: HotWordResponse) {
+//                        LogUtils.debugInfo(response.toString() + "--------------url")
+//                        mRootView.refreshHotWord(response)
+//
+//                    }
+//                })
+
+    }
+
     fun getHotWordResult() {
-        mModel.getHotWordResult()
-                .subscribeOn(Schedulers.io())
-                 .retryWhen( RetryWithDelay(3, 2))
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle<HotWordResponse>(mRootView))
-                .subscribe(object : ErrorHandleSubscriber<HotWordResponse>(mErrorHandler!!) {
-
-                    override fun onNext(response: HotWordResponse) {
-                        LogUtils.debugInfo(response.toString() + "--------------url")
-                        mRootView.refreshHotWord(response)
-
-                    }
-                })
-
+        HttpUtil.executeHttpRequest(mModel.getHotWordResult(), mRootView, object : ErrorHandleSubscriber<List<HotWordData>>(mErrorHandler!!) {
+            override fun onNext(response: List<HotWordData>) {
+                mRootView.refreshHotWord(response)
+            }
+        })
     }
 
 

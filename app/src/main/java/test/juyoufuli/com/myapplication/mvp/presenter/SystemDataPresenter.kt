@@ -48,12 +48,6 @@ constructor(model: SystemDataContract.Model, rootView: SystemDataContract.View) 
                     }
                 })
 
-        //        HttpUtil.executeHttpRequest(mModel.getSystemData(), mRootView, new ErrorHandleSubscriber<List<SystemBean>>(mErrorHandler) {
-        //            @Override
-        //            public void onNext(List<SystemBean> systemDataResponse) {
-        //
-        //            }
-        //        });
 
     }
 }

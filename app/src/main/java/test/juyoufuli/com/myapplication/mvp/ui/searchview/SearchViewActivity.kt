@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import butterknife.BindView
@@ -14,12 +15,14 @@ import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.listener.CustomSearchListener
+import test.juyoufuli.com.myapplication.app.view.CustomSearchView
 import test.juyoufuli.com.myapplication.app.view.LabelsView
 import test.juyoufuli.com.myapplication.di.component.DaggerSearchComponent
 import test.juyoufuli.com.myapplication.di.module.SearchModule
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
+import test.juyoufuli.com.myapplication.mvp.entity.HotWordData
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SearchViewPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter
@@ -45,7 +48,7 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     internal var rlvSearchResult: RecyclerView? = null
     @JvmField
     @BindView(R.id.et_search_word)
-    internal var etSearchWord: EditText? = null
+    internal var etSearchWord: CustomSearchView? = null
     @JvmField
     @BindView(R.id.btn_search_word)
     internal var btnSearchWord: Button? = null
@@ -75,13 +78,15 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.search_activity
+        return R.layout.activity_search
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         hotWordList = ArrayList()
         initRecyclerView()
         initPaginate()
+        mPresenter!!.getHotWordResult()
+
     }
 
 
@@ -154,19 +159,28 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
         toolbar_back!!.visibility = View.VISIBLE
         toolbar_back!!.setOnClickListener(this)
         btnSearchWord!!.setOnClickListener(this)
-        mPresenter!!.getHotWordResult()
 
         lbvSearch!!.setChildClickListener { view: View, item: String, position: Int ->
-
+            etSearchWord!!.editTextString = item
             searchHotWord(item)
-
-
         }
-//        labelsView.setChildClickListener(object : LabelsView.MyChildClickListener() {
-//            fun onChildClick(view: View, `object`: Any, position: Int) {
-//                Toast.makeText(this@MainActivity, `object`.toString() + "第几个：" + position, Toast.LENGTH_SHORT).show()
-//            }
-//        })
+
+        etSearchWord!!.setCustomSearchListener(object : CustomSearchListener {
+            override fun OnContentChangeListener(s: String?) {
+                searchWord = if (TextUtils.isEmpty(s)) " " else s!!
+            }
+
+            override fun OnSearchButtonPressListener(b: Boolean?) {
+                if (mAdapter != null) {
+                    mAdapter!!.clearList()
+                    page = 0
+                }
+                isLoadingMore = true
+
+                mPresenter!!.getSearchResult(page, searchWord)
+            }
+
+        })
 
     }
 
@@ -192,7 +206,6 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
                     page = 0
                 }
                 isLoadingMore = true
-                searchWord = etSearchWord!!.text.toString()
                 mPresenter!!.getSearchResult(page, searchWord)
             }
         }
@@ -220,9 +233,10 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
 
     }
 
-    override fun refreshHotWord(response: HotWordResponse) {
+    override fun refreshHotWord(response: List<HotWordData>) {
+        hotWordList!!.clear()
         lbvSearch!!.setModel(LabelsView.Model.CLICK)
-        for (item in response.data) {
+        for (item in response) {
             hotWordList!!.add(item.name)
         }
         lbvSearch!!.setTextList(hotWordList)

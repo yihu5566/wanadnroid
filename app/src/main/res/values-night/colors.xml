@@ -17,4 +17,6 @@
 
     <color name="textColor">#FFFFFF</color>
     <color name="backgroundColor">#3b3b3b</color>
+    <color name="transparent">#00ffffff</color>
+
 </resources>

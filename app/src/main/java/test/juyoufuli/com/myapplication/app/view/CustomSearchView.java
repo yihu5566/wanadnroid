@@ -27,8 +27,17 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
 
     private ImageView ivCustomClose;
     private TextInputEditText etCustomSearch;
-
     public CustomSearchListener customSearchListener;
+    private String editTextString;
+
+    public String getEditTextString() {
+        return editTextString;
+    }
+
+    public void setEditTextString(String editTextString) {
+        this.editTextString = editTextString;
+        etCustomSearch.setText(editTextString);
+    }
 
     public void setCustomSearchListener(CustomSearchListener customSearchListener) {
         this.customSearchListener = customSearchListener;
@@ -68,6 +77,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                 } else {
                     ivCustomClose.setVisibility(View.VISIBLE);
                 }
+                editTextString = s.toString();
 
             }
 

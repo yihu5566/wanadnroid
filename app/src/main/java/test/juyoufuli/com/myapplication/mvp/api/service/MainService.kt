@@ -3,6 +3,7 @@ package test.juyoufuli.com.myapplication.mvp.api.service
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.*
+import test.juyoufuli.com.myapplication.app.BaseRequest
 import test.juyoufuli.com.myapplication.mvp.entity.*
 
 /**
@@ -65,7 +66,7 @@ interface MainService {
     fun getNavigation(): Observable<NavigationResponse>
 
     @GET("hotkey/json")
-    fun getHotWord(): Observable<HotWordResponse>
+    fun getHotWord(): Observable<BaseResponse<List<HotWordData>>>
 
     @GET("wxarticle/chapters/json")
     fun getWeChatArticle(): Observable<WeChatNumberResponse>

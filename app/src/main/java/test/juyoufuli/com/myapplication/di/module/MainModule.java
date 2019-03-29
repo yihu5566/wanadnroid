@@ -31,6 +31,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.model.MainModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter;
 
 /**
  * ================================================
@@ -81,14 +82,14 @@ public class MainModule {
 
     @FragmentScope
     @Provides
-    List<ArticleBean> provideUserList() {
+    ArrayList<ArticleBean> provideUserList() {
         return new ArrayList<>();
     }
 
 
     @FragmentScope
     @Provides
-    ArticleAdapter provideUserAdapter(List<ArticleBean> list) {
-        return new ArticleAdapter(list);
+    MainRecyclerViewAdapter provideUserAdapter(ArrayList<ArticleBean> list) {
+        return new MainRecyclerViewAdapter(view.getFragment().getActivity(),list);
     }
 }

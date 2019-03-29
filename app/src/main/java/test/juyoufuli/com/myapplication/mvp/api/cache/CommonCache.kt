@@ -23,6 +23,7 @@ import io.rx_cache2.EvictProvider
 import io.rx_cache2.LifeCache
 import io.rx_cache2.Reply
 import io.rx_cache2.internal.RxCache
+import test.juyoufuli.com.myapplication.app.BaseRequest
 import test.juyoufuli.com.myapplication.mvp.entity.*
 
 /**
@@ -49,7 +50,7 @@ interface CommonCache {
     fun getSystemDetailsData(users: Observable<ArticleResponse>): Observable<Reply<ArticleResponse>>
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
-    fun getHotWord(users: Observable<HotWordResponse>): Observable<Reply<HotWordResponse>>
+    fun getHotWord(users: Observable<BaseResponse<List<HotWordData>>>): Observable<Reply<BaseResponse<List<HotWordData>>>>
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     fun getWeChatArticle(users: Observable<WeChatNumberResponse>): Observable<Reply<WeChatNumberResponse>>

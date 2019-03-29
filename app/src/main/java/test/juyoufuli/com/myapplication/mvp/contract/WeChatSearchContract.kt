@@ -24,7 +24,6 @@ class WeChatSearchContract {
     interface Model : IModel {
 
         fun getSearchResult(id: String, index: Int, result: String): Observable<ArticleResponse>
-        fun getHotWordResult(): Observable<HotWordResponse>
 
     }
 }

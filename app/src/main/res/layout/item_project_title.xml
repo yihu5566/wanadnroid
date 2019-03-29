@@ -9,7 +9,7 @@
         android:id="@+id/tag"
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:background="@color/red"
+        android:background="@color/colorPrimary"
         android:visibility="invisible" />
 
     <TextView

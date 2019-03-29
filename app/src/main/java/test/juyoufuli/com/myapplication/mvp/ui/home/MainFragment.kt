@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import butterknife.BindView
-import cn.bingoogolapple.bgabanner.BGABanner
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
@@ -19,7 +17,6 @@ import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
 import com.tbruyelle.rxpermissions2.RxPermissions
 import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent
 import test.juyoufuli.com.myapplication.di.module.MainModule
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
@@ -27,10 +24,11 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.BaseRecyclerViewAdapter
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -45,26 +43,24 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     @JvmField
     @BindView(R.id.swipeRefreshLayout)
     internal var mSwipeRefreshLayout: SwipeRefreshLayout? = null
-    @JvmField
-    @BindView(R.id.banner_guide_content)
-    internal var bannerGuideContent: BGABanner? = null
+    //internal var bannerGuideContent: BGABanner? = null
     @JvmField
     @Inject
     internal var mLayoutManager: RecyclerView.LayoutManager? = null
-
-    @JvmField
-    @Inject
-    internal var mAdapter: ArticleAdapter? = null
-
     @JvmField
     @Inject
     internal var mPermissions: RxPermissions? = null
     @JvmField
     @Inject
-    internal var mUsers: MutableList<ArticleBean>? = null
+    internal var mUsers: ArrayList<ArticleBean>? = null
+    @JvmField
+    @Inject
+    internal var mAdapter: MainRecyclerViewAdapter? = null
 
     private var mPaginate: Paginate? = null
     private var isLoadingMore: Boolean = false
+    private var isFrist: Boolean = true
+    var mmBannerList: java.util.ArrayList<BannerInfor>? = null
 
     override val fragment: Fragment
         get() = this
@@ -76,35 +72,16 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.main_fragment, null)
+        return inflater.inflate(R.layout.fragment_main, null)
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
-        mPresenter!!.requestFromModel(true)
         mPresenter!!.requestBannerDataList()
-    }
 
-    private fun initBanner(mBannerList: List<BannerInfor>) {
-        val imagePath = ArrayList<String>()
-        val imageTitle = ArrayList<String>()
-        for ((_, _, imagePath1, _, _, title) in mBannerList) {
-            imagePath.add(imagePath1)
-            imageTitle.add(title)
-        }
-        bannerGuideContent!!.setAdapter { bgaBanner: BGABanner, view: View, model: Any?, i: Int ->
-            ImageLoaderUtils.loadImage(view as ImageView, model, context)
+        mPresenter!!.requestFromModel(true)
 
-        }
-
-        bannerGuideContent!!.setData(imagePath, imageTitle)
-        bannerGuideContent!!.setDelegate { banner, itemView, model, position ->
-            val intent = Intent(activity, WebViewActivity::class.java)
-            intent.putExtra("link", mBannerList[position].url)
-            intent.putExtra("title", mBannerList[position].title)
-            launchActivity(intent)
-        }
     }
 
 
@@ -112,7 +89,13 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
-                    mPresenter!!.requestFromModel(false)
+                    if (!isFrist) {
+                        isFrist = false
+                        mPresenter!!.requestFromModel(true)
+                    } else {
+                        mPresenter!!.requestFromModel(false)
+                    }
+
                 }
 
                 override fun isLoading(): Boolean {
@@ -134,26 +117,25 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     private fun initRecyclerView() {
         mSwipeRefreshLayout!!.setOnRefreshListener(this)
         ArmsUtils.configRecyclerView(mRecyclerView!!, mLayoutManager)
-        //        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()){
-        //            @Override
-        //            public boolean canScrollVertically() {
-        //                //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
-        //                //如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
-        //                return false;
-        //            }
-        //        });
-
-
+        //我是分割线---------------------------------------
         mRecyclerView!!.adapter = mAdapter
-        mAdapter!!.setOnItemClickListener { view, viewType, data, position ->
-            //                     LogUtils.debugInfo(((Datas)data).getLink()+position);
-            val intent = Intent(activity, WebViewActivity::class.java)
-            intent.putExtra("link", (data as ArticleBean).link)
-            intent.putExtra("title", data.title)
-            launchActivity(intent)
-        }
-        mAdapter!!.setChildClickListener(object : ArticleItemHolder.ChildClickListener {
-            override fun viewClick(viewid: Int, position: Int, data: ArticleBean) {
+
+        mAdapter!!.setOnItemClickListener(object : DefaultItemHolder.OnItemClickListener {
+
+            override fun onItemClick(position: Int) {
+                if (position == 0) return
+                var data = mUsers!![position - 1]
+                val intent = Intent(activity, WebViewActivity::class.java)
+                intent.putExtra("link", data.link)
+                intent.putExtra("title", data.title)
+                launchActivity(intent)
+            }
+
+        })
+
+
+        mAdapter!!.setChildClickListener(object : DefaultItemHolder.OnViewClickListener {
+            override fun onViewClick(viewid: Int, position: Int, data: ArticleBean) {
                 if (viewid == R.id.iv_favorite_article) {
                     if (!data.collect) {
                         LogUtils.debugInfo(data.id.toString() + "--true--" + position)
@@ -169,6 +151,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
                 }
             }
         })
+
     }
 
 
@@ -206,14 +189,18 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
 
     }
 
+    /**
+     * 下拉刷新的刷新
+     */
     override fun onRefresh() {
         mPresenter!!.requestFromModel(true)
     }
 
 
     override fun updateBanner(systemDataResponse: BannerResponse) {
-        initBanner(systemDataResponse.data)
-
+        mmBannerList = systemDataResponse.data
+        mAdapter!!.mBannerList = mmBannerList
+        mAdapter!!.notifyDataSetChanged()
     }
 
 

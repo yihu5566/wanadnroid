@@ -8,26 +8,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
+        <test.juyoufuli.com.myapplication.app.view.CustomSearchView
             android:id="@+id/et_search_word"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/selector_bg_edit"
+            android:gravity="center"
             android:hint="支持多个关键词，用空格隔开"
-            android:paddingStart="5dp"
             android:textCursorDrawable="@drawable/bg_input_cursor" />
 
         <Button
             android:id="@+id/btn_search_word"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="搜索" />
     </LinearLayout>
 
@@ -37,16 +36,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rlv_search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
         android:visibility="gone" />
 
 
