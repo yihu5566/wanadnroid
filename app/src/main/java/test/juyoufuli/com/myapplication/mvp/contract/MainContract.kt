@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
+import test.juyoufuli.com.myapplication.mvp.entity.TopArticleResponse
 
 /**
  * Author : ludf
@@ -32,6 +33,9 @@ class MainContract {
         fun getBanner(): Observable<BannerResponse>
         fun collectArticle(id: String): Observable<LoginResponse>
         fun cancelCollectArticle(id: String): Observable<LoginResponse>
+
+        fun getTopArticle(): Observable<TopArticleResponse>
+
 
     }
 }

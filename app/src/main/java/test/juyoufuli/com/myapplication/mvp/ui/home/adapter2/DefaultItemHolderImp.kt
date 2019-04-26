@@ -33,6 +33,9 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
     @JvmField
     @BindView(R.id.iv_favorite_article)
     internal var ivFavoriteArticle: CheckBox? = null
+    @JvmField
+    @BindView(R.id.tv_top_tag)
+    internal var textViewTop: TextView? = null
     private var mAppComponent: AppComponent? = null
     private var mImageLoader: ImageLoader? = null//用于加载图片的管理类,默认使用 Glide,使用策略模式,可替换框架
 
@@ -46,6 +49,12 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
 
     override fun getData(data: ArticleBean) {
         LogUtils.debugInfo("填充条目：：：" + data.apkLink)
+        if (data.type == 1) {
+            textViewTop!!.visibility = View.VISIBLE
+        } else {
+            textViewTop!!.visibility = View.GONE
+
+        }
         Observable.just(data.author)
                 .subscribe { s -> mName!!.text = s }
         Observable.just(data.title)

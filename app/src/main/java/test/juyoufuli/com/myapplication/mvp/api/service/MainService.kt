@@ -78,5 +78,9 @@ interface MainService {
     @GET("wxarticle/list/{id}/{page}/json")
     fun getWeChatHistoryArticle(@Path("id") id: String, @Path("page") page: String, @Query("k") k: String): Observable<ArticleResponse>
 
-
+    /**
+     * 获取置顶的文章
+     */
+    @GET("article/top/json")
+    fun getTopArticle(): Observable<TopArticleResponse>
 }

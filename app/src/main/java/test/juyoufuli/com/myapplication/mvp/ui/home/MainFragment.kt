@@ -78,9 +78,9 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
+        mPresenter!!.requestTopArticle(true)
         mPresenter!!.requestBannerDataList()
-
-        mPresenter!!.requestFromModel(true)
+//        mPresenter!!.requestFromModel(true)
 
     }
 

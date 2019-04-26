@@ -12,14 +12,13 @@ import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
-import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
+import test.juyoufuli.com.myapplication.app.utils.LogUtils
+import test.juyoufuli.com.myapplication.mvp.entity.*
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 /**
  * Author : ludf
@@ -38,6 +37,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
     @JvmField
     @Inject
     internal var mAdapter: MainRecyclerViewAdapter? = null
+    internal var mTopArticle: ArrayList<ArticleBean> = ArrayList()
 
     private var lastUserId = 0
     private var preEndIndex: Int = 0
@@ -50,40 +50,41 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
     internal fun onCreate() {
         //        requestUsers(true);//打开 App 时自动加载列表
         //        requestBannerDataList();
+
+
     }
 
-//    fun requestUsers(pullToRefresh: Boolean) {
-//        //请求外部存储权限用于适配android6.0的权限管理机制
-//        PermissionUtil.externalStorage(object : PermissionUtil.RequestPermission {
-//            override fun onRequestPermissionSuccess() {
-//                //request permission success, do something.
-//                requestFromModel(pullToRefresh)
-//            }
-//
-//            override fun onRequestPermissionFailure(permissions: List<String>) {
-//                mRootView.showMessage("Request permissions failure")
-//                mRootView.hideLoading()//隐藏下拉刷新的进度条
-//            }
-//
-//            override fun onRequestPermissionFailureWithAskNeverAgain(permissions: List<String>) {
-//                mRootView.showMessage("Need to go to the settings")
-//                mRootView.hideLoading()//隐藏下拉刷新的进度条
-//            }
-//        }, mRootView.rxPermissions, mErrorHandler)
-//    }
+    fun requestTopArticle(firstTime: Boolean) {
+        //请求外部存储权限用于适配android6.0的权限管理机制
+        mModel.getTopArticle()
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle<TopArticleResponse>(mRootView))
+                .subscribe(object : ErrorHandleSubscriber<TopArticleResponse>(mErrorHandler!!) {
+                    override fun onNext(t: TopArticleResponse) {
+                        LogUtils.d("文章回来了：：置顶")
+                        mTopArticle.clear()
+                        mTopArticle.addAll(t.data)
 
-    public fun requestFromModel(pullToRefresh: Boolean) {
+                        if (mAdapter!!.mList != null && mAdapter!!.mList!!.size != 0) {
+                            mUsers!!.addAll(0, t.data)
+                            mAdapter!!.mList = mUsers
+                            mAdapter!!.notifyDataSetChanged()
+                            preEndIndex = mUsers!!.size
+                        }
+                    }
+                })
+    }
+
+    fun requestFromModel(pullToRefresh: Boolean) {
         if (pullToRefresh) lastUserId = 0//下拉刷新默认只请求第一页
-
         //关于RxCache缓存库的使用请参考 http://www.jianshu.com/p/b58ef6b0624b
-
         val isEvictCache = true//是否驱逐缓存,为ture即不使用缓存,每次下拉刷新即需要最新数据,则不使用缓存
-
-        //        if (pullToRefresh && isFirst) {//默认在第一次下拉刷新时使用缓存
-        //            isFirst = false;
-        //            isEvictCache = false;
-        //        }
-
+//        if (pullToRefresh && isFirst) {//默认在第一次下拉刷新时使用缓存
+//            isFirst = false;
+//            isEvictCache = false;
+//        }
         mModel.getUsers(lastUserId, isEvictCache)
                 .subscribeOn(Schedulers.io())
                 .retryWhen(RetryWithDelay(3, 2))//遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔
@@ -103,6 +104,8 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                 .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))//使用 Rxlifecycle,使 Disposable 和 Activity 一起销毁
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
                     override fun onNext(users: ArticleResponse) {
+                        LogUtils.d("文章回来了：：")
+
                         //下一页的页码
                         lastUserId = users.data.curPage
                         //如果是下拉刷新则清空列表
@@ -110,14 +113,18 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                             mUsers!!.clear()
                             mAdapter!!.mList!!.clear()
                         }
-                        preEndIndex = mUsers!!.size//更新之前列表总长度,用于确定加载更多的起始位置
                         mUsers!!.addAll(users.data.datas)
                         if (users.data.curPage != 1) {
                             mAdapter!!.mList!!.addAll(users.data.datas)
                         } else {
-                            mAdapter!!.mList = users.data.datas
-
+//                            mAdapter!!.mList = users.data.datas
+                            LogUtils.d("长度：：" + mAdapter!!.mList!!.size)
+                            mUsers!!.addAll(0, mTopArticle)
+                            mAdapter!!.mList = mUsers
+                            LogUtils.d("变化后长度：：" + mUsers!!.size + "置顶的文章" + mTopArticle.size)
                         }
+                        //更新之前列表总长度,用于确定加载更多的起始位置
+                        preEndIndex = mUsers!!.size
                         if (pullToRefresh)
                             mAdapter!!.notifyDataSetChanged()
                         else
@@ -131,7 +138,6 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
         mModel.getBanner()
                 .subscribeOn(Schedulers.io())
                 .retryWhen(RetryWithDelay(3, 2))
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle<BannerResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<BannerResponse>(mErrorHandler!!) {

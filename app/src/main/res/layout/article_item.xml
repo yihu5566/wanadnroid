@@ -11,25 +11,23 @@
         android:background="@drawable/item_circle_bg"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tv_chapterName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="作者" />
-
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="时间" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="4dp"
             android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_top_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/top_icon_shape"
+                android:padding="3dp"
+                android:text="置顶"
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_desc"
@@ -37,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="end"
+                android:padding="3dp"
                 android:singleLine="true"
                 android:text="标题" />
 
@@ -49,6 +48,20 @@
                 android:button="@drawable/main_favorite_icon_select" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_chapterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="作者" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="时间" />
 
     </RelativeLayout>
 
