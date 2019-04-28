@@ -13,7 +13,7 @@ import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @Author : dongfang

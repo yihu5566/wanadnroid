@@ -24,8 +24,6 @@ import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.BaseRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity

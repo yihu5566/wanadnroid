@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @Author : dongfang

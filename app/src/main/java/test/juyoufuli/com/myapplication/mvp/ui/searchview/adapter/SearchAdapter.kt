@@ -1,11 +1,8 @@
 package test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.text.Html
-import android.view.View
 import android.view.ViewGroup
-
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 

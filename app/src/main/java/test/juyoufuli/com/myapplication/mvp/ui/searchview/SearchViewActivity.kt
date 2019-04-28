@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.RelativeLayout
+import android.widget.TextView
 import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
