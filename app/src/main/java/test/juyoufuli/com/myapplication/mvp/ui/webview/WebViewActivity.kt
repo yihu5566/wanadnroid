@@ -1,5 +1,6 @@
 package test.juyoufuli.com.myapplication.mvp.ui.webview
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
@@ -26,6 +27,10 @@ class WebViewActivity : AppCompatActivity() {
     @BindView(R.id.toolbar_back)
     internal var toolbar_back: RelativeLayout? = null
     @JvmField
+    @BindView(R.id.toolbar_share)
+    internal var toolbar_share: RelativeLayout? = null
+
+    @JvmField
     @BindView(R.id.toolbar_title)
     internal var toolbar_title: TextView? = null
     private var mAgentWeb: AgentWeb? = null
@@ -46,8 +51,19 @@ class WebViewActivity : AppCompatActivity() {
         link = intent.getStringExtra("link")
         title = intent.getStringExtra("title")
         toolbar_back!!.visibility = View.VISIBLE
+        toolbar_share!!.visibility = View.VISIBLE
         toolbar_title!!.text = title
         toolbar_back!!.setOnClickListener { finish() }
+
+        toolbar_share!!.setOnClickListener {
+            val wechatIntent = Intent(Intent.ACTION_SEND)
+            wechatIntent.setPackage("com.tencent.mm")
+            wechatIntent.setType("text/plain")
+            wechatIntent.putExtra(Intent.EXTRA_TEXT, link)
+            startActivity(wechatIntent)
+
+        }
+
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(flWeb!!, LinearLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()

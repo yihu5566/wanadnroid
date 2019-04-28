@@ -2,6 +2,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 
@@ -19,7 +20,7 @@ class SearchAdapter(context: Context) : BaseRecyclerViewAdapter<ArticleBean>(con
         val mHolder = holder
         val data = list!![position]
         mHolder.mName.text = data.author
-        mHolder.mDesc.text = data.title
+        mHolder.mDesc.text = Html.fromHtml(data.title)
         mHolder.tvTime.text = data.niceDate
 
         mHolder.root.setOnClickListener { mOnItemClickListener!!.onItemClick(R.id.root, position, data) }

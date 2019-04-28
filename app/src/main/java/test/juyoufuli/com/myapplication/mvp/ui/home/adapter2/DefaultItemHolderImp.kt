@@ -50,11 +50,17 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
     override fun getData(data: ArticleBean) {
         LogUtils.debugInfo("填充条目：：：" + data.apkLink)
         if (data.type == 1) {
+            textViewTop!!.text="置顶"
             textViewTop!!.visibility = View.VISIBLE
         } else {
-            textViewTop!!.visibility = View.GONE
-
+            if (data.niceDate.endsWith("小时前")) {
+                textViewTop!!.text="新"
+                textViewTop!!.visibility = View.VISIBLE
+            } else {
+                textViewTop!!.visibility = View.GONE
+            }
         }
+
         Observable.just(data.author)
                 .subscribe { s -> mName!!.text = s }
         Observable.just(data.title)
