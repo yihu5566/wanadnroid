@@ -49,7 +49,16 @@
 
 #### 主要截图
 
-![账户](image/pager.png)
+![账户](image/device-2019-02-26-152344.png)
+![账户](image/device-2019-02-26-152412.png)
+![账户](image/device-2019-02-26-164044.png)
+![账户](image/device-2019-02-28-133556.png)
+![账户](image/device-2019-04-26-172917.png)
+![账户](image/device-2019-04-26-172954.png)
+![账户](image/Screenshot_1542275240.png)
+![账户](image/Screenshot_1542275253.png)
+
+
 
 
 
