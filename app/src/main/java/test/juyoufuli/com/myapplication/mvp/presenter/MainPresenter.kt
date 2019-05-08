@@ -63,7 +63,7 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                 .compose(RxLifecycleUtils.bindToLifecycle<TopArticleResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<TopArticleResponse>(mErrorHandler!!) {
                     override fun onNext(t: TopArticleResponse) {
-                        LogUtils.d("文章回来了：：置顶")
+                        LogUtils.d("置顶文章回来了：：置顶")
                         mTopArticle.clear()
                         mTopArticle.addAll(t.data)
 

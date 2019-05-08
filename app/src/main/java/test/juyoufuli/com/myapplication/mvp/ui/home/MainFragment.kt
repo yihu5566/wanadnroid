@@ -16,6 +16,7 @@ import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
 import com.tbruyelle.rxpermissions2.RxPermissions
+import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent
 import test.juyoufuli.com.myapplication.di.module.MainModule
@@ -183,10 +184,6 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         ArmsUtils.startActivity(intent)
     }
 
-    override fun killMyself() {
-
-    }
-
     /**
      * 下拉刷新的刷新
      */
@@ -201,5 +198,9 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         mAdapter!!.notifyDataSetChanged()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mUsers!!.clear()
+    }
 
 }

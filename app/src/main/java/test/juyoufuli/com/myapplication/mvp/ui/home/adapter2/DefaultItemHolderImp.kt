@@ -48,7 +48,6 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
 
 
     override fun getData(data: ArticleBean) {
-        LogUtils.debugInfo("填充条目：：：" + data.apkLink)
         if (data.type == 1) {
             textViewTop!!.text="置顶"
             textViewTop!!.visibility = View.VISIBLE

@@ -49,25 +49,25 @@
 
 #### 主要截图
 
-<figure class="half">
+<center class="half">
     <img src="image/device-2019-02-26-152344.png" width="200"/>
     <img src="image/device-2019-02-26-152412.png" width="200"/>
-</figure>
+</center>
 
-<figure class="half">
+<center class="half">
     <img src="image/device-2019-02-26-164044.png" width="200"/>
     <img src="image/device-2019-02-28-133556.png" width="200"/>
-</figure>
+</center>
 
-<figure class="half">
+<center class="half">
     <img src="image/Screenshot_1542275240.png" width="200"/>
     <img src="image/Screenshot_1542275253.png" width="200"/>
-</figure>
+</center>
 
-<figure class="half">
+<center class="half">
     <img src="image/device-2019-04-26-172917.png" width="200"/>
     <img src="image/device-2019-04-26-172954.png" width="200"/>
-</figure>
+</center>
 
 <!--![账户](image/device-2019-02-26-152344.png)![账户](image/device-2019-02-26-152412.png)-->
 

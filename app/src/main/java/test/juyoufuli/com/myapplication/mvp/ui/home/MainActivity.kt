@@ -54,7 +54,6 @@ import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-
     @JvmField
     @BindView(R.id.fl_content)
     internal var flContent: FrameLayout? = null
@@ -91,6 +90,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     var fragmentList: ArrayList<Fragment> = ArrayList()
 
 
+    var isRecreat: Boolean = false
+
+
     private var lastClickTime: Long = 0//上次点击的时间
 
     private val spaceTime = 2000//时间间隔
@@ -110,7 +112,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        LogUtils.d("onSaveInstanceState...")
+        LogUtils.d("onSaveInstanceState..."+currentFragmentIndex)
         outState.putInt("currentFragmentIndex", currentFragmentIndex!!)
     }
 
@@ -125,7 +127,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             fragmentList.add(NavigationFragment())
             fragmentList.add(WeChatNumberFragment())
 
-            add(fragmentList.get(0), R.id.fl_content, "main")
+            add(0, R.id.fl_content, "main")
         } else {
             fragmentList.clear()
             fragmentList.add(MainFragment())
@@ -139,11 +141,11 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             var tagFragment = savedInstanceState.get("currentFragmentIndex") as Int
             currentFragment = fragmentList.get(tagFragment)
             when (tagFragment) {
-                0 -> add(fragmentList.get(tagFragment), R.id.fl_content, "main")
-                1 -> add(fragmentList.get(tagFragment), R.id.fl_content, "system")
-                2 -> add(fragmentList.get(tagFragment), R.id.fl_content, "project")
-                3 -> add(fragmentList.get(tagFragment), R.id.fl_content, "navigation")
-                4 -> add(fragmentList.get(tagFragment), R.id.fl_content, "wechat")
+                0 -> add(tagFragment, R.id.fl_content, "main")
+                1 -> add(tagFragment, R.id.fl_content, "system")
+                2 -> add(tagFragment, R.id.fl_content, "project")
+                3 -> add(tagFragment, R.id.fl_content, "navigation")
+                4 -> add(tagFragment, R.id.fl_content, "wechat")
 
             }
 
@@ -168,41 +170,39 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         init()
     }
 
+
     fun init() {
         LogUtils.d("onStart...")
 
 //        disableShiftMode()
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
-
         navigation!!.setOnNavigationItemSelectedListener { item ->
-
             item.isChecked = item.itemId == isSelect
             LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
-
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
-                    add(fragmentList.get(0), R.id.fl_content, "main")
+                    add(0, R.id.fl_content, "main")
 //                    navigation!!.menu.getItem(0).isChecked = false
                     toolbar_title!!.text = ("首页")
                     currentFragmentIndex = 0
                     true
                 }
                 R.id.bottom_menu_found -> {
-                    add(fragmentList.get(1), R.id.fl_content, "system")
+                    add(1, R.id.fl_content, "system")
 //                    navigation!!.menu.getItem(1).isChecked = false
                     toolbar_title!!.text = ("知识体系")
                     currentFragmentIndex = 1
                     true
                 }
                 R.id.bottom_menu_project -> {
-                    add(fragmentList.get(2), R.id.fl_content, "project")
+                    add(2, R.id.fl_content, "project")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("项目")
                     currentFragmentIndex = 2
                     true
                 }
                 R.id.bottom_menu_navigation -> {
-                    add(fragmentList.get(3), R.id.fl_content, "navigation")
+                    add(3, R.id.fl_content, "navigation")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("导航")
                     currentFragmentIndex = 3
@@ -210,7 +210,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                 }
 
                 R.id.bottom_menu_wechat -> {
-                    add(fragmentList.get(4), R.id.fl_content, "wechat")
+                    add(4, R.id.fl_content, "wechat")
 //                    navigation!!.menu.getItem(2).isChecked = false
                     toolbar_title!!.text = ("公众号")
                     currentFragmentIndex = 4
@@ -281,6 +281,11 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     }
 
     override fun recreate() {
+//        if (!isRecreat) {
+//            super.recreate()
+//            return
+//        }
+//        isRecreat = false
         try {//避免重启太快 恢复
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             for (fragment in fragmentList) {
@@ -306,9 +311,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     }
 
 
-    fun add(mFragment: Fragment, id: Int, tag: String) {
-
-        var fragment = mFragment
+    fun add(idFragment: Int, id: Int, tag: String) {
+        if (fragmentList.size == 0) return
+        var fragment = fragmentList.get(idFragment)
         fragmentTransaction = supportFragmentManager.beginTransaction()
         //优先检查，fragment是否存在，避免重叠
         var tempFragment = supportFragmentManager.findFragmentByTag(tag)
@@ -396,7 +401,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
             }
         })
-
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
@@ -426,6 +430,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             switch!!.isChecked = !mode
             LogUtils.d("onDrawerOpened..." + mode)
             SPUtils.put(applicationContext, "night_mode", !mode)
+            isRecreat = true
             recreate()
         }
     }
@@ -443,7 +448,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     override fun onDestroy() {
         LogUtils.d("onDestroy...")
-//        fragmentTransaction!!.remove(currentFragment!!).commit()
         super.onDestroy()
 
     }
@@ -489,10 +493,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         ArmsUtils.startActivity(intent)
     }
 
-
-    override fun killMyself() {
-        ArmsUtils.exitApp()
-    }
 
     override fun showMessage(message: String) {
     }
