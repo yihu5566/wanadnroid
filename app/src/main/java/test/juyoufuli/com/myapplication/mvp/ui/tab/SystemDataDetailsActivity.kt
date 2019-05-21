@@ -58,10 +58,10 @@ class SystemDataDetailsActivity : BaseActivity<SystemDataDetailsPresenter>(), Sy
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
-        toolbarBack = findViewById<RelativeLayout>(R.id.toolbar_back)
-        mViewPager = findViewById<ViewPager>(R.id.vp_system_details_content)
-        magicIndicator = findViewById<MagicIndicator>(R.id.riv_system_details_top)
+        toolbarTitle = findViewById(R.id.toolbar_title)
+        toolbarBack = findViewById(R.id.toolbar_back)
+        mViewPager = findViewById(R.id.vp_system_details_content)
+        magicIndicator = findViewById(R.id.riv_system_details_top)
 
         toolbarBack!!.setVisibility(View.VISIBLE)
         toolbarBack!!.setOnClickListener(this)

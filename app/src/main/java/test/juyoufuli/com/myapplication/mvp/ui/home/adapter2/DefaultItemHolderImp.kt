@@ -25,6 +25,9 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
     @BindView(R.id.tv_chapterName)
     internal var mName: TextView? = null
     @JvmField
+    @BindView(R.id.tv_position)
+    internal var tvPosition: TextView? = null
+    @JvmField
     @BindView(R.id.tv_desc)
     internal var mDesc: TextView? = null
     @JvmField
@@ -48,17 +51,19 @@ class DefaultItemHolderImp : DefaultItemHolder<ArticleBean> {
 
 
     override fun getData(data: ArticleBean) {
+
         if (data.type == 1) {
-            textViewTop!!.text="置顶"
+            textViewTop!!.text = "置顶"
             textViewTop!!.visibility = View.VISIBLE
         } else {
             if (data.niceDate.endsWith("小时前")) {
-                textViewTop!!.text="新"
+                textViewTop!!.text = "新"
                 textViewTop!!.visibility = View.VISIBLE
             } else {
                 textViewTop!!.visibility = View.GONE
             }
         }
+//        tvPosition!!.setText("我是条目"+position)
 
         Observable.just(data.author)
                 .subscribe { s -> mName!!.text = s }

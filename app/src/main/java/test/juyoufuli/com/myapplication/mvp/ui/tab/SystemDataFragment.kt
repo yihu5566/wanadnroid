@@ -32,6 +32,11 @@ import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter
 
 import com.jess.arms.utils.Preconditions.checkNotNull
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
+import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
+import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
+import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 
 /**
  * Author : ludf
@@ -39,6 +44,8 @@ import com.jess.arms.utils.Preconditions.checkNotNull
  * Description:
  */
 class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContract.View {
+
+
     @JvmField
     @BindView(R.id.recyclerView)
     internal var mRecyclerView: RecyclerView? = null
@@ -51,6 +58,7 @@ class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContra
     @JvmField
     @Inject
     internal var tagName: ArrayList<String>? = null
+    var mBaseLoadService: LoadService<*>? = null
 
     override val fragment: Fragment
         get() = this
@@ -60,8 +68,11 @@ class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContra
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.tab_fragment, null)
-
+        val rootView = inflater.inflate(R.layout.tab_fragment, null)
+        mBaseLoadService = LoadSir.getDefault().register(rootView) {
+            mBaseLoadService!!.showCallback(LoadingCallback::class.java)
+        }
+        return mBaseLoadService!!.getLoadLayout()
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -111,10 +122,10 @@ class SystemDataFragment : BaseFragment<SystemDataPresenter>(), SystemDataContra
     }
 
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        mPresenter!!.requestSystemDataList()//打开 App 时自动加载列表
-
+    override fun refreshData(response: SystemDataRespons) {
+        mBaseLoadService!!.showSuccess()
+        if (response.data.isEmpty()) {
+            mBaseLoadService!!.showCallback(EmptyCallback::class.java)
+        }
     }
-
 }

@@ -33,7 +33,7 @@ class HeaderItemHolderImp(itemVIew: View, var mBannerList: List<BannerInfor>?, v
     }
 
     override fun getDataHeader(any: ArrayList<BannerInfor>) {
-        LogUtils.d("我来到了头部的holder中啦")
+//        LogUtils.d("我来到了头部的holder中啦")
         mBannerList = any
         if (mBannerList != null) {
             initBanner(any)

@@ -18,6 +18,8 @@ import com.paginate.Paginate
 import javax.inject.Inject
 
 import butterknife.BindView
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataItemComponent
 import test.juyoufuli.com.myapplication.di.module.SystemDataItemModule
@@ -25,6 +27,8 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataDetailsItemPresenter
+import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
+import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
@@ -58,6 +62,7 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
     private var totalPage: Int = 0
 
     private var isFrist = true
+    var mBaseLoadService: LoadService<*>? = null
 
     override val fragment: Fragment
         get() = this
@@ -67,7 +72,11 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.view_pager_item, null)
+        val rootView = inflater.inflate(R.layout.view_pager_item, null)
+        mBaseLoadService = LoadSir.getDefault().register(rootView) {
+            mBaseLoadService!!.showCallback(LoadingCallback::class.java)
+        }
+        return mBaseLoadService!!.getLoadLayout()
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -139,6 +148,10 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
 
 
     override fun refreshData(response: ArticleResponse) {
+        mBaseLoadService!!.showSuccess()
+        if (response.data.pageCount == 0) {
+            mBaseLoadService!!.showCallback(EmptyCallback::class.java)
+        }
         page = response.data.curPage
         if (response.data.curPage == 1) {
             mAdapter!!.clearList()

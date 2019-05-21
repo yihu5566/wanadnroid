@@ -20,4 +20,8 @@
     <color name="textColor">#FF000000</color>
     <color name="backgroundColor">#FFFFFF</color>
     <color name="transparent">#00ffffff</color>
+
+    <color name="main_background_gray">#999999</color>
+    <color name="main_background_tab_gray">#666666</color>
+
 </resources>

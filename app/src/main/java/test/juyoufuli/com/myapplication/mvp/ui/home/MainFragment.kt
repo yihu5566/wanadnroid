@@ -16,7 +16,6 @@ import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent
 import test.juyoufuli.com.myapplication.di.module.MainModule
@@ -77,8 +76,10 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
-        mPresenter!!.requestTopArticle(true)
         mPresenter!!.requestBannerDataList()
+        mPresenter!!.mergeArticle(true)
+
+//        mPresenter!!.requestTopArticle(true)
 //        mPresenter!!.requestFromModel(true)
 
     }
@@ -88,9 +89,9 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
-                    if (!isFrist) {
+                    LogUtils.debugInfo("加载更多。。。")
+                    if (isFrist) {
                         isFrist = false
-                        mPresenter!!.requestFromModel(true)
                     } else {
                         mPresenter!!.requestFromModel(false)
                     }
@@ -128,6 +129,8 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
                 intent.putExtra("link", data.link)
                 intent.putExtra("title", data.title)
                 launchActivity(intent)
+
+//                mPresenter!!.mergeArticle(true)
             }
 
         })
@@ -188,7 +191,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
      * 下拉刷新的刷新
      */
     override fun onRefresh() {
-        mPresenter!!.requestFromModel(true)
+        mPresenter!!.mergeArticle(true)
     }
 
 

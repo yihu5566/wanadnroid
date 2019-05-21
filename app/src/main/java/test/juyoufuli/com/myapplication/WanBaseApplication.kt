@@ -8,6 +8,13 @@ import android.support.v7.app.AppCompatDelegate
 import com.jess.arms.base.BaseApplication
 
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import android.hardware.Camera.ErrorCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadSir
+import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
+import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
+import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback
+
 
 /**
  * Author : dongfang
@@ -48,7 +55,13 @@ class WanBaseApplication : BaseApplication() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+        LoadSir.beginBuilder()
+                .addCallback(EmptyCallback())
+                .addCallback(LoadingCallback())
+                .addCallback(TimeoutCallback())
+                .setDefaultCallback(LoadingCallback::class.java)
 
+                .commit()
 
     }
 

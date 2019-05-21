@@ -11,6 +11,11 @@
         android:background="@drawable/item_circle_bg"
         android:padding="5dp">
 
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:layout_width="match_parent"

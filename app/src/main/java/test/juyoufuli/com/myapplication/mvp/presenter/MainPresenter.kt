@@ -7,7 +7,9 @@ import android.support.v4.app.SupportActivity
 import com.jess.arms.di.scope.FragmentScope
 import com.jess.arms.mvp.BasePresenter
 import com.jess.arms.utils.RxLifecycleUtils
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
@@ -54,23 +56,64 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
 
     }
 
+
+    fun mergeArticle(pullToRefresh: Boolean) {
+        var topArticle = mModel.getTopArticle()
+        var users = mModel.getUsers(0, pullToRefresh)
+
+        Observable.zip(topArticle, users,
+                BiFunction<TopArticleResponse, ArticleResponse, ArrayList<ArticleBean>> { t1, t2 ->
+                    val list = ArrayList<ArticleBean>()
+                    list.addAll(t1.data)
+                    list.addAll(t2.data.datas)
+                    mTopArticle.clear()
+                    mTopArticle.addAll(t1.data)
+                    list
+                }
+
+        ).subscribeOn(Schedulers.io())
+                .doOnSubscribe { disposable ->
+                    if (pullToRefresh)
+                        mRootView.showLoading()//显示下拉刷新的进度条
+                    else
+                        mRootView.startLoadMore()//显示上拉加载更多的进度条
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally {
+                    if (pullToRefresh)
+                        mRootView.hideLoading()//隐藏下拉刷新的进度条
+                    else
+                        mRootView.endLoadMore()//隐藏上拉加载更多的进度条
+                }
+                .compose(RxLifecycleUtils.bindToLifecycle<ArrayList<ArticleBean>>(mRootView))
+                .subscribe(object : ErrorHandleSubscriber<ArrayList<ArticleBean>>(mErrorHandler!!) {
+                    override fun onNext(t: ArrayList<ArticleBean>) {
+                        LogUtils.d("全部文章合并：：" + t.size)
+                        mUsers!!.clear()
+                        mAdapter!!.mList!!.clear()
+
+                        mUsers!!.addAll(t)
+                        mAdapter!!.mList = mUsers
+                        mAdapter!!.notifyDataSetChanged()
+                        preEndIndex = mUsers!!.size
+                    }
+                })
+
+    }
+
     fun requestTopArticle(firstTime: Boolean) {
         //请求外部存储权限用于适配android6.0的权限管理机制
         mModel.getTopArticle()
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle<TopArticleResponse>(mRootView))
                 .subscribe(object : ErrorHandleSubscriber<TopArticleResponse>(mErrorHandler!!) {
                     override fun onNext(t: TopArticleResponse) {
-                        LogUtils.d("置顶文章回来了：：置顶")
                         mTopArticle.clear()
                         mTopArticle.addAll(t.data)
-
-                        if (mAdapter!!.mList != null && mAdapter!!.mList!!.size != 0) {
+                        if (mAdapter!!.itemCount != 0) {
                             mUsers!!.addAll(0, t.data)
-                            mAdapter!!.mList = mUsers
-                            mAdapter!!.notifyDataSetChanged()
+                            mAdapter!!.addList(mUsers)
                             preEndIndex = mUsers!!.size
                         }
                     }
@@ -104,23 +147,23 @@ constructor(model: MainContract.Model, rootView: MainContract.View) : BasePresen
                 .compose(RxLifecycleUtils.bindToLifecycle<ArticleResponse>(mRootView))//使用 Rxlifecycle,使 Disposable 和 Activity 一起销毁
                 .subscribe(object : ErrorHandleSubscriber<ArticleResponse>(mErrorHandler!!) {
                     override fun onNext(users: ArticleResponse) {
-                        LogUtils.d("文章回来了：：")
-
                         //下一页的页码
                         lastUserId = users.data.curPage
                         //如果是下拉刷新则清空列表
                         if (pullToRefresh) {
                             mUsers!!.clear()
-                            mAdapter!!.mList!!.clear()
+                            mAdapter!!.clearList()
                         }
-                        mUsers!!.addAll(users.data.datas)
                         if (users.data.curPage != 1) {
-                            mAdapter!!.mList!!.addAll(users.data.datas)
+                            mUsers!!.addAll(users.data.datas)
+                            mAdapter!!.appendData(users.data.datas)
                         } else {
-//                            mAdapter!!.mList = users.data.datas
-                            LogUtils.d("长度：：" + mAdapter!!.mList!!.size)
+                            mUsers!!.clear()
+                            mAdapter!!.clearList()
                             mUsers!!.addAll(0, mTopArticle)
-                            mAdapter!!.mList = mUsers
+                            mUsers!!.addAll(users.data.datas)
+
+                            mAdapter!!.addList(mUsers)
                             LogUtils.d("变化后长度：：" + mUsers!!.size + "置顶的文章" + mTopArticle.size)
                         }
                         //更新之前列表总长度,用于确定加载更多的起始位置

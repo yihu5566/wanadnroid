@@ -13,6 +13,7 @@ import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
+import com.kingja.loadsir.callback.Callback
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerNavigationComponent
 import test.juyoufuli.com.myapplication.di.module.NavigationModule
@@ -22,6 +23,12 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.NavigationContract
 import test.juyoufuli.com.myapplication.mvp.presenter.NavigationPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.NavigationAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import com.kingja.loadsir.callback.Callback.OnReloadListener
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
+import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
+import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
+
 
 /**
  * Author : dongfang
@@ -39,12 +46,19 @@ class NavigationFragment : BaseFragment<NavigationPresenter>(), NavigationContra
     var mAdapter: NavigationAdapter? = null
 
     var isExpand: Boolean = false
+
+    var mBaseLoadService: LoadService<*>? = null
+
     override fun setupFragmentComponent(appComponent: AppComponent) {
         DaggerNavigationComponent.builder().appComponent(appComponent).navigationModule(NavigationModule(this)).build().inject(this)
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_navigation, null)
+        val rootView = inflater.inflate(R.layout.fragment_navigation, null)
+        mBaseLoadService = LoadSir.getDefault().register(rootView) {
+            mBaseLoadService!!.showCallback(LoadingCallback::class.java)
+        }
+        return mBaseLoadService!!.getLoadLayout()
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -63,6 +77,11 @@ class NavigationFragment : BaseFragment<NavigationPresenter>(), NavigationContra
     }
 
     override fun refreshAdapterList(response: NavigationResponse) {
+        mBaseLoadService!!.showSuccess()
+        if (response.data.isEmpty()) {
+            mBaseLoadService!!.showCallback(EmptyCallback::class.java)
+            return
+        }
         for (item in response.data) {
             parentList!!.add(item.name)
             childList!!.addAll(listOf(item.articles))
@@ -90,21 +109,11 @@ class NavigationFragment : BaseFragment<NavigationPresenter>(), NavigationContra
     override val fragment: Fragment
         get() = this
 
-    override fun showLoading() {
-    }
-
     override fun launchActivity(intent: Intent) {
         checkNotNull(intent)
         ArmsUtils.startActivity(intent)
     }
 
-    override fun hideLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun killMyself() {
-
-    }
 
     override fun showMessage(message: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

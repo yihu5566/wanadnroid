@@ -16,8 +16,10 @@
 package test.juyoufuli.com.myapplication.mvp.ui.project.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 
 import com.jess.arms.base.BaseHolder
@@ -50,6 +52,10 @@ class ProjectItemHolder(itemView: View) : BaseHolder<ProjectData>(itemView) {
     @BindView(R.id.tv_project_title)
     internal var mName: TextView? = null
     @JvmField
+    @BindView(R.id.root_back)
+    internal var linearLayout: LinearLayout? = null
+
+    @JvmField
     @BindView(R.id.tag)
     internal var mTag: View? = null
     var mAppComponent: AppComponent? = null
@@ -67,8 +73,10 @@ class ProjectItemHolder(itemView: View) : BaseHolder<ProjectData>(itemView) {
                 .subscribe { s -> mName!!.text = s }
         if (data.isSelect) {
             mTag!!.visibility = View.VISIBLE
+            linearLayout!!.setBackgroundColor(Color.parseColor("#999999"))
         } else {
             mTag!!.visibility = View.INVISIBLE
+            linearLayout!!.setBackgroundColor(Color.parseColor("#FFFFFF"))
 
         }
         LogUtils.debugInfo("ProjectItemHolder----")

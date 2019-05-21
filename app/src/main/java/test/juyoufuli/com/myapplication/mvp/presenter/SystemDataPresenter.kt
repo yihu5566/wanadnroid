@@ -43,6 +43,7 @@ constructor(model: SystemDataContract.Model, rootView: SystemDataContract.View) 
                 .subscribe(object : ErrorHandleSubscriber<SystemDataRespons>(mErrorHandler!!) {
 
                     override fun onNext(response: SystemDataRespons) {
+                        mRootView.refreshData(response)
                         mSystemData!!.addAll(response.data)
                         mAdapter!!.notifyDataSetChanged()
                     }
