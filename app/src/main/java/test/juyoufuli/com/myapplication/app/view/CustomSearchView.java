@@ -78,7 +78,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
                     ivCustomClose.setVisibility(View.VISIBLE);
                 }
                 editTextString = s.toString();
-
+                etCustomSearch.setSelection(editTextString.length());
             }
 
             @Override
@@ -90,14 +90,11 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             }
         });
 
-        etCustomSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (customSearchListener != null) {
-                    customSearchListener.OnSearchButtonPressListener(true);
-                }
-                return false;
+        etCustomSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (customSearchListener != null) {
+                customSearchListener.OnSearchButtonPressListener(true);
             }
+            return false;
         });
     }
 
@@ -111,6 +108,7 @@ public class CustomSearchView extends LinearLayout implements View.OnClickListen
             default:
                 break;
         }
-
     }
+
+
 }

@@ -18,6 +18,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.project.adapter
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -69,14 +70,14 @@ class ProjectItemHolder(itemView: View) : BaseHolder<ProjectData>(itemView) {
 
     @SuppressLint("CheckResult")
     override fun setData(data: ProjectData, position: Int) {
-        Observable.just(data.name)
+        Observable.just(Html.fromHtml(data.name))
                 .subscribe { s -> mName!!.text = s }
         if (data.isSelect) {
             mTag!!.visibility = View.VISIBLE
-            linearLayout!!.setBackgroundColor(Color.parseColor("#999999"))
+            linearLayout!!.setBackgroundColor(itemView.context.resources.getColor(R.color.black_deep))
         } else {
             mTag!!.visibility = View.INVISIBLE
-            linearLayout!!.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            linearLayout!!.setBackgroundColor(itemView.context.resources.getColor(R.color.backgroundColor))
 
         }
         LogUtils.debugInfo("ProjectItemHolder----")

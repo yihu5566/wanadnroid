@@ -90,6 +90,6 @@ public class MainModule {
     @FragmentScope
     @Provides
     MainRecyclerViewAdapter provideUserAdapter(ArrayList<ArticleBean> list) {
-        return new MainRecyclerViewAdapter(view.getFragment().getActivity(),list);
+        return new MainRecyclerViewAdapter(view.getFragment().getContext(),list);
     }
 }

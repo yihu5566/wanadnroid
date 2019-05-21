@@ -5,10 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
 import android.support.design.widget.BottomNavigationView
@@ -42,7 +39,6 @@ import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
-import test.juyoufuli.com.myapplication.mvp.ui.account.SettingActivity
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
 import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
@@ -112,13 +108,21 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        LogUtils.d("onSaveInstanceState..."+currentFragmentIndex)
+        LogUtils.d("onSaveInstanceState..." + currentFragmentIndex)
         outState.putInt("currentFragmentIndex", currentFragmentIndex!!)
     }
 
     @SuppressLint("ResourceAsColor")
     override fun initData(savedInstanceState: Bundle?) {
-
+        try {//避免重启太快 恢复
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            for (fragment in fragmentList) {
+                fragmentTransaction.remove(fragment)
+            }
+            fragmentTransaction.commitAllowingStateLoss()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         if (savedInstanceState == null) {
             fragmentList.clear()
             fragmentList.add(MainFragment())
@@ -367,14 +371,14 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 //                switchView!!.setOnCheckedChangeListener(this@MainActivity)
                 switchView!!.setOnClickListener(this@MainActivity)
 
-                val user = SPUtils.get(this@MainActivity, "user", "") as String
+                val user = SPUtils.get(applicationContext, "user", "") as String
                 if (!TextUtils.isEmpty(user)) {
                     val fromJsonToBean = JsonUtils.fromJsonToBean(user, LoginResponse::class.java) as LoginResponse
                     isLogin = true
 
                     tvPersonName!!.text = fromJsonToBean.data.username
                     tvPersonLogin!!.text = "退出登录"
-                    Glide.with(this@MainActivity)
+                    Glide.with(applicationContext)
                             .load(R.drawable.head_photo)
                             .apply(RequestOptions.bitmapTransform(CircleCrop()))
                             .into(ivPersonPhoto!!)
@@ -386,7 +390,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                     ivPersonPhoto!!.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
 
                 }
-                SPUtils.put(this@MainActivity, "isLogin", isLogin)
+                SPUtils.put(applicationContext, "isLogin", isLogin)
 
 
             }

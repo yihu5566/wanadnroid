@@ -58,7 +58,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     private var mPaginate: Paginate? = null
     private var isLoadingMore: Boolean = false
     private var isFrist: Boolean = true
-    var mmBannerList: java.util.ArrayList<BannerInfor>? = null
+    var mmBannerList: ArrayList<BannerInfor>? = null
 
     override val fragment: Fragment
         get() = this
@@ -129,8 +129,6 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
                 intent.putExtra("link", data.link)
                 intent.putExtra("title", data.title)
                 launchActivity(intent)
-
-//                mPresenter!!.mergeArticle(true)
             }
 
         })
@@ -204,6 +202,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     override fun onDestroyView() {
         super.onDestroyView()
         mUsers!!.clear()
+        mmBannerList!!.clear()
     }
 
 }
