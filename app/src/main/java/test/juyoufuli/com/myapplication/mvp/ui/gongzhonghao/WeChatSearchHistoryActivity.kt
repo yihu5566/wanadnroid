@@ -19,6 +19,7 @@ import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.Preconditions
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import kotlinx.android.synthetic.main.activity_wechat_search_history.*
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.listener.CustomSearchListener
 import test.juyoufuli.com.myapplication.app.utils.ToastUtils
@@ -73,7 +74,6 @@ class WeChatSearchHistoryActivity : BaseActivity<WeChatSearchViewPresenter>(), W
 
     internal var searchContent: String = ""
 
-    internal var onLoadMoreListener: SmartRefreshLayout? = null
 
     /**
      * 默认的公众号id
@@ -146,7 +146,7 @@ class WeChatSearchHistoryActivity : BaseActivity<WeChatSearchViewPresenter>(), W
         mRefreshLayout!!.setEnableRefresh(false)//启用刷新
         mRefreshLayout!!.setEnableLoadMore(true)//启用加载
         //加载更多
-        onLoadMoreListener = mRefreshLayout!!.setOnLoadMoreListener { refreshlayout ->
+        mRefreshLayout!!.setOnLoadMoreListener { refreshlayout ->
             if (totalPage > page) {
                 mPresenter!!.getSearchResult(cid, page, "java")
             }
@@ -168,10 +168,15 @@ class WeChatSearchHistoryActivity : BaseActivity<WeChatSearchViewPresenter>(), W
     }
 
     override fun refreshList(list: ArticleResponse) {
-        onLoadMoreListener!!.finishLoadMore()
-        if (list.data.curPage == 0) {
+        mRefreshLayout!!.finishLoadMore()
+        if (list.data.total == 0) {
             ToastUtils.showToast(this, "查询不到数据")
+            rl_search_finish.visibility = View.VISIBLE
+            mRefreshLayout!!.visibility = View.GONE
             return
+        } else {
+            rl_search_finish.visibility = View.GONE
+            mRefreshLayout!!.visibility = View.VISIBLE
         }
 
         page = list.data.curPage

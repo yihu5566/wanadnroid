@@ -4,11 +4,9 @@ import android.app.Activity
 import com.jess.arms.mvp.IModel
 import com.jess.arms.mvp.IView
 import io.reactivex.Observable
-import test.juyoufuli.com.myapplication.app.BaseRequest
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
 import test.juyoufuli.com.myapplication.mvp.entity.HotWordData
-import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
 
 /**
  * Author : ludf
@@ -19,7 +17,7 @@ class SearchContract {
 
     interface View : IView {
         fun getActivity(): Activity
-        fun refreshList(list: ArticleResponse)
+        fun refreshList(list: ArticleResponse?)
         fun refreshHotWord(response: List<HotWordData>)
     }
 

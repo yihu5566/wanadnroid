@@ -13,6 +13,8 @@ import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
+import test.juyoufuli.com.myapplication.WanBaseApplication
+import test.juyoufuli.com.myapplication.app.utils.ToastUtils
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
@@ -45,6 +47,7 @@ constructor(model: LoginContract.Model, rootView: LoginContract.View) : BasePres
 
                     override fun onError(t: Throwable) {
                         super.onError(t)
+                        ToastUtils.showToast(WanBaseApplication.application, t.message)
                     }
                 })
 

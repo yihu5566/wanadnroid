@@ -49,4 +49,20 @@
         android:visibility="gone" />
 
 
+    <RelativeLayout
+        android:id="@+id/tv_search_finish"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableTop="@drawable/ic_sentiment_dissatisfied_black_24dp"
+            android:text="未搜索到结果" />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

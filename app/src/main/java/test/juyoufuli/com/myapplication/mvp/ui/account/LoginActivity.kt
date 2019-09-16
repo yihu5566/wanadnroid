@@ -22,6 +22,7 @@ import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.ui.home.MainActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import test.juyoufuli.com.myapplication.app.utils.ToastUtils
 import test.juyoufuli.com.myapplication.di.component.DaggerLoginComponent
 import test.juyoufuli.com.myapplication.di.module.LoginModule
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
@@ -143,7 +144,7 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginContract.View, View.O
     }
 
     override fun loginSucceed(response: LoginResponse) {
-        if (response.data == null) return
+        ToastUtils.showToast(this, response.errorMsg)
         SPUtils.put(this, "user", JsonUtils.toJson(response))
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", if (TextUtils.isEmpty(response.data.username)) "" else response.data.username)

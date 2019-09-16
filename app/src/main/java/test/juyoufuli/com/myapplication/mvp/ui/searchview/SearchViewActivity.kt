@@ -16,6 +16,7 @@ import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
+import kotlinx.android.synthetic.main.activity_search.*
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.listener.CustomSearchListener
 import test.juyoufuli.com.myapplication.app.view.CustomSearchView
@@ -63,6 +64,7 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
     @JvmField
     @Inject
     internal var mLayoutManager: RecyclerView.LayoutManager? = null
+
 
     var hotWordList: ArrayList<String>? = null
 
@@ -218,9 +220,18 @@ class SearchViewActivity : BaseActivity<SearchViewPresenter>(), SearchContract.V
         return this
     }
 
-    override fun refreshList(response: ArticleResponse) {
+    override fun refreshList(response: ArticleResponse?) {
         lbvSearch!!.visibility = View.GONE
-        rlvSearchResult!!.visibility = View.VISIBLE
+        if (response==null||response!!.data.total==0) {
+            rlvSearchResult!!.visibility = View.GONE
+            tv_search_finish.visibility=View.VISIBLE
+            return
+        }else{
+            rlvSearchResult!!.visibility = View.VISIBLE
+            tv_search_finish.visibility=View.GONE
+        }
+
+
         page = response.data.curPage
         if (response.data.curPage == 1) {
             mAdapter!!.list = response.data.datas

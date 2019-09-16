@@ -4,22 +4,16 @@ import com.jess.arms.di.scope.ActivityScope
 import com.jess.arms.mvp.BasePresenter
 import com.jess.arms.utils.LogUtils
 import com.jess.arms.utils.RxLifecycleUtils
-
-import javax.inject.Inject
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
-import me.jessyan.rxerrorhandler.handler.RetryWithDelay
-import test.juyoufuli.com.myapplication.app.BaseRequest
 import test.juyoufuli.com.myapplication.app.net.HttpUtil
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
 import test.juyoufuli.com.myapplication.mvp.entity.HotWordData
-import test.juyoufuli.com.myapplication.mvp.entity.HotWordResponse
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
+import javax.inject.Inject
 
 /**
  * Author : ludf
@@ -48,6 +42,11 @@ constructor(model: SearchContract.Model, rootView: SearchContract.View) : BasePr
                         LogUtils.debugInfo(page.toString() + "--------------url")
                         mRootView.refreshList(response)
 
+                    }
+
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                        mRootView.refreshList(null)
                     }
                 })
 
