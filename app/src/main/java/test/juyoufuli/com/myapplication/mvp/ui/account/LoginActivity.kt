@@ -18,6 +18,9 @@ import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 
 import butterknife.BindView
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.empty_layout.view.*
+import kotlinx.android.synthetic.main.include_title.*
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.ui.home.MainActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
@@ -36,30 +39,11 @@ import test.juyoufuli.com.myapplication.mvp.presenter.LoginPresenter
  */
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginContract.View, View.OnClickListener {
     @JvmField
-    @BindView(R.id.toolbar_back)
-    internal var toolbar_back: RelativeLayout? = null
-    @JvmField
-    @BindView(R.id.toolbar_title)
-    internal var toolbar_title: TextView? = null
-    @JvmField
-    @BindView(R.id.et_username)
-    internal var et_username: EditText? = null
-    @JvmField
-    @BindView(R.id.et_password)
-    internal var et_password: EditText? = null
-    @JvmField
-    @BindView(R.id.et_password_again)
-    internal var et_password_again: EditText? = null
-    @JvmField
-    @BindView(R.id.bt_go)
-    internal var bt_go: Button? = null
-    @JvmField
-    @BindView(R.id.bt_register)
-    internal var bt_register: Button? = null
-    @JvmField
     @BindView(R.id.login_root)
     internal var loginRoot: RelativeLayout? = null
-
+    var stringExtra: Int? = 0
+    lateinit var name: String
+    lateinit var password: String
     override fun setupActivityComponent(appComponent: AppComponent) {
         DaggerLoginComponent.builder().appComponent(appComponent).loginModule(LoginModule(this)).build().inject(this)
     }
@@ -69,9 +53,22 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginContract.View, View.O
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        toolbar_title!!.text = "搜索"
-        toolbar_back!!.visibility = View.VISIBLE
-        toolbar_back!!.setOnClickListener(this)
+        toolbar_title.text = "搜索"
+        toolbar_back.visibility = View.VISIBLE
+        stringExtra = intent.getIntExtra("type", 0)
+        if (stringExtra == 1) {
+            tv_title_login_register.text = resources.getString(R.string.login)
+            ll_password_again.visibility = View.GONE
+            bt_go.visibility = View.VISIBLE
+            bt_register.visibility = View.GONE
+
+        } else {
+            tv_title_login_register.text = resources.getString(R.string.register)
+            ll_password_again.visibility = View.VISIBLE
+            bt_go.visibility = View.GONE
+            bt_register.visibility = View.VISIBLE
+        }
+        toolbar_back.setOnClickListener(this)
         bt_go!!.setOnClickListener(this)
         bt_register!!.setOnClickListener(this)
         loginRoot!!.setOnTouchListener { view, motionEvent ->
@@ -80,29 +77,10 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginContract.View, View.O
         }
     }
 
-    override fun showLoading() {
-
-    }
-
-    override fun hideLoading() {
-
-    }
-
     override fun showMessage(message: String) {
 
     }
 
-    override fun launchActivity(intent: Intent) {
-        ArmsUtils.startActivity(intent)
-        finish()
-    }
-
-    override fun killMyself() {
-        finish()
-    }
-
-    lateinit var name: String
-    lateinit var password: String
 
     override fun onClick(view: View) {
         when (view.id) {

@@ -36,6 +36,7 @@ import test.juyoufuli.com.myapplication.di.component.DaggerHomeComponent
 import test.juyoufuli.com.myapplication.di.module.HomeModule
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
+import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
@@ -77,6 +78,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     var screenWidth: Int? = null
     var tvPersonLogin: TextView? = null
+    var tvPersonRegister: TextView? = null
     var tvPersonName: TextView? = null
     var ivPersonPhoto: ImageView? = null
 
@@ -161,7 +163,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         var headerLayout = mNavigationView!!.getHeaderView(0) // 0-index header
         tvPersonName = headerLayout!!.findViewById(R.id.tv_person_name)
         tvPersonLogin = headerLayout!!.findViewById(R.id.tv_person_login)
-        ivPersonPhoto = headerLayout!!.findViewById<ImageView>(R.id.tv_person)
+        tvPersonRegister = headerLayout!!.findViewById(R.id.tv_person_register)
+
+        ivPersonPhoto = headerLayout!!.findViewById(R.id.tv_person)
 
         var item = mNavigationView!!.menu.getItem(1).actionView // 0-index header
         var switchView = item!!.findViewById<Switch>(R.id.switchForActionBar)
@@ -277,10 +281,18 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                 mPresenter!!.LoginOut()
             } else {
                 dl_main_tab!!.closeDrawer(Gravity.LEFT)
-                launchActivity(Intent(this, LoginActivity::class.java))
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.putExtra("type", 1)
+                launchActivity(intent)
             }
         }
+        tvPersonRegister!!.setOnClickListener {
+            dl_main_tab!!.closeDrawer(Gravity.LEFT)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("type", 2)
+            launchActivity(intent)
 
+        }
 
     }
 
@@ -312,6 +324,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         SPUtils.put(this, "isLogin", isLogin)
         tvPersonName!!.text = intent!!.getStringExtra("username")
         tvPersonLogin!!.text = "退出登录"
+        tvPersonRegister!!.visibility = View.GONE
     }
 
 
@@ -386,7 +399,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                 } else {
                     isLogin = false
                     tvPersonName!!.text = "用户名"
-                    tvPersonLogin!!.text = "前往登陆"
+                    tvPersonLogin!!.text = "登陆"
                     ivPersonPhoto!!.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
 
                 }
@@ -488,7 +501,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         isLogin = false
         SPUtils.put(this, "isLogin", isLogin)
         tvPersonName!!.text = "用户名"
-        tvPersonLogin!!.text = "前往登陆"
+        tvPersonLogin!!.text = "登陆"
+        tvPersonRegister!!.visibility = View.VISIBLE
+
         SPUtils.clear(this)
     }
 

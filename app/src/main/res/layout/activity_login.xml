@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_root"
     android:background="@color/colorPrimary"
     tools:context=".app.ui.home.MainActivity">
 
@@ -36,6 +36,7 @@
                     android:background="#2fa881" />
 
                 <TextView
+                    android:id="@+id/tv_title_login_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -51,8 +52,8 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:paddingEnd="30dp"
-                android:paddingStart="50dp">
+                android:paddingStart="50dp"
+                android:paddingEnd="30dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -77,8 +78,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
-                android:paddingEnd="30dp"
-                android:paddingStart="50dp">
+                android:paddingStart="50dp"
+                android:paddingEnd="30dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -100,11 +101,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_password_again"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
+                android:paddingStart="50dp"
                 android:paddingEnd="30dp"
-                android:paddingStart="50dp">
+                android:visibility="gone">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -135,8 +138,6 @@
                     android:id="@+id/bt_go"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="30dp"
                     android:background="@drawable/bt_shape"
                     android:stateListAnimator="@drawable/state_list_animator_z"
                     android:text="@string/go"
@@ -146,12 +147,11 @@
                     android:id="@+id/bt_register"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
                     android:background="@drawable/bt_shape"
                     android:stateListAnimator="@drawable/state_list_animator_z"
                     android:text="@string/register"
-                    android:textColor="#d3d3d3" />
+                    android:textColor="#d3d3d3"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 

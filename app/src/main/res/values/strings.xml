@@ -6,7 +6,7 @@
     <string name="main_tab_navigation_text">导航</string>
     <string name="main_tab_wechat_text">公众号</string>
 
-    <string name="login">登陆OR注册</string>
+    <string name="login">登陆</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
     <string name="AgainPassword">AgainPassword</string>

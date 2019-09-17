@@ -27,10 +27,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="12dp"
+        android:text="登陆"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_person_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:layout_marginBottom="18dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="12dp"
-        android:text="前往登陆"
+        android:text="注册"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
