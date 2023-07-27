@@ -15,26 +15,19 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.di.scope.FragmentScope;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
 import test.juyoufuli.com.myapplication.mvp.model.CollectArticleModel;
-import test.juyoufuli.com.myapplication.mvp.model.HomeModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.CollectArticleContract;
-import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract;
 import test.juyoufuli.com.myapplication.mvp.ui.account.adapter.ArticleCollectAdapter;
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * ================================================

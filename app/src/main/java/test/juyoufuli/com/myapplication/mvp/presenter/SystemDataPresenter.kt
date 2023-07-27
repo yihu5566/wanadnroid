@@ -10,7 +10,7 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
+import test.juyoufuli.com.myapplication.mvp.contract.SystemDataContract
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter
 import javax.inject.Inject
 

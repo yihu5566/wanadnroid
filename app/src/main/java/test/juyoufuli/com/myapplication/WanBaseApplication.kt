@@ -3,14 +3,10 @@ package test.juyoufuli.com.myapplication
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.app.AppCompatDelegate
-
+import androidx.appcompat.app.AppCompatDelegate
 import com.jess.arms.base.BaseApplication
-
-import test.juyoufuli.com.myapplication.app.utils.SPUtils
-import android.hardware.Camera.ErrorCallback
-import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadSir
+import test.juyoufuli.com.myapplication.app.utils.SPUtils
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback

@@ -5,10 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ItemDecoration
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import test.juyoufuli.com.myapplication.R
 
 /**
@@ -17,7 +17,8 @@ import test.juyoufuli.com.myapplication.R
  * Description:
  */
 class ProjectRecycerDecoration
-constructor(context: Context, orientation: Int, color: Int, private val inset: Int) : ItemDecoration() {
+constructor(context: Context, orientation: Int, color: Int, private val inset: Int) :
+    ItemDecoration() {
 
 
     var mOrientation: Int = 0
@@ -39,7 +40,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     private fun setOrientation(orientation: Int) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
-            throw  IllegalArgumentException("invalid orientation") as Throwable
+            throw IllegalArgumentException("invalid orientation") as Throwable
         }
         mOrientation = orientation
 
@@ -69,7 +70,7 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
             val right = mDivider!!.intrinsicWidth + left
 
             mDivider!!.setBounds(left, top, right, bottom);
-            mDivider!!.draw(canvas)
+            mDivider!!.draw(canvas!!)
 
         }
 
@@ -95,7 +96,12 @@ constructor(context: Context, orientation: Int, color: Int, private val inset: I
 
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         if (mOrientation == VERTICAL_LIST) {
             outRect!!.set(0, 0, 0, mDivider!!.intrinsicHeight);
         } else {

@@ -1,23 +1,14 @@
 package test.juyoufuli.com.myapplication.di.module;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.FragmentActivity;
 
 import com.jess.arms.di.scope.ActivityScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dagger.Module;
 import dagger.Provides;
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
 import test.juyoufuli.com.myapplication.mvp.model.LoginModel;
-import test.juyoufuli.com.myapplication.mvp.model.SearchViewModel;
 import test.juyoufuli.com.myapplication.mvp.model.contract.LoginContract;
-import test.juyoufuli.com.myapplication.mvp.model.contract.SearchContract;
-import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter;
 
 /**
  * Author : dongfang

@@ -1,17 +1,15 @@
 package test.juyoufuli.com.myapplication.mvp.ui.splash
 
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.app.ui.home.MainActivity
+import test.juyoufuli.com.myapplication.mvp.ui.home.MainActivity
 
 /**
  * @Author : dongfang

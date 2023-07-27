@@ -3,10 +3,10 @@ package test.juyoufuli.com.myapplication.mvp.ui.account
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
@@ -19,13 +19,10 @@ import test.juyoufuli.com.myapplication.di.component.DaggerCollectArticleCompone
 import test.juyoufuli.com.myapplication.di.module.CollectArticleModule
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.model.CollectArticleModel
 import test.juyoufuli.com.myapplication.mvp.model.contract.CollectArticleContract
 import test.juyoufuli.com.myapplication.mvp.presenter.CollectArticlePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.adapter.ArticleCollectAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.account.adapter.ArticleCollectItemHolder
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 import java.util.*
 import javax.inject.Inject

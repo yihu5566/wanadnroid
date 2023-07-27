@@ -15,24 +15,19 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jess.arms.di.scope.FragmentScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
 import test.juyoufuli.com.myapplication.mvp.contract.WeChatNumberContract;
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean;
-import test.juyoufuli.com.myapplication.mvp.model.SystemDataModel;
 import test.juyoufuli.com.myapplication.mvp.model.WeChatNumberModel;
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract;
 import test.juyoufuli.com.myapplication.mvp.ui.tab.RecyclerViewFragment;
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter;
 
 /**
  * ================================================

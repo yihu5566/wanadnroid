@@ -1,11 +1,10 @@
 package test.juyoufuli.com.myapplication.mvp.ui.account
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
 import android.widget.Button
-import android.widget.TextClock
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
 

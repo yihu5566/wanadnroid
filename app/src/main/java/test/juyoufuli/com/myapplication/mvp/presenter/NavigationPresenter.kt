@@ -9,7 +9,7 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay
 import test.juyoufuli.com.myapplication.mvp.entity.NavigationResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.NavigationContract
+import test.juyoufuli.com.myapplication.mvp.contract.NavigationContract
 import javax.inject.Inject
 
 /**

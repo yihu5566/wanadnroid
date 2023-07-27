@@ -2,41 +2,30 @@ package test.juyoufuli.com.myapplication.mvp.ui.tab
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
-
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
 import com.jess.arms.base.BaseFragment
-import com.jess.arms.base.DefaultAdapter
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
-import com.tbruyelle.rxpermissions2.RxPermissions
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
-import butterknife.BindView
-import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataComponent
-import test.juyoufuli.com.myapplication.di.module.SystemDataModule
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataContract
-import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter
-
 import com.jess.arms.utils.Preconditions.checkNotNull
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataComponent
+import test.juyoufuli.com.myapplication.di.module.SystemDataModule
+import test.juyoufuli.com.myapplication.mvp.contract.SystemDataContract
+import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
+import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
+import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.SystemDataAdapter
+import javax.inject.Inject
 
 /**
  * Author : ludf

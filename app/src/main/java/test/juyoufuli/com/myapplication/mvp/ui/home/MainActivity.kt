@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.app.ui.home
+package test.juyoufuli.com.myapplication.mvp.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -6,24 +6,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.design.internal.BottomNavigationItemView
-import android.support.design.internal.BottomNavigationMenuView
-import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AppCompatDelegate
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import butterknife.BindView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
@@ -36,12 +36,10 @@ import test.juyoufuli.com.myapplication.di.component.DaggerHomeComponent
 import test.juyoufuli.com.myapplication.di.module.HomeModule
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
 import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
-import test.juyoufuli.com.myapplication.mvp.ui.home.MainFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
@@ -487,7 +485,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             for (i in 0 until menuView.childCount) {
                 val itemView = menuView.getChildAt(i) as BottomNavigationItemView
 //                itemView.setShiftingMode(false)
-                itemView.setChecked(itemView.itemData.isChecked)
+                itemView.itemData?.let { itemView.setChecked(it.isChecked) }
             }
         } catch (e: IllegalAccessException) {
             e.printStackTrace()

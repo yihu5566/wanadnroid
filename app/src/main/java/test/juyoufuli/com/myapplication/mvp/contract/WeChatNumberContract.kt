@@ -1,10 +1,9 @@
 package test.juyoufuli.com.myapplication.mvp.contract
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.jess.arms.mvp.IModel
 import com.jess.arms.mvp.IView
 import io.reactivex.Observable
-import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
 import test.juyoufuli.com.myapplication.mvp.entity.WeChatNumberResponse
 
 /**

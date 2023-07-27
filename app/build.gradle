@@ -7,7 +7,7 @@ kapt {
 }
 
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    compileSdk ProjectBuildConfig.compileSdkVersion
 
     useLibrary 'org.apache.http.legacy'
 
@@ -17,12 +17,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "test.juyoufuli.com.myapplication"
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        minSdkVersion ProjectBuildConfig.minSdkVersion
+        targetSdkVersion ProjectBuildConfig.targetSdkVersion
+        applicationId ProjectBuildConfig.applicationId
+        versionCode ProjectBuildConfig.versionCode
+        versionName ProjectBuildConfig.versionName
     }
 
     buildTypes {
@@ -56,35 +55,95 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation rootProject.ext.dependencies["appcompat-v7"]
-    implementation rootProject.ext.dependencies["support-v4"]
-    implementation rootProject.ext.dependencies["design"]
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation AndroidX.AppCompat
+    //kotlin
+    implementation AndroidX.CoreKtx
+    implementation Kotlin.StdlibJdk7
+    implementation Kotlin.KotlinReflect
 
-    implementation 'me.jessyan:arms:2.5.0'
-    //view
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    kapt(rootProject.ext.dependencies["butterknife-compiler"]) {
-        exclude module: 'support-annotations'
-    }
-    //tools
-    //    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-    kapt 'com.google.dagger:dagger-compiler:2.15'
+    //lifecycle
+    implementation AndroidX.LifecycleRuntime
+    implementation AndroidX.LifecycleCommon
+    implementation AndroidX.LifecycleExtensions
+
+    // viewModel
+    implementation AndroidX.ViewModelKtx
+    implementation AndroidX.FragmentKtx
+
+    // liveData
+    implementation AndroidX.LiveData
+    implementation GitHub.UnpeekLivedata
+    //navigation
+    implementation AndroidX.NavigationKtx
+    implementation AndroidX.navigationFragmentKtx
+    //retrofit
+    implementation GitHub.retrofit2
+    implementation GitHub.retrofit2Gson
+    implementation GitHub.PersistentCookieJar
+    implementation GitHub.retrofitUrlManager
+    //注解库
+    implementation GitHub.koin
+    implementation GitHub.koinCompat
+    //util
+    implementation GitHub.utilCodex
+
+    //权限相关
+    implementation GitHub.xPermissions
+    //androidx UI
+    implementation AndroidX.ConstraintLayout
+    implementation AndroidX.Material
+    implementation AndroidX.Swiperefreshlayout
+    //sp存储
+    implementation AndroidX.DataStore
+    //BaseAdapter
+    implementation GitHub.cymChadAdapter
+
+    //管理界面状态库
+    implementation GitHub.loadSir
+    //glide
+    implementation GitHub.glide
+    implementation GitHub.glideComplier
+    implementation GitHub.grideTransformations
+    //屏幕适配
+    implementation GitHub.autoSize
+    //防崩溃
+    implementation GitHub.crash
+    //轮播图
+    implementation GitHub.bannerViewPager
+    //日历组件
+    implementation GitHub.calendarView
+    //时间选择器
+    implementation GitHub.wheelPicker
+    // 皮肤
+    implementation GitHub.reflex
+    implementation GitHub.paintedskin
+    implementation GitHub.skin_constraintlayout_compat
+    implementation GitHub.skin_standard_plugin
+    //弹窗
+    implementation GitHub.basePopup
+
+    //图片显示
+    implementation GitHub.photoView
+
+    //html文件修改
+    implementation GitHub.Jsoup
+    //图片选择
+    implementation GitHub.pictureSelector
+    //debugApi 'com.squareup.leakcanary:leakcanary-android:2.8.1'
+    implementation AndroidX.MultiDex
     //test
-    debugImplementation rootProject.ext.dependencies["canary-debug"]
-    releaseImplementation rootProject.ext.dependencies["canary-release"]
-    testImplementation rootProject.ext.dependencies["canary-release"]
-    testImplementation rootProject.ext.dependencies["junit"]
-    implementation rootProject.ext.dependencies["paginate"]
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation rootProject.ext.dependencies["cardview-v7"]
+    testApi AndroidX.Junit
+    androidTestApi AndroidX.TestExtJunit
+    androidTestApi AndroidX.TestEspresso
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.9.1"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:2.9.1"
 
-    implementation rootProject.ext.dependencies["okhttp-urlconnection"]
     implementation 'cn.bingoogolapple:bga-banner:2.2.4'
     implementation 'com.just.agentweb:agentweb:4.0.2'
     // (必选)
     implementation 'com.github.SherlockGougou:MagicIndicator:1.6.0'
     implementation 'com.facebook.stetho:stetho:1.3.1'
-
 
     implementation 'me.jessyan:arms-imageloader-glide:2.5.0'
 
@@ -92,8 +151,8 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-21'
     //空页面
     implementation 'com.kingja.loadsir:loadsir:1.3.6'
+    implementation 'me.jessyan:arms:2.5.0'
+    kapt 'com.google.dagger:dagger-compiler:2.15'
+    implementation 'com.github.markomilos:paginate:0.5.1'
 
-}
-repositories {
-    mavenCentral()
 }

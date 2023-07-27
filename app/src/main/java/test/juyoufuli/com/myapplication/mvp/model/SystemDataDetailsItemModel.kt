@@ -4,12 +4,9 @@ import com.jess.arms.di.scope.FragmentScope
 import com.jess.arms.integration.IRepositoryManager
 import com.jess.arms.mvp.BaseModel
 import io.reactivex.Observable
-import test.juyoufuli.com.myapplication.mvp.api.cache.CommonCache
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse
-import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract
+import test.juyoufuli.com.myapplication.mvp.contract.SystemDataDetailsItemContract
 import javax.inject.Inject
 
 /**

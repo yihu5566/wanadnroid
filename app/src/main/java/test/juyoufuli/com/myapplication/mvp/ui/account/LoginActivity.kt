@@ -5,24 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.RelativeLayout
-import android.widget.TextView
-
+import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
-
-import butterknife.BindView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.empty_layout.view.*
 import kotlinx.android.synthetic.main.include_title.*
 import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.app.ui.home.MainActivity
+import test.juyoufuli.com.myapplication.mvp.ui.home.MainActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
 import test.juyoufuli.com.myapplication.app.utils.ToastUtils

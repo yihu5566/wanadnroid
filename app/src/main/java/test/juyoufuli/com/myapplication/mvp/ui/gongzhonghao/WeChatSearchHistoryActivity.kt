@@ -5,14 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
-import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.jess.arms.base.BaseActivity
 import com.jess.arms.di.component.AppComponent
@@ -92,7 +89,7 @@ class WeChatSearchHistoryActivity : BaseActivity<WeChatSearchViewPresenter>(), W
     override fun initData(savedInstanceState: Bundle?) {
         ArmsUtils.configRecyclerView(rlvSearchResult!!, mLayoutManager)
         rlvSearchResult!!.adapter = mAdapter
-        cid = intent.getStringExtra("cid")
+        cid = intent.getStringExtra("cid").toString()
         initRecyclerView()
 
         mAdapter!!.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<ArticleBean> {

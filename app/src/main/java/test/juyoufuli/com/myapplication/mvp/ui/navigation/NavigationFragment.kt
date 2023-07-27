@@ -2,32 +2,29 @@ package test.juyoufuli.com.myapplication.mvp.ui.navigation
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
-import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerNavigationComponent
 import test.juyoufuli.com.myapplication.di.module.NavigationModule
 import test.juyoufuli.com.myapplication.mvp.entity.Article
 import test.juyoufuli.com.myapplication.mvp.entity.NavigationResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.NavigationContract
+import test.juyoufuli.com.myapplication.mvp.contract.NavigationContract
 import test.juyoufuli.com.myapplication.mvp.presenter.NavigationPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.NavigationAdapter
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-import com.kingja.loadsir.callback.Callback.OnReloadListener
-import com.kingja.loadsir.core.LoadService
-import com.kingja.loadsir.core.LoadSir
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
+import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.NavigationAdapter
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
 /**

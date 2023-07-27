@@ -1,7 +1,7 @@
 package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
 import java.util.*

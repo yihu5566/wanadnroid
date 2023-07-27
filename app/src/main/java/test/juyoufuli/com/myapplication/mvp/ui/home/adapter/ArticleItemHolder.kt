@@ -16,7 +16,7 @@
 package test.juyoufuli.com.myapplication.mvp.ui.home.adapter
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton

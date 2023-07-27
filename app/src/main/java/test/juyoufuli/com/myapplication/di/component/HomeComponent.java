@@ -19,7 +19,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
-import test.juyoufuli.com.myapplication.app.ui.home.MainActivity;
+import test.juyoufuli.com.myapplication.mvp.ui.home.MainActivity;
 import test.juyoufuli.com.myapplication.di.module.HomeModule;
 
 /**

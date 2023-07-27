@@ -2,21 +2,19 @@ package test.juyoufuli.com.myapplication.mvp.ui.project
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
-import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerProjectComponent
@@ -24,18 +22,12 @@ import test.juyoufuli.com.myapplication.di.module.ProjectModule
 import test.juyoufuli.com.myapplication.mvp.contract.ProjectContract
 import test.juyoufuli.com.myapplication.mvp.entity.*
 import test.juyoufuli.com.myapplication.mvp.presenter.ProjectPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleItemHolder
+import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ProjectAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsHolder
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-import com.kingja.loadsir.callback.Callback.OnReloadListener
-import com.kingja.loadsir.core.LoadService
-import com.kingja.loadsir.core.LoadSir
-import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
-import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
-import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback
 
 
 /**

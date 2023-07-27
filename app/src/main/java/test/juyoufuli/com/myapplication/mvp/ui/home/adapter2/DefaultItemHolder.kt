@@ -1,6 +1,6 @@
 package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor

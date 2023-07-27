@@ -40,21 +40,36 @@
 
         <activity
             android:name=".mvp.ui.splash.SplashActivity"
-            android:configChanges="orientation">
+            android:configChanges="orientation"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.ui.home.MainActivity" />
-        <activity android:name=".mvp.ui.webview.WebViewActivity" />
-        <activity android:name=".mvp.ui.searchview.SearchViewActivity" />
-        <activity android:name=".mvp.ui.tab.SystemDataDetailsActivity" />
+        <activity
+            android:name=".mvp.ui.home.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp.ui.webview.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp.ui.searchview.SearchViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp.ui.tab.SystemDataDetailsActivity"
+            android:exported="false" />
         <activity android:name=".mvp.ui.account.LoginActivity" />
-        <activity android:name=".mvp.ui.account.CollectArticleActivity" />
-        <activity android:name=".mvp.ui.account.SettingActivity" />
-        <activity android:name=".mvp.ui.gongzhonghao.WeChatSearchHistoryActivity" />
+        <activity
+            android:name=".mvp.ui.account.CollectArticleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp.ui.account.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp.ui.gongzhonghao.WeChatSearchHistoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

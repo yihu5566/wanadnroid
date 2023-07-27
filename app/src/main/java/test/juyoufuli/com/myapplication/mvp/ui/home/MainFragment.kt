@@ -2,12 +2,12 @@ package test.juyoufuli.com.myapplication.mvp.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
@@ -19,10 +19,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent
 import test.juyoufuli.com.myapplication.di.module.MainModule
+import test.juyoufuli.com.myapplication.mvp.contract.MainContract
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
 import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract
 import test.juyoufuli.com.myapplication.mvp.presenter.MainPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter

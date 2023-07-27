@@ -6,7 +6,7 @@ import com.jess.arms.mvp.BaseModel
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.api.service.MainService
 import test.juyoufuli.com.myapplication.mvp.entity.NavigationResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.NavigationContract
+import test.juyoufuli.com.myapplication.mvp.contract.NavigationContract
 import javax.inject.Inject
 
 /**

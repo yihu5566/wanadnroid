@@ -1,9 +1,8 @@
-package test.juyoufuli.com.myapplication.mvp.model.contract
+package test.juyoufuli.com.myapplication.mvp.contract
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.jess.arms.mvp.IModel
 import com.jess.arms.mvp.IView
-import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Observable
 import test.juyoufuli.com.myapplication.mvp.entity.SystemDataRespons
 

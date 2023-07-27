@@ -4,10 +4,8 @@ import com.jess.arms.di.scope.FragmentScope;
 
 import dagger.Module;
 import dagger.Provides;
-import test.juyoufuli.com.myapplication.mvp.contract.ProjectContract;
 import test.juyoufuli.com.myapplication.mvp.model.NavigationModel;
-import test.juyoufuli.com.myapplication.mvp.model.ProjectModel;
-import test.juyoufuli.com.myapplication.mvp.model.contract.NavigationContract;
+import test.juyoufuli.com.myapplication.mvp.contract.NavigationContract;
 
 /**
  * Author : dongfang

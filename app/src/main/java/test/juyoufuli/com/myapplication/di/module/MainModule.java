@@ -15,22 +15,19 @@
  */
 package test.juyoufuli.com.myapplication.di.module;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jess.arms.di.scope.FragmentScope;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
+import test.juyoufuli.com.myapplication.mvp.contract.MainContract;
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean;
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor;
 import test.juyoufuli.com.myapplication.mvp.model.MainModel;
-import test.juyoufuli.com.myapplication.mvp.model.contract.MainContract;
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter;
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter;
 
 /**

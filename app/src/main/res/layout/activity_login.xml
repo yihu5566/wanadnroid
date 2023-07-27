@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".app.ui.home.MainActivity">
+    tools:context=".mvp.ui.home.MainActivity">
 
     <include layout="@layout/include_title" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cv"
         android:layout_width="300dp"
         android:layout_height="350dp"
@@ -55,7 +55,7 @@
                 android:paddingStart="50dp"
                 android:paddingEnd="30dp">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="#c5c5c5">
@@ -71,7 +71,7 @@
                         android:textColor="#2fa881"
                         android:textCursorDrawable="@drawable/bg_input_cursor"
                         android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -81,7 +81,7 @@
                 android:paddingStart="50dp"
                 android:paddingEnd="30dp">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="#c5c5c5">
@@ -97,7 +97,7 @@
                         android:textColor="#2fa881"
                         android:textCursorDrawable="@drawable/bg_input_cursor"
                         android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -109,7 +109,7 @@
                 android:paddingEnd="30dp"
                 android:visibility="gone">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="#c5c5c5">
@@ -125,7 +125,7 @@
                         android:textColor="#2fa881"
                         android:textCursorDrawable="@drawable/bg_input_cursor"
                         android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <RelativeLayout
@@ -156,7 +156,7 @@
 
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

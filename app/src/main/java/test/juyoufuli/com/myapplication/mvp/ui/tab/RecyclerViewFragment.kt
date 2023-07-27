@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Message
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,11 +25,10 @@ import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataItemCompone
 import test.juyoufuli.com.myapplication.di.module.SystemDataItemModule
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.SystemDataDetailsItemContract
+import test.juyoufuli.com.myapplication.mvp.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataDetailsItemPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
-import test.juyoufuli.com.myapplication.mvp.ui.home.adapter.ArticleAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity

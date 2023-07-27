@@ -17,7 +17,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.project.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Html
 import android.view.View
 import android.widget.LinearLayout
