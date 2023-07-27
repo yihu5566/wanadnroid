@@ -47,42 +47,49 @@ import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
-class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
+    CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     @JvmField
     @BindView(R.id.fl_content)
     internal var flContent: FrameLayout? = null
+
     @JvmField
     @BindView(R.id.dl_main_tab)
     internal var dl_main_tab: DrawerLayout? = null
+
     @JvmField
     @BindView(R.id.navigationView)
     var mNavigationView: NavigationView? = null
+
     @JvmField
     @BindView(R.id.navigation)
     internal var navigation: BottomNavigationView? = null
+
     @JvmField
     @BindView(R.id.toolbar_title)
     internal var toolbar_title: TextView? = null
+
     @JvmField
     @BindView(R.id.toolbar_menu)
     internal var toolbar_menu: RelativeLayout? = null
+
     @JvmField
     @BindView(R.id.toolbar_search)
     internal var toolbar_search: RelativeLayout? = null
 
-    var currentFragment: Fragment? = null
+    lateinit var currentFragment: Fragment
     var currentFragmentIndex: Int? = 0
 
-    var screenWidth: Int? = null
-    var tvPersonLogin: TextView? = null
-    var tvPersonRegister: TextView? = null
-    var tvPersonName: TextView? = null
-    var ivPersonPhoto: ImageView? = null
+    private var screenWidth: Int = 0
+    lateinit var tvPersonLogin: TextView
+    private lateinit var tvPersonRegister: TextView
+    lateinit var tvPersonName: TextView
+    lateinit var ivPersonPhoto: ImageView
 
     var isLogin: Boolean = false
     var isSelect: Int = R.id.bottom_menu_home
-    var fragmentTransaction: FragmentTransaction? = null
+    private lateinit var fragmentTransaction: FragmentTransaction
     var fragmentList: ArrayList<Fragment> = ArrayList()
 
 
@@ -94,7 +101,8 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     private val spaceTime = 2000//时间间隔
 
     override fun setupActivityComponent(appComponent: AppComponent) {
-        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this)).build().inject(this)
+        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this))
+            .build().inject(this)
     }
 
     override fun getActivity(): Activity {
@@ -109,7 +117,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         LogUtils.d("onSaveInstanceState..." + currentFragmentIndex)
-        outState.putInt("currentFragmentIndex", currentFragmentIndex!!)
+        outState.putInt("currentFragmentIndex", currentFragmentIndex ?: 0)
     }
 
     @SuppressLint("ResourceAsColor")
@@ -158,17 +166,17 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 //        flContent = findViewById(R.id.fl_content)
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
 //        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
-        var headerLayout = mNavigationView!!.getHeaderView(0) // 0-index header
-        tvPersonName = headerLayout!!.findViewById(R.id.tv_person_name)
-        tvPersonLogin = headerLayout!!.findViewById(R.id.tv_person_login)
-        tvPersonRegister = headerLayout!!.findViewById(R.id.tv_person_register)
+        var headerLayout = mNavigationView?.getHeaderView(0)!! // 0-index header
+        tvPersonName = headerLayout.findViewById(R.id.tv_person_name)
+        tvPersonLogin = headerLayout.findViewById(R.id.tv_person_login)
+        tvPersonRegister = headerLayout.findViewById(R.id.tv_person_register)
 
-        ivPersonPhoto = headerLayout!!.findViewById(R.id.tv_person)
+        ivPersonPhoto = headerLayout.findViewById(R.id.tv_person)
 
-        var item = mNavigationView!!.menu.getItem(1).actionView // 0-index header
-        var switchView = item!!.findViewById<Switch>(R.id.switchForActionBar)
+        var item = mNavigationView?.menu?.getItem(1)?.actionView // 0-index header
+        var switchView = item?.findViewById<Switch>(R.id.switchForActionBar)
 //        //条目中的控件
-        switchView!!.setOnClickListener(this@MainActivity)
+        switchView?.setOnClickListener(this@MainActivity)
         var window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         screenWidth = window.defaultDisplay.width
 //        StatusBarUtil.setColor(this, R.color.colorPrimary)
@@ -182,43 +190,46 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
 //        disableShiftMode()
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
-        navigation!!.setOnNavigationItemSelectedListener { item ->
+        navigation?.setOnNavigationItemSelectedListener { item ->
             item.isChecked = item.itemId == isSelect
             LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
                     add(0, R.id.fl_content, "main")
-//                    navigation!!.menu.getItem(0).isChecked = false
-                    toolbar_title!!.text = ("首页")
+//                    navigation?.menu.getItem(0).isChecked = false
+                    toolbar_title?.text = ("首页")
                     currentFragmentIndex = 0
                     true
                 }
+
                 R.id.bottom_menu_found -> {
                     add(1, R.id.fl_content, "system")
-//                    navigation!!.menu.getItem(1).isChecked = false
-                    toolbar_title!!.text = ("知识体系")
+//                    navigation?.menu.getItem(1).isChecked = false
+                    toolbar_title?.text = ("知识体系")
                     currentFragmentIndex = 1
                     true
                 }
+
                 R.id.bottom_menu_project -> {
                     add(2, R.id.fl_content, "project")
-//                    navigation!!.menu.getItem(2).isChecked = false
-                    toolbar_title!!.text = ("项目")
+//                    navigation?.menu.getItem(2).isChecked = false
+                    toolbar_title?.text = ("项目")
                     currentFragmentIndex = 2
                     true
                 }
+
                 R.id.bottom_menu_navigation -> {
                     add(3, R.id.fl_content, "navigation")
-//                    navigation!!.menu.getItem(2).isChecked = false
-                    toolbar_title!!.text = ("导航")
+//                    navigation?.menu.getItem(2).isChecked = false
+                    toolbar_title?.text = ("导航")
                     currentFragmentIndex = 3
                     true
                 }
 
                 R.id.bottom_menu_wechat -> {
                     add(4, R.id.fl_content, "wechat")
-//                    navigation!!.menu.getItem(2).isChecked = false
-                    toolbar_title!!.text = ("公众号")
+//                    navigation?.menu.getItem(2).isChecked = false
+                    toolbar_title?.text = ("公众号")
                     currentFragmentIndex = 4
                     true
                 }
@@ -228,15 +239,16 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
         }
 
 
-        mNavigationView!!.setNavigationItemSelectedListener { item ->
+        mNavigationView?.setNavigationItemSelectedListener { item ->
 
             when (item.itemId) {
                 R.id.menu_History -> {
-                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+                    dl_main_tab?.closeDrawer(Gravity.LEFT)
 
                     launchActivity(Intent(this, CollectArticleActivity::class.java))
                     true
                 }
+
                 R.id.menu_Setting -> {
 //                    var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
                     //进入方法就先注册上监听
@@ -248,12 +260,13 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 //                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 //                    }
 //                    switch.isChecked = !mode
-//                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+//                    dl_main_tab?.closeDrawer(Gravity.LEFT)
 //                    launchActivity(Intent(this, SettingActivity::class.java))
                     true
                 }
+
                 R.id.menu_AboutUs -> {
-                    dl_main_tab!!.closeDrawer(Gravity.LEFT)
+                    dl_main_tab?.closeDrawer(Gravity.LEFT)
 
                     var intent = Intent(this, WebViewActivity::class.java)
                     intent.putExtra("link", "https://www.github.com/yihu5566")
@@ -264,28 +277,35 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             }
             false
         }
-        toolbar_title!!.text = ("首页")
+        toolbar_title?.text = ("首页")
 
-        toolbar_search!!.visibility = (View.VISIBLE)
-        toolbar_menu!!.visibility = (View.VISIBLE)
-        toolbar_menu!!.setOnClickListener {
-            dl_main_tab!!.openDrawer(Gravity.LEFT)
+        toolbar_search?.visibility = (View.VISIBLE)
+        toolbar_menu?.visibility = (View.VISIBLE)
+        toolbar_menu?.setOnClickListener {
+            dl_main_tab?.openDrawer(Gravity.LEFT)
         }
-        toolbar_search!!.setOnClickListener { launchActivity(Intent(this, SearchViewActivity::class.java)) }
+        toolbar_search?.setOnClickListener {
+            launchActivity(
+                Intent(
+                    this,
+                    SearchViewActivity::class.java
+                )
+            )
+        }
 
-        tvPersonLogin!!.setOnClickListener {
+        tvPersonLogin?.setOnClickListener {
             if (isLogin) {
-                dl_main_tab!!.closeDrawer(Gravity.LEFT)
-                mPresenter!!.LoginOut()
+                dl_main_tab?.closeDrawer(Gravity.LEFT)
+                mPresenter?.LoginOut()
             } else {
-                dl_main_tab!!.closeDrawer(Gravity.LEFT)
+                dl_main_tab?.closeDrawer(Gravity.LEFT)
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.putExtra("type", 1)
                 launchActivity(intent)
             }
         }
-        tvPersonRegister!!.setOnClickListener {
-            dl_main_tab!!.closeDrawer(Gravity.LEFT)
+        tvPersonRegister?.setOnClickListener {
+            dl_main_tab?.closeDrawer(Gravity.LEFT)
             val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("type", 2)
             launchActivity(intent)
@@ -314,15 +334,20 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (TextUtils.isEmpty(intent!!.getStringExtra("username")) || TextUtils.isEmpty(intent!!.getStringExtra("password"))) {
+        if (TextUtils.isEmpty(intent?.getStringExtra("username")) || TextUtils.isEmpty(
+                intent?.getStringExtra(
+                    "password"
+                )
+            )
+        ) {
             isLogin = false
             return
         }
         isLogin = true
         SPUtils.put(this, "isLogin", isLogin)
-        tvPersonName!!.text = intent!!.getStringExtra("username")
-        tvPersonLogin!!.text = "退出登录"
-        tvPersonRegister!!.visibility = View.GONE
+        tvPersonName?.text = intent?.getStringExtra("username")
+        tvPersonLogin?.text = "退出登录"
+        tvPersonRegister?.visibility = View.GONE
     }
 
 
@@ -336,37 +361,42 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             fragment = tempFragment
         }
         if (fragment.isAdded) {
-            addOrShowFragment(fragmentTransaction!!, fragment, id, tag)
+            addOrShowFragment(fragmentTransaction, fragment, id, tag)
         } else {
-            if (currentFragment != null && currentFragment!!.isAdded()) {
-                fragmentTransaction!!.hide(currentFragment!!).add(id, fragment, tag).commit()
+            if (currentFragment.isAdded()) {
+                fragmentTransaction?.hide(currentFragment)?.add(id, fragment, tag).commit()
             } else {
-                fragmentTransaction!!.add(id, fragment, tag).commit()
+                fragmentTransaction?.add(id, fragment, tag)?.commit()
             }
             currentFragment = fragment
         }
     }
 
-    fun addOrShowFragment(transaction: FragmentTransaction, fragment: Fragment, id: Int, tag: String) {
+    fun addOrShowFragment(
+        transaction: FragmentTransaction,
+        fragment: Fragment,
+        id: Int,
+        tag: String
+    ) {
         if (currentFragment == fragment)
             return
         if (!fragment.isAdded) { // 如果当前fragment未被添加，则添加到Fragment管理器中
-            transaction.hide(currentFragment!!).add(id, fragment, tag).commit()
+            transaction.hide(currentFragment).add(id, fragment, tag).commit()
         } else {
-            transaction.hide(currentFragment!!).show(fragment).commit()
+            transaction.hide(currentFragment).show(fragment).commit()
         }
-        currentFragment!!.userVisibleHint = false
+        currentFragment?.userVisibleHint = false
         currentFragment = fragment
-        currentFragment!!.userVisibleHint = true
+        currentFragment?.userVisibleHint = true
     }
 
 
     override fun onResume() {
         super.onResume()
         LogUtils.d("onResume...")
-        navigation!!.selectedItemId = isSelect
+        navigation?.selectedItemId = isSelect
 
-        dl_main_tab!!.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
+        dl_main_tab?.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
 //                println("----onDrawerSlide-  $slideOffset")
@@ -378,27 +408,28 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
                 //设置一下状态
                 var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
                 var switchView = drawerView.findViewById<Switch>(R.id.switchForActionBar)
-                switchView!!.isChecked = mode
-//                switchView!!.setOnCheckedChangeListener(this@MainActivity)
-                switchView!!.setOnClickListener(this@MainActivity)
+                switchView?.isChecked = mode
+//                switchView?.setOnCheckedChangeListener(this@MainActivity)
+                switchView?.setOnClickListener(this@MainActivity)
 
                 val user = SPUtils.get(applicationContext, "user", "") as String
                 if (!TextUtils.isEmpty(user)) {
-                    val fromJsonToBean = JsonUtils.fromJsonToBean(user, LoginResponse::class.java) as LoginResponse
+                    val fromJsonToBean =
+                        JsonUtils.fromJsonToBean(user, LoginResponse::class.java) as LoginResponse
                     isLogin = true
 
-                    tvPersonName!!.text = fromJsonToBean.data.username
-                    tvPersonLogin!!.text = "退出登录"
+                    tvPersonName?.text = fromJsonToBean.data.username
+                    tvPersonLogin?.text = "退出登录"
                     Glide.with(applicationContext)
-                            .load(R.drawable.head_photo)
-                            .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                            .into(ivPersonPhoto!!)
+                        .load(R.drawable.head_photo)
+                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                        .into(ivPersonPhoto)
 
                 } else {
                     isLogin = false
-                    tvPersonName!!.text = "用户名"
-                    tvPersonLogin!!.text = "登陆"
-                    ivPersonPhoto!!.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
+                    tvPersonName?.text = "用户名"
+                    tvPersonLogin?.text = "登陆"
+                    ivPersonPhoto?.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
 
                 }
                 SPUtils.put(applicationContext, "isLogin", isLogin)
@@ -442,7 +473,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-            switch!!.isChecked = !mode
+            switch?.isChecked = !mode
             LogUtils.d("onDrawerOpened..." + mode)
             SPUtils.put(applicationContext, "night_mode", !mode)
             isRecreat = true
@@ -475,7 +506,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
 
     @SuppressLint("RestrictedApi")
     private fun disableShiftMode() {
-        val menuView = navigation!!.getChildAt(0) as BottomNavigationMenuView
+        val menuView = navigation?.getChildAt(0) as BottomNavigationMenuView
         try {
             val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
             shiftingMode.isAccessible = true
@@ -498,9 +529,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View, CompoundB
     override fun loginOutSucceed() {
         isLogin = false
         SPUtils.put(this, "isLogin", isLogin)
-        tvPersonName!!.text = "用户名"
-        tvPersonLogin!!.text = "登陆"
-        tvPersonRegister!!.visibility = View.VISIBLE
+        tvPersonName?.text = "用户名"
+        tvPersonLogin?.text = "登陆"
+        tvPersonRegister?.visibility = View.VISIBLE
 
         SPUtils.clear(this)
     }

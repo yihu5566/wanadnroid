@@ -1,7 +1,6 @@
 package test.juyoufuli.com.myapplication.app.view;
 
 import android.content.Context;
-import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import javax.annotation.Nullable;
 

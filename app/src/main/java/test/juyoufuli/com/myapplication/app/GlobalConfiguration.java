@@ -3,25 +3,21 @@ package test.juyoufuli.com.myapplication.app;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.di.module.GlobalConfigModule;
-import com.jess.arms.http.imageloader.BaseImageLoaderStrategy;
-import com.jess.arms.http.imageloader.ImageConfig;
 import com.jess.arms.http.imageloader.glide.GlideImageLoaderStrategy;
 import com.jess.arms.http.log.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
-import com.jess.arms.utils.ArmsUtils;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.JavaNetCookieJar;
 import test.juyoufuli.com.myapplication.BuildConfig;
 import test.juyoufuli.com.myapplication.app.net.InDiskCookieStore;
 import test.juyoufuli.com.myapplication.mvp.api.Api;
@@ -123,7 +119,7 @@ public final class GlobalConfiguration implements ConfigModule {
                 .okhttpConfiguration((context1, okhttpBuilder) -> {//这里可以自己自定义配置Okhttp的参数
 //                    okhttpBuilder.sslSocketFactory(); //支持 Https,详情请百度
                     okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
-                    okhttpBuilder.cookieJar(new JavaNetCookieJar(cookieManager));
+//                    okhttpBuilder.cookieJar(new JavaNetCookieJar(cookieManager));
                     //使用一行代码监听 Retrofit／Okhttp 上传下载进度监听,以及 Glide 加载进度监听 详细使用方法查看 https://github.com/JessYanCoding/ProgressManager
 //                    ProgressManager.getInstance().with(okhttpBuilder);
                     //让 Retrofit 同时支持多个 BaseUrl 以及动态改变 BaseUrl. 详细使用请方法查看 https://github.com/JessYanCoding/RetrofitUrlManager
@@ -166,11 +162,11 @@ public final class GlobalConfiguration implements ConfigModule {
 
             @Override
             public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-                ((RefWatcher) ArmsUtils
-                        .obtainAppComponentFromContext(f.getActivity())
-                        .extras()
-                        .get(RefWatcher.class.getName()))
-                        .watch(f);
+//                ((RefWatcher) ArmsUtils
+//                        .obtainAppComponentFromContext(f.getActivity())
+//                        .extras()
+//                        .get(RefWatcher.class.getName()))
+//                        .watch(f);
             }
         });
     }

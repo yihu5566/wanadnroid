@@ -3,35 +3,32 @@ package test.juyoufuli.com.myapplication.mvp.ui.tab
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
-import android.support.v4.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
 import com.jess.arms.base.BaseFragment
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.utils.ArmsUtils
 import com.jess.arms.utils.LogUtils
-import com.paginate.Paginate
-
-import javax.inject.Inject
-
-import butterknife.BindView
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.di.component.DaggerSystemDataItemComponent
 import test.juyoufuli.com.myapplication.di.module.SystemDataItemModule
+import test.juyoufuli.com.myapplication.mvp.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.presenter.SystemDataDetailsItemPresenter
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.BaseRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.searchview.adapter.SearchAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import javax.inject.Inject
 
 /**
  * Author : dongfang
@@ -82,7 +79,7 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
         LogUtils.debugInfo("---initData---")
         if (isFrist) {
             isFrist = false
-            cid = arguments!!.getString("cid")
+            cid = arguments?.getString("cid").toString()
             mRecyclerView!!.layoutManager = layoutManager
             mRecyclerView!!.adapter = mAdapter
             mPresenter!!.requestSystemDataList(page.toString(), cid)
@@ -103,7 +100,7 @@ class RecyclerViewFragment : BaseFragment<SystemDataDetailsItemPresenter>(), Sys
 
     override fun setData(data: Any?) {
         if (data != null && data is Message) {
-            cid = data.data.getString("cid")
+            cid = data.data.getString("cid").toString()
             mPresenter!!.requestSystemDataList(0.toString(), cid)
         }
     }
