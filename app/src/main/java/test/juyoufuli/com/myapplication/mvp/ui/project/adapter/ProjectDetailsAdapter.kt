@@ -1,9 +1,9 @@
 package test.juyoufuli.com.myapplication.mvp.ui.project.adapter
 
-import android.view.View
-import com.jess.arms.base.BaseHolder
-import com.jess.arms.base.DefaultAdapter
+import android.content.Context
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.recyclerview.CommonAdapter
+import test.juyoufuli.com.myapplication.app.recyclerview.base.ViewHolder
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectDatas
 import javax.inject.Inject
 
@@ -12,8 +12,9 @@ import javax.inject.Inject
  * Created Time : 2018-11-01  09:37
  * Description:
  */
-class ProjectDetailsAdapter @Inject constructor(mList: ArrayList<ProjectDatas>) : DefaultAdapter<ProjectDatas>(mList) {
-
+class ProjectDetailsAdapter @Inject constructor(
+    context: Context, mList: ArrayList<ProjectDatas>
+) : CommonAdapter<ProjectDatas>(context, R.layout.item_project_details, mList) {
 
     private var mChildClickListener: ProjectDetailsHolder.ChildClickListener? = null
 
@@ -21,13 +22,7 @@ class ProjectDetailsAdapter @Inject constructor(mList: ArrayList<ProjectDatas>) 
         this.mChildClickListener = mChildClickListener
     }
 
-    override fun getLayoutId(viewType: Int): Int {
-        return R.layout.item_project_details
+    override fun convert(holder: ViewHolder?, t: ProjectDatas?, position: Int) {
+        TODO("Not yet implemented")
     }
-
-    override fun getHolder(v: View, viewType: Int): BaseHolder<ProjectDatas> {
-        return ProjectDetailsHolder(v, mChildClickListener)
-    }
-
-
 }

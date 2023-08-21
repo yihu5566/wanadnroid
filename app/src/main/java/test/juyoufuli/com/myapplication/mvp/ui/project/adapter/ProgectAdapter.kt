@@ -1,12 +1,10 @@
-package test.juyoufuli.com.myapplication.mvp.ui.home.adapter
+package test.juyoufuli.com.myapplication.mvp.ui.project.adapter
 
-import android.view.View
-import com.jess.arms.base.BaseHolder
-import com.jess.arms.base.DefaultAdapter
-import com.jess.arms.utils.LogUtils
+import android.content.Context
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.recyclerview.CommonAdapter
+import test.juyoufuli.com.myapplication.app.recyclerview.base.ViewHolder
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectData
-import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectItemHolder
 import javax.inject.Inject
 
 /**
@@ -15,15 +13,12 @@ import javax.inject.Inject
  * Description:
  */
 class ProjectAdapter @Inject
-constructor(infos: ArrayList<ProjectData>) : DefaultAdapter<ProjectData>(infos) {
+constructor(context: Context, infos: ArrayList<ProjectData>) : CommonAdapter<ProjectData>(
+    context, R.layout.item_project_title, infos
+) {
 
-    override fun getHolder(v: View, viewType: Int): BaseHolder<ProjectData> {
-        LogUtils.debugInfo("ProjectAdapter")
-        return ProjectItemHolder(v)
-    }
-
-    override fun getLayoutId(viewType: Int): Int {
-        return R.layout.item_project_title
+    override fun convert(holder: ViewHolder?, t: ProjectData?, position: Int) {
+        TODO("Not yet implemented")
     }
 
 }

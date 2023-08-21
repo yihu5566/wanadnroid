@@ -3,13 +3,15 @@ package test.juyoufuli.com.myapplication
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.jess.arms.base.BaseApplication
 import com.kingja.loadsir.core.LoadSir
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
+import test.juyoufuli.com.myapplication.di.AppComponent
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback
+import test.juyoufuli.com.myapplication.di.DaggerAppComponent
 
 
 /**
@@ -17,20 +19,17 @@ import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback
  * Created Time : 2018-10-1209:19
  * Description:
  */
-class WanBaseApplication : BaseApplication() {
+class WanBaseApplication : Application() {
+
+    lateinit var appComponent: AppComponent
 
     companion object {
-        val ui_handler: Handler? = Handler(Looper.getMainLooper())
-        var application: BaseApplication? = null
+        val ui_handler: Handler = Handler(Looper.getMainLooper())
 
         fun runOnUiThread(runnable: Runnable?) {
             if (runnable != null) {
-                ui_handler!!.post(runnable)
+                ui_handler.post(runnable)
             }
-        }
-
-        fun getAppContext(): Application? {
-            return application
         }
     }
 
@@ -41,7 +40,8 @@ class WanBaseApplication : BaseApplication() {
     }
 
     private fun init() {
-        application = this
+
+        appComponent = DaggerAppComponent.create()
 
         //判断是不是夜间模式
         val mode = SPUtils.get(this, "night_mode", false) as Boolean
@@ -52,14 +52,16 @@ class WanBaseApplication : BaseApplication() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         LoadSir.beginBuilder()
-                .addCallback(EmptyCallback())
-                .addCallback(LoadingCallback())
-                .addCallback(TimeoutCallback())
-                .setDefaultCallback(LoadingCallback::class.java)
-
-                .commit()
+            .addCallback(EmptyCallback())
+            .addCallback(LoadingCallback())
+            .addCallback(TimeoutCallback())
+            .setDefaultCallback(LoadingCallback::class.java)
+            .commit()
 
     }
 
+    fun ComponentActivity.appComponent(): AppComponent {
+        return (application as WanBaseApplication).appComponent
+    }
 
 }

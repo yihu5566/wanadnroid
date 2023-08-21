@@ -1,10 +1,8 @@
 package test.juyoufuli.com.myapplication.mvp.ui.home
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
@@ -17,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import butterknife.BindView
+import com.blankj.utilcode.util.ActivityUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -24,19 +23,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.jess.arms.base.BaseActivity
-import com.jess.arms.di.component.AppComponent
-import com.jess.arms.utils.ArmsUtils
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.BaseActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
 import test.juyoufuli.com.myapplication.app.utils.ToastUtils.showToast
-import test.juyoufuli.com.myapplication.di.component.DaggerHomeComponent
-import test.juyoufuli.com.myapplication.di.module.HomeModule
+import test.juyoufuli.com.myapplication.databinding.ActivityMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
-import test.juyoufuli.com.myapplication.mvp.model.contract.HomeContract
-import test.juyoufuli.com.myapplication.mvp.presenter.HomePresenter
 import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
 import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
@@ -47,8 +41,8 @@ import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
-class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
-    CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheckedChangeListener,
+    View.OnClickListener {
 
     @JvmField
     @BindView(R.id.fl_content)
@@ -92,27 +86,11 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
     private lateinit var fragmentTransaction: FragmentTransaction
     var fragmentList: ArrayList<Fragment> = ArrayList()
 
-
     var isRecreat: Boolean = false
-
 
     private var lastClickTime: Long = 0//上次点击的时间
 
     private val spaceTime = 2000//时间间隔
-
-    override fun setupActivityComponent(appComponent: AppComponent) {
-        DaggerHomeComponent.builder().appComponent(appComponent).homeModule(HomeModule(this))
-            .build().inject(this)
-    }
-
-    override fun getActivity(): Activity {
-        return this
-    }
-
-    override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.activity_main
-    }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -158,10 +136,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
                 2 -> add(tagFragment, R.id.fl_content, "project")
                 3 -> add(tagFragment, R.id.fl_content, "navigation")
                 4 -> add(tagFragment, R.id.fl_content, "wechat")
-
             }
-
-
         }
 //        flContent = findViewById(R.id.fl_content)
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
@@ -182,6 +157,14 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
 //        StatusBarUtil.setColor(this, R.color.colorPrimary)
 //        StatusBarUtil.setTranslucentForDrawerLayout(this, dl_main_tab)
         init()
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun attachBinding(): ActivityMainBinding {
+        TODO("Not yet implemented")
     }
 
 
@@ -244,8 +227,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
             when (item.itemId) {
                 R.id.menu_History -> {
                     dl_main_tab?.closeDrawer(Gravity.LEFT)
-
-                    launchActivity(Intent(this, CollectArticleActivity::class.java))
+//                    ActivityUtils.startActivity(Intent(this, CollectArticleActivity::class.java))
                     true
                 }
 
@@ -271,7 +253,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
                     var intent = Intent(this, WebViewActivity::class.java)
                     intent.putExtra("link", "https://www.github.com/yihu5566")
                     intent.putExtra("title", "yihu5566")
-                    launchActivity(intent)
+                    ActivityUtils.startActivity(intent)
                     true
                 }
             }
@@ -285,33 +267,31 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
             dl_main_tab?.openDrawer(Gravity.LEFT)
         }
         toolbar_search?.setOnClickListener {
-            launchActivity(
-                Intent(
-                    this,
-                    SearchViewActivity::class.java
-                )
-            )
+//            ActivityUtils.startActivity(
+//                Intent(
+//                    this,
+//                    SearchViewActivity::class.java
+//                )
+//            )
         }
 
         tvPersonLogin.setOnClickListener {
             if (isLogin) {
                 dl_main_tab?.closeDrawer(Gravity.LEFT)
-                mPresenter?.LoginOut()
+//                mPresenter?.LoginOut()
             } else {
                 dl_main_tab?.closeDrawer(Gravity.LEFT)
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("type", 1)
-                launchActivity(intent)
+//                val intent = Intent(this, LoginActivity::class.java)
+//                intent.putExtra("type", 1)
+//                ActivityUtils.startActivity(intent)
             }
         }
         tvPersonRegister.setOnClickListener {
             dl_main_tab?.closeDrawer(Gravity.LEFT)
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("type", 2)
-            launchActivity(intent)
-
+//            val intent = Intent(this, LoginActivity::class.java)
+//            intent.putExtra("type", 2)
+//            ActivityUtils.startActivity(intent)
         }
-
     }
 
     override fun recreate() {
@@ -481,28 +461,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        LogUtils.d("onPause...")
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        LogUtils.d("onStop...")
-    }
-
-    override fun onDestroy() {
-        LogUtils.d("onDestroy...")
-        super.onDestroy()
-
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        LogUtils.d("onConfigurationChanged...")
-
-    }
 
     @SuppressLint("RestrictedApi")
     private fun disableShiftMode() {
@@ -526,25 +484,6 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
 
     }
 
-    override fun loginOutSucceed() {
-        isLogin = false
-        SPUtils.put(this, "isLogin", isLogin)
-        tvPersonName?.text = "用户名"
-        tvPersonLogin?.text = "登陆"
-        tvPersonRegister?.visibility = View.VISIBLE
-
-        SPUtils.clear(this)
-    }
-
-    override fun launchActivity(intent: Intent) {
-        checkNotNull(intent)
-        ArmsUtils.startActivity(intent)
-    }
-
-
-    override fun showMessage(message: String) {
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             val currentTime = System.currentTimeMillis()//当前系统时间
@@ -554,7 +493,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
                 showToast(this, "再点击一次退出")
                 return true//禁用返回键
             } else {
-                ArmsUtils.exitApp()
+                ActivityUtils.finishAllActivities()
                 return false//返回
             }
         } else {

@@ -19,12 +19,12 @@ class MainRecyclerViewAdapter constructor(var context: Context, articleBean: Arr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultItemHolder<ArticleBean> {
-        if (viewType == TYPE_HEADER) {
+        return if (viewType == TYPE_HEADER) {
             var headerMainBanner = mLayoutInflater.inflate(R.layout.header_main_banner, null)
-            return HeaderItemHolderImp(headerMainBanner, mBannerList,context)
+            HeaderItemHolderImp(headerMainBanner, mBannerList,context)
         } else {
             var inflate = mLayoutInflater.inflate(R.layout.article_item, parent, false)
-            return DefaultItemHolderImp(inflate)
+            DefaultItemHolderImp(inflate)
         }
 
     }

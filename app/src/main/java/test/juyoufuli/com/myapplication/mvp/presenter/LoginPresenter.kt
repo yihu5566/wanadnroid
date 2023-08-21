@@ -47,7 +47,7 @@ constructor(model: LoginContract.Model, rootView: LoginContract.View) : BasePres
 
                     override fun onError(t: Throwable) {
                         super.onError(t)
-                        ToastUtils.showToast(WanBaseApplication.application, t.message)
+//                        ToastUtils.showToast(WanBaseApplication.application, t.message)
                     }
                 })
 

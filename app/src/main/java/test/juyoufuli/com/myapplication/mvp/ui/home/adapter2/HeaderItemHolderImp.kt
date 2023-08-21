@@ -3,20 +3,14 @@ package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import android.widget.ImageView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.jess.arms.di.component.AppComponent
 import com.jess.arms.http.imageloader.ImageLoader
-import com.jess.arms.http.imageloader.glide.ImageConfigImpl
 import com.jess.arms.utils.ArmsUtils
 import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.WanBaseApplication
-import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils
-import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-import java.util.*
 
 /**
  * @Author : dongfang
@@ -34,13 +28,11 @@ class HeaderItemHolderImp(
 
     init {
         bannerGuideContent = itemVIew.findViewById(R.id.banner_guide_content)
-        if (mBannerList != null) {
-            initBanner(mBannerList!!)
-        }
+        mBannerList?.let { initBanner(it) }
 
         //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
         mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.context)
-        mImageLoader = mAppComponent!!.imageLoader()
+        mImageLoader = mAppComponent?.imageLoader()
     }
 
     override fun getData(data: ArticleBean) {
@@ -61,23 +53,17 @@ class HeaderItemHolderImp(
             imagePath.add(imagePath1)
             imageTitle.add(title)
         }
-        bannerGuideContent!!.setAdapter { bgaBanner: BGABanner, view: View, model: Any?, i: Int ->
-            val configImpl = ImageConfigImpl
-                .builder()
-                .url(model as String?)
-                .imageView(view as ImageView)
-                .build()
-            mImageLoader?.loadImage(WanBaseApplication.getAppContext(),configImpl)
-
-        }
-
-        bannerGuideContent!!.setData(imagePath, imageTitle)
-        bannerGuideContent!!.setDelegate { banner, itemView, model, position ->
+        bannerGuideContent?.setData(imagePath, imageTitle)
+        bannerGuideContent?.setDelegate { banner, itemView, model, position ->
 
             val intent = Intent(context, WebViewActivity::class.java)
             intent.putExtra("link", mBannerList[position].url)
             intent.putExtra("title", mBannerList[position].title)
             context.startActivity(intent)
+        }
+
+        bannerGuideContent?.setAdapter { bgaBanner: BGABanner, view: View, model: Any?, i: Int ->
+//            ImageLoaderUtils.loadImage(view as ImageView?, model, context)
         }
     }
 
