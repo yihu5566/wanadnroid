@@ -17,6 +17,7 @@ import com.jess.arms.utils.Preconditions.checkNotNull
 import com.paginate.Paginate
 import com.tbruyelle.rxpermissions2.RxPermissions
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.databinding.FragmentMainBinding
 import test.juyoufuli.com.myapplication.di.component.DaggerMainComponent
 import test.juyoufuli.com.myapplication.di.module.MainModule
 import test.juyoufuli.com.myapplication.mvp.contract.MainContract
@@ -35,13 +36,7 @@ import javax.inject.Inject
  * Description:
  */
 class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefreshLayout.OnRefreshListener {
-    @JvmField
-    @BindView(R.id.recyclerView)
-    internal var mRecyclerView: RecyclerView? = null
-    @JvmField
-    @BindView(R.id.swipeRefreshLayout)
-    internal var mSwipeRefreshLayout: SwipeRefreshLayout? = null
-    //internal var bannerGuideContent: BGABanner? = null
+  
     @JvmField
     @Inject
     internal var mLayoutManager: RecyclerView.LayoutManager? = null
@@ -68,16 +63,17 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     override fun setupFragmentComponent(appComponent: AppComponent) {
         DaggerMainComponent.builder().appComponent(appComponent).mainModule(MainModule(this)).build().inject(this)
     }
-
+    lateinit var binding: FragmentMainBinding
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_main, null)
+         binding = FragmentMainBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
-        mPresenter!!.requestBannerDataList()
-        mPresenter!!.mergeArticle(true)
+        mPresenter?.requestBannerDataList()
+        mPresenter?.mergeArticle(true)
 
 //        mPresenter!!.requestTopArticle(true)
 //        mPresenter!!.requestFromModel(true)
@@ -107,7 +103,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
                 }
             }
 
-            mPaginate = Paginate.with(mRecyclerView, callbacks)
+            mPaginate = Paginate.with(binding.recyclerView, callbacks)
                     .setLoadingTriggerThreshold(0)
                     .build()
             mPaginate!!.setHasMoreDataToLoad(false)
@@ -115,16 +111,16 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     }
 
     private fun initRecyclerView() {
-        mSwipeRefreshLayout!!.setOnRefreshListener(this)
-        ArmsUtils.configRecyclerView(mRecyclerView!!, mLayoutManager)
+        binding.swipeRefreshLayout.setOnRefreshListener(this)
+        ArmsUtils.configRecyclerView(binding.recyclerView, mLayoutManager)
         //我是分割线---------------------------------------
-        mRecyclerView!!.adapter = mAdapter
+        binding.recyclerView.adapter = mAdapter
 
-        mAdapter!!.setOnItemClickListener(object : DefaultItemHolder.OnItemClickListener {
+        mAdapter?.setOnItemClickListener(object : DefaultItemHolder.OnItemClickListener {
 
             override fun onItemClick(position: Int) {
                 if (position == 0) return
-                var data = mUsers!![position - 1]
+                val data = mUsers!![position - 1]
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra("link", data.link)
                 intent.putExtra("title", data.title)
@@ -134,7 +130,7 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
         })
 
 
-        mAdapter!!.setChildClickListener(object : DefaultItemHolder.OnViewClickListener {
+        mAdapter?.setChildClickListener(object : DefaultItemHolder.OnViewClickListener {
             override fun onViewClick(viewid: Int, position: Int, data: ArticleBean) {
                 if (viewid == R.id.iv_favorite_article) {
                     if (!data.collect) {
@@ -168,11 +164,11 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
     }
 
     override fun showLoading() {
-        mSwipeRefreshLayout!!.isRefreshing = true
+        binding.swipeRefreshLayout.isRefreshing = true
     }
 
     override fun hideLoading() {
-        mSwipeRefreshLayout!!.isRefreshing = false
+        binding.swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showMessage(message: String) {
@@ -195,8 +191,8 @@ class MainFragment : BaseFragment<MainPresenter>(), MainContract.View, SwipeRefr
 
     override fun updateBanner(systemDataResponse: BannerResponse) {
         mmBannerList = systemDataResponse.data
-        mAdapter!!.mBannerList = mmBannerList
-        mAdapter!!.notifyDataSetChanged()
+        mAdapter?.mBannerList = mmBannerList
+        mAdapter?.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

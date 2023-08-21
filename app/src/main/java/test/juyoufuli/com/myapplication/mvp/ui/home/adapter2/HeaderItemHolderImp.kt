@@ -5,6 +5,10 @@ import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import cn.bingoogolapple.bgabanner.BGABanner
+import com.jess.arms.di.component.AppComponent
+import com.jess.arms.http.imageloader.ImageLoader
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl
+import com.jess.arms.utils.ArmsUtils
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.WanBaseApplication
 import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils
@@ -19,14 +23,24 @@ import java.util.*
  * @Created Time : 2019-03-28  14:36
  * @Description:
  */
-class HeaderItemHolderImp(itemVIew: View, var mBannerList: List<BannerInfor>?, var context: Context) : DefaultItemHolder<ArticleBean>(itemVIew), View.OnClickListener {
+class HeaderItemHolderImp(
+    itemVIew: View,
+    var mBannerList: List<BannerInfor>?,
+    var context: Context
+) : DefaultItemHolder<ArticleBean>(itemVIew), View.OnClickListener {
     var bannerGuideContent: BGABanner? = null
+    var mAppComponent: AppComponent? = null
+    var mImageLoader: ImageLoader? = null//用于加载图片的管理类,默认使用 Glide,使用策略模式,可替换框架nt: BGABanner? = null
 
     init {
-        bannerGuideContent = itemVIew!!.findViewById(R.id.banner_guide_content)
+        bannerGuideContent = itemVIew.findViewById(R.id.banner_guide_content)
         if (mBannerList != null) {
             initBanner(mBannerList!!)
         }
+
+        //可以在任何可以拿到 Context 的地方,拿到 AppComponent,从而得到用 Dagger 管理的单例对象
+        mAppComponent = ArmsUtils.obtainAppComponentFromContext(itemView.context)
+        mImageLoader = mAppComponent!!.imageLoader()
     }
 
     override fun getData(data: ArticleBean) {
@@ -48,7 +62,12 @@ class HeaderItemHolderImp(itemVIew: View, var mBannerList: List<BannerInfor>?, v
             imageTitle.add(title)
         }
         bannerGuideContent!!.setAdapter { bgaBanner: BGABanner, view: View, model: Any?, i: Int ->
-            ImageLoaderUtils.loadImage(view as ImageView, model, WanBaseApplication.getAppContext())
+            val configImpl = ImageConfigImpl
+                .builder()
+                .url(model as String?)
+                .imageView(view as ImageView)
+                .build()
+            mImageLoader?.loadImage(WanBaseApplication.getAppContext(),configImpl)
 
         }
 

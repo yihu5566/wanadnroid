@@ -60,7 +60,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
 
     @JvmField
     @BindView(R.id.navigationView)
-    var mNavigationView: NavigationView? = null
+    internal var mNavigationView: NavigationView? = null
 
     @JvmField
     @BindView(R.id.navigation)
@@ -151,7 +151,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
             LogUtils.d("initData剩余fragment..." + supportFragmentManager.fragments.size)
 
             var tagFragment = savedInstanceState.get("currentFragmentIndex") as Int
-            currentFragment = fragmentList.get(tagFragment)
+            currentFragment = fragmentList[tagFragment]
             when (tagFragment) {
                 0 -> add(tagFragment, R.id.fl_content, "main")
                 1 -> add(tagFragment, R.id.fl_content, "system")
@@ -165,8 +165,8 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
         }
 //        flContent = findViewById(R.id.fl_content)
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
-//        mNavigationView = findViewById<NavigationView>(R.id.navigationView)
-        var headerLayout = mNavigationView?.getHeaderView(0)!! // 0-index header
+        mNavigationView = findViewById(R.id.navigationView)
+        val headerLayout = mNavigationView?.getHeaderView(0)!! // 0-index header
         tvPersonName = headerLayout.findViewById(R.id.tv_person_name)
         tvPersonLogin = headerLayout.findViewById(R.id.tv_person_login)
         tvPersonRegister = headerLayout.findViewById(R.id.tv_person_register)
@@ -293,7 +293,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
             )
         }
 
-        tvPersonLogin?.setOnClickListener {
+        tvPersonLogin.setOnClickListener {
             if (isLogin) {
                 dl_main_tab?.closeDrawer(Gravity.LEFT)
                 mPresenter?.LoginOut()
@@ -304,7 +304,7 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
                 launchActivity(intent)
             }
         }
-        tvPersonRegister?.setOnClickListener {
+        tvPersonRegister.setOnClickListener {
             dl_main_tab?.closeDrawer(Gravity.LEFT)
             val intent = Intent(this, LoginActivity::class.java)
             intent.putExtra("type", 2)
@@ -345,15 +345,15 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
         }
         isLogin = true
         SPUtils.put(this, "isLogin", isLogin)
-        tvPersonName?.text = intent?.getStringExtra("username")
-        tvPersonLogin?.text = "退出登录"
-        tvPersonRegister?.visibility = View.GONE
+        tvPersonName.text = intent?.getStringExtra("username")
+        tvPersonLogin.text = "退出登录"
+        tvPersonRegister.visibility = View.GONE
     }
 
 
     fun add(idFragment: Int, id: Int, tag: String) {
         if (fragmentList.size == 0) return
-        var fragment = fragmentList.get(idFragment)
+        var fragment = fragmentList[idFragment]
         fragmentTransaction = supportFragmentManager.beginTransaction()
         //优先检查，fragment是否存在，避免重叠
         var tempFragment = supportFragmentManager.findFragmentByTag(tag)
@@ -363,12 +363,12 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
         if (fragment.isAdded) {
             addOrShowFragment(fragmentTransaction, fragment, id, tag)
         } else {
-            if (currentFragment.isAdded()) {
-                fragmentTransaction?.hide(currentFragment)?.add(id, fragment, tag).commit()
-            } else {
-                fragmentTransaction?.add(id, fragment, tag)?.commit()
-            }
             currentFragment = fragment
+            if (currentFragment.isAdded) {
+                fragmentTransaction.hide(currentFragment).add(id, fragment, tag).commit()
+            } else {
+                fragmentTransaction.add(id, fragment, tag).commit()
+            }
         }
     }
 
@@ -385,9 +385,9 @@ class MainActivity : BaseActivity<HomePresenter>(), HomeContract.View,
         } else {
             transaction.hide(currentFragment).show(fragment).commit()
         }
-        currentFragment?.userVisibleHint = false
+        currentFragment.userVisibleHint = false
         currentFragment = fragment
-        currentFragment?.userVisibleHint = true
+        currentFragment.userVisibleHint = true
     }
 
 
