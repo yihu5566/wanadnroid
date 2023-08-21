@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.mvp.ui.home.adapter
+package test.juyoufuli.com.myapplication.mvp.ui.navigation.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context

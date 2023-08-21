@@ -1,25 +1,13 @@
 package test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import butterknife.BindView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.jess.arms.base.BaseFragment
-import com.jess.arms.di.component.AppComponent
-import com.jess.arms.utils.ArmsUtils
-import com.jess.arms.utils.LogUtils
-import com.jess.arms.utils.Preconditions
-import net.lucode.hackware.magicindicator.MagicIndicator
+import com.blankj.utilcode.util.LogUtils
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -27,12 +15,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
-import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.di.component.DaggerWeChatNumberComponent
-import test.juyoufuli.com.myapplication.di.module.WeChatNumberModule
-import test.juyoufuli.com.myapplication.mvp.contract.WeChatNumberContract
-import test.juyoufuli.com.myapplication.mvp.entity.WeChatNumberResponse
-import test.juyoufuli.com.myapplication.mvp.presenter.WeChatNumberPresenter
+import test.juyoufuli.com.myapplication.app.BaseFragment
+import test.juyoufuli.com.myapplication.databinding.FragmentWechatnumberBinding
 import test.juyoufuli.com.myapplication.mvp.ui.tab.RecyclerViewFragment
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
 import javax.inject.Inject
@@ -42,81 +26,64 @@ import javax.inject.Inject
  * @Created Time : 2019-03-14  10:24
  * @Description:
  */
-class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumberContract.View, View.OnClickListener {
-
+class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.OnClickListener {
 
     @JvmField
     @Inject
     var tagNameList: ArrayList<String>? = null
+
     @JvmField
     @Inject
     var fragmentList: ArrayList<RecyclerViewFragment>? = null
-    @JvmField
-    @BindView(R.id.toolbar_title)
-    var toolbarTitle: TextView? = null
-    @JvmField
-    @BindView(R.id.vp_system_details_content)
-    var mViewPager: ViewPager? = null
-    @JvmField
-    @BindView(R.id.riv_system_details_top)
-    var magicIndicator: MagicIndicator? = null
-    @JvmField
-    @BindView(R.id.fab_wechat_number)
-    var mFloatingActionButton: FloatingActionButton? = null
-    @JvmField
-    @BindView(R.id.cdl_wechat)
-    var mCoordinatorLayout: CoordinatorLayout? = null
+
     /**
      * 默认的公众号id
      */
     lateinit var cid: String
 
-    override val fragment: Fragment
-        get() = this
 
-    override fun refreshData(response: WeChatNumberResponse) {
-        tagNameList!!.clear()
-        val children = response.data
-        var stringb: StringBuffer
-        for (i in 0 until children.size) {
-            stringb = StringBuffer()
-            stringb.append(children[i].id)
-            stringb.append("*")
-            stringb.append(children[i].name)
-
-            tagNameList!!.add(stringb.toString())
-        }
-
-        initDataList()
-
-    }
-
-    override fun setupFragmentComponent(appComponent: AppComponent) {
-        DaggerWeChatNumberComponent.builder().appComponent(appComponent).weChatNumberModule(WeChatNumberModule(this)).build().inject(this)
-    }
-
-
-    override fun showMessage(message: String) {
-    }
+//    override fun refreshData(response: WeChatNumberResponse) {
+//        tagNameList!!.clear()
+//        val children = response.data
+//        var stringb: StringBuffer
+//        for (i in 0 until children.size) {
+//            stringb = StringBuffer()
+//            stringb.append(children[i].id)
+//            stringb.append("*")
+//            stringb.append(children[i].name)
+//
+//            tagNameList!!.add(stringb.toString())
+//        }
+//
+//        initDataList()
+//
+//    }
 
 
     override fun initData(savedInstanceState: Bundle?) {
         //获取公众号列表
-        mPresenter!!.requestSystemDataList()
+//        mPresenter?.requestSystemDataList()
 
-        mFloatingActionButton!!.setOnClickListener(this@WeChatNumberFragment)
+        binding.fabWechatNumber.setOnClickListener(this@WeChatNumberFragment)
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun attachBinding(): FragmentWechatnumberBinding {
+        return FragmentWechatnumberBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
+    override fun invalidate() {
+
     }
 
 
     override fun onClick(v: View?) {
-//        Snackbar.make(mCoordinatorLayout!!, "已删除一个会话", Snackbar.LENGTH_SHORT)
-//                .setAction("撤销") { view ->
-//                    Toast.makeText(activity, "撤销了删除", Toast.LENGTH_SHORT).show()
-//
-//                }.show()
-        val intent = Intent(activity, WeChatSearchHistoryActivity::class.java)
-        intent.putExtra("cid", cid)
-        launchActivity(intent)
+//        val intent = Intent(activity, WeChatSearchHistoryActivity::class.java)
+//        intent.putExtra("cid", cid)
+//        launchActivity(intent)
     }
 
     private fun initDataList() {
@@ -151,7 +118,7 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
                 colorTransitionPagerTitleView.setText(tagNameList!!.get(index).split("*").get(1))
                 colorTransitionPagerTitleView.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(view: View) {
-                        mViewPager!!.setCurrentItem(index)
+                        binding.vpSystemDetailsContent.setCurrentItem(index)
                     }
                 })
 
@@ -166,47 +133,37 @@ class WeChatNumberFragment : BaseFragment<WeChatNumberPresenter>(), WeChatNumber
         }
 
 
-        magicIndicator!!.setNavigator(commonNavigator)
+        binding.rivSystemDetailsTop.setNavigator(commonNavigator)
 
-        ViewPagerHelper.bind(magicIndicator, mViewPager)
+        ViewPagerHelper.bind(binding.rivSystemDetailsTop, binding.vpSystemDetailsContent)
 
-        mViewPager!!.adapter = myPagerAdapter
+        binding.vpSystemDetailsContent.adapter = myPagerAdapter
 
-        mViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        binding.vpSystemDetailsContent.addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
 
             override fun onPageSelected(position: Int) {
 //                toolbarTitle!!.setText(tagNameList!!.get(position).split("*").get(1))
-                var get = fragmentList!!.get(position)
+                var get = fragmentList?.get(position)
                 var value = Message()
                 var bundle = Bundle()
                 bundle.putString("cid", tagNameList!!.get(position).split("*").get(0))
                 value.data = bundle
-                get.setData(value)
+//                get.setData(value)
                 cid = tagNameList!!.get(position).split("*").get(0)
-                LogUtils.debugInfo("cid=" + cid)
+                LogUtils.d("cid=" + cid)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
 
             }
         })
-
-    }
-
-
-    override fun setData(data: Any?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_wechatnumber, null)
-    }
-
-    override fun launchActivity(intent: Intent) {
-        Preconditions.checkNotNull(intent)
-        ArmsUtils.startActivity(intent)
     }
 }

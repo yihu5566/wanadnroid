@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.airbnb.mvrx.MavericksView
 
 /**
  * @Author : dongfang
  * @Created Time : 2023-08-21  11:41
  * @Description:
  */
-abstract class BaseFragment<V : ViewBinding> : Fragment() {
+abstract class BaseFragment<V : ViewBinding> : Fragment(), MavericksView {
     // viewbind
     lateinit var binding: V
     override fun onCreateView(

@@ -1,0 +1,124 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdk ProjectBuildConfig.compileSdkVersion
+//    buildToolsVersion ProjectBuildConfig.buildToolsVersion
+    defaultConfig {
+        minSdk ProjectBuildConfig.minSdkVersion
+        targetSdk ProjectBuildConfig.targetSdkVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+//    buildFeatures {
+//        dataBinding = true
+//    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_11
+//        targetCompatibility JavaVersion.VERSION_11
+//    }
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api AndroidX.AppCompat
+    //kotlin
+    api AndroidX.CoreKtx
+    api Kotlin.StdlibJdk7
+    api Kotlin.KotlinReflect
+
+    //lifecycle
+    api AndroidX.LifecycleRuntime
+    api AndroidX.LifecycleCommon
+    api AndroidX.LifecycleExtensions
+
+    // viewModel
+    api AndroidX.ViewModelKtx
+    api AndroidX.FragmentKtx
+
+    // liveData
+    api AndroidX.LiveData
+    api GitHub.UnpeekLivedata
+    //navigation
+    api AndroidX.NavigationKtx
+    api AndroidX.navigationFragmentKtx
+    //retrofit
+    api GitHub.retrofit2
+    api GitHub.retrofit2Gson
+    api GitHub.PersistentCookieJar
+    api GitHub.retrofitUrlManager
+    //注解库
+    api GitHub.koin
+    api GitHub.koinCompat
+    //util
+    api GitHub.utilCodex
+
+    //权限相关
+    api GitHub.xPermissions
+    //androidx UI
+    api AndroidX.ConstraintLayout
+    api AndroidX.Material
+    api AndroidX.Swiperefreshlayout
+    //sp存储
+    api AndroidX.DataStore
+    //BaseAdapter
+    api GitHub.cymChadAdapter
+
+    //管理界面状态库
+    api GitHub.loadSir
+    //glide
+    api GitHub.glide
+    api GitHub.glideComplier
+    api GitHub.grideTransformations
+    //屏幕适配
+    api GitHub.autoSize
+    //防崩溃
+    api GitHub.crash
+    //轮播图
+    api GitHub.bannerViewPager
+    //日历组件
+    api GitHub.calendarView
+    //时间选择器
+    api GitHub.wheelPicker
+    // 皮肤
+    api GitHub.reflex
+    api GitHub.paintedskin
+    api GitHub.skin_constraintlayout_compat
+    api GitHub.skin_standard_plugin
+    //更新
+    api GitHub.XUpdate
+    api GitHub.XUpdateAPI
+    //ali推送
+//    api GitHub.aliPush
+    //弹窗
+    api GitHub.basePopup
+    //华为扫码
+//    api GitHub.scanQr
+    //图片显示
+    api GitHub.photoView
+    //微信支付，登录，分享
+//    api GitHub.wchatPay
+    //qq登录，分享
+    api GitHub.qq
+    //html文件修改
+    api GitHub.Jsoup
+    //图片选择
+    api GitHub.pictureSelector
+    //debugApi 'com.squareup.leakcanary:leakcanary-android:2.8.1'
+    api AndroidX.MultiDex
+    //test
+    testApi AndroidX.Junit
+    androidTestApi AndroidX.TestExtJunit
+    androidTestApi AndroidX.TestEspresso
+
+}

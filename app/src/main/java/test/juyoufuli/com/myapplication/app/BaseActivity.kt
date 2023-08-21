@@ -9,13 +9,13 @@ import androidx.viewbinding.ViewBinding
  * @Created Time : 2023-08-21  11:41
  * @Description:
  */
-abstract class BaseActivity<V : ViewBinding>() : AppCompatActivity() {
+abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
     // viewbind
-    var binding: V? = null
+    lateinit var binding: V
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = attachBinding()
-        setContentView(binding?.root)
+        setContentView(binding.root)
         initData(savedInstanceState)
         initView(savedInstanceState)
     }

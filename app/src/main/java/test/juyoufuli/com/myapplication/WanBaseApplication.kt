@@ -3,15 +3,13 @@ package test.juyoufuli.com.myapplication
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.airbnb.mvrx.Mavericks
 import com.kingja.loadsir.core.LoadSir
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
-import test.juyoufuli.com.myapplication.di.AppComponent
 import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.LoadingCallback
 import test.juyoufuli.com.myapplication.mvp.ui.callback.TimeoutCallback
-import test.juyoufuli.com.myapplication.di.DaggerAppComponent
 
 
 /**
@@ -21,7 +19,6 @@ import test.juyoufuli.com.myapplication.di.DaggerAppComponent
  */
 class WanBaseApplication : Application() {
 
-    lateinit var appComponent: AppComponent
 
     companion object {
         val ui_handler: Handler = Handler(Looper.getMainLooper())
@@ -40,9 +37,7 @@ class WanBaseApplication : Application() {
     }
 
     private fun init() {
-
-        appComponent = DaggerAppComponent.create()
-
+        Mavericks.initialize(this)
         //判断是不是夜间模式
         val mode = SPUtils.get(this, "night_mode", false) as Boolean
         //进入方法就先注册上监听
@@ -57,11 +52,5 @@ class WanBaseApplication : Application() {
             .addCallback(TimeoutCallback())
             .setDefaultCallback(LoadingCallback::class.java)
             .commit()
-
     }
-
-    fun ComponentActivity.appComponent(): AppComponent {
-        return (application as WanBaseApplication).appComponent
-    }
-
 }

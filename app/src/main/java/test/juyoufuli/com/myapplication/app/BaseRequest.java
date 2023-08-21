@@ -1,7 +1,9 @@
 package test.juyoufuli.com.myapplication.app;
 
 
-import io.reactivex.functions.Function;
+
+import com.google.common.base.Function;
+
 import test.juyoufuli.com.myapplication.app.exception.OnHttpDataNullException;
 import test.juyoufuli.com.myapplication.app.exception.OnHttpServiceException;
 import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse;

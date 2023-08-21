@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -14,15 +15,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import butterknife.BindView
 import com.blankj.utilcode.util.ActivityUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.dl_main_tab
+import kotlinx.android.synthetic.main.include_title.toolbar_menu
+import kotlinx.android.synthetic.main.include_title.toolbar_search
+import kotlinx.android.synthetic.main.include_title.toolbar_title
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
@@ -31,46 +33,15 @@ import test.juyoufuli.com.myapplication.app.utils.SPUtils
 import test.juyoufuli.com.myapplication.app.utils.ToastUtils.showToast
 import test.juyoufuli.com.myapplication.databinding.ActivityMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
-import test.juyoufuli.com.myapplication.mvp.ui.account.CollectArticleActivity
-import test.juyoufuli.com.myapplication.mvp.ui.account.LoginActivity
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
-import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheckedChangeListener,
     View.OnClickListener {
-
-    @JvmField
-    @BindView(R.id.fl_content)
-    internal var flContent: FrameLayout? = null
-
-    @JvmField
-    @BindView(R.id.dl_main_tab)
-    internal var dl_main_tab: DrawerLayout? = null
-
-    @JvmField
-    @BindView(R.id.navigationView)
-    internal var mNavigationView: NavigationView? = null
-
-    @JvmField
-    @BindView(R.id.navigation)
-    internal var navigation: BottomNavigationView? = null
-
-    @JvmField
-    @BindView(R.id.toolbar_title)
-    internal var toolbar_title: TextView? = null
-
-    @JvmField
-    @BindView(R.id.toolbar_menu)
-    internal var toolbar_menu: RelativeLayout? = null
-
-    @JvmField
-    @BindView(R.id.toolbar_search)
-    internal var toolbar_search: RelativeLayout? = null
 
     lateinit var currentFragment: Fragment
     var currentFragmentIndex: Int? = 0
@@ -140,15 +111,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
         }
 //        flContent = findViewById(R.id.fl_content)
 //        dl_main_tab = findViewById<DrawerLayout>(R.id.dl_main_tab)
-        mNavigationView = findViewById(R.id.navigationView)
-        val headerLayout = mNavigationView?.getHeaderView(0)!! // 0-index header
+        val headerLayout = binding.navigationView.getHeaderView(0)!! // 0-index header
         tvPersonName = headerLayout.findViewById(R.id.tv_person_name)
         tvPersonLogin = headerLayout.findViewById(R.id.tv_person_login)
         tvPersonRegister = headerLayout.findViewById(R.id.tv_person_register)
 
         ivPersonPhoto = headerLayout.findViewById(R.id.tv_person)
 
-        var item = mNavigationView?.menu?.getItem(1)?.actionView // 0-index header
+        var item = binding.navigationView.menu.getItem(1)?.actionView // 0-index header
         var switchView = item?.findViewById<Switch>(R.id.switchForActionBar)
 //        //条目中的控件
         switchView?.setOnClickListener(this@MainActivity)
@@ -160,26 +130,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun attachBinding(): ActivityMainBinding {
-        TODO("Not yet implemented")
+        return ActivityMainBinding.inflate(LayoutInflater.from(this))
     }
 
 
-    fun init() {
+    private fun init() {
         LogUtils.d("onStart...")
 
 //        disableShiftMode()
         isLogin = SPUtils.get(this, "isLogin", false) as Boolean
-        navigation?.setOnNavigationItemSelectedListener { item ->
+        binding.navigation.setOnNavigationItemSelectedListener { item ->
             item.isChecked = item.itemId == isSelect
             LogUtils.d("bottom_menu_home..." + supportFragmentManager.fragments.size)
             when (item.itemId) {
                 R.id.bottom_menu_home -> {
                     add(0, R.id.fl_content, "main")
-//                    navigation?.menu.getItem(0).isChecked = false
+                    //                    navigation?.menu.getItem(0).isChecked = false
                     toolbar_title?.text = ("首页")
                     currentFragmentIndex = 0
                     true
@@ -187,7 +157,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 R.id.bottom_menu_found -> {
                     add(1, R.id.fl_content, "system")
-//                    navigation?.menu.getItem(1).isChecked = false
+                    //                    navigation?.menu.getItem(1).isChecked = false
                     toolbar_title?.text = ("知识体系")
                     currentFragmentIndex = 1
                     true
@@ -195,7 +165,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 R.id.bottom_menu_project -> {
                     add(2, R.id.fl_content, "project")
-//                    navigation?.menu.getItem(2).isChecked = false
+                    //                    navigation?.menu.getItem(2).isChecked = false
                     toolbar_title?.text = ("项目")
                     currentFragmentIndex = 2
                     true
@@ -203,7 +173,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 R.id.bottom_menu_navigation -> {
                     add(3, R.id.fl_content, "navigation")
-//                    navigation?.menu.getItem(2).isChecked = false
+                    //                    navigation?.menu.getItem(2).isChecked = false
                     toolbar_title?.text = ("导航")
                     currentFragmentIndex = 3
                     true
@@ -211,7 +181,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 R.id.bottom_menu_wechat -> {
                     add(4, R.id.fl_content, "wechat")
-//                    navigation?.menu.getItem(2).isChecked = false
+                    //                    navigation?.menu.getItem(2).isChecked = false
                     toolbar_title?.text = ("公众号")
                     currentFragmentIndex = 4
                     true
@@ -222,28 +192,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
         }
 
 
-        mNavigationView?.setNavigationItemSelectedListener { item ->
+        binding.navigationView.setNavigationItemSelectedListener { item ->
 
             when (item.itemId) {
                 R.id.menu_History -> {
                     dl_main_tab?.closeDrawer(Gravity.LEFT)
-//                    ActivityUtils.startActivity(Intent(this, CollectArticleActivity::class.java))
+                    //                    ActivityUtils.startActivity(Intent(this, CollectArticleActivity::class.java))
                     true
                 }
 
                 R.id.menu_Setting -> {
-//                    var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
+                    //                    var mode = SPUtils.get(applicationContext, "night_mode", false) as Boolean
                     //进入方法就先注册上监听
-//                    var switch = item.actionView.findViewById(R.id.switchForActionBar) as Switch
+                    //                    var switch = item.actionView.findViewById(R.id.switchForActionBar) as Switch
                     //进入方法就先注册上监听
-//                    if (!mode) {
-//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                    } else {
-//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//                    }
-//                    switch.isChecked = !mode
-//                    dl_main_tab?.closeDrawer(Gravity.LEFT)
-//                    launchActivity(Intent(this, SettingActivity::class.java))
+                    //                    if (!mode) {
+                    //                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    //                    } else {
+                    //                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    //                    }
+                    //                    switch.isChecked = !mode
+                    //                    dl_main_tab?.closeDrawer(Gravity.LEFT)
+                    //                    launchActivity(Intent(this, SettingActivity::class.java))
                     true
                 }
 
@@ -312,10 +282,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
         super.recreate()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (TextUtils.isEmpty(intent?.getStringExtra("username")) || TextUtils.isEmpty(
-                intent?.getStringExtra(
+        if (TextUtils.isEmpty(intent.getStringExtra("username")) || TextUtils.isEmpty(
+                intent.getStringExtra(
                     "password"
                 )
             )
@@ -325,7 +295,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
         }
         isLogin = true
         SPUtils.put(this, "isLogin", isLogin)
-        tvPersonName.text = intent?.getStringExtra("username")
+        tvPersonName.text = intent.getStringExtra("username")
         tvPersonLogin.text = "退出登录"
         tvPersonRegister.visibility = View.GONE
     }
@@ -374,7 +344,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
     override fun onResume() {
         super.onResume()
         LogUtils.d("onResume...")
-        navigation?.selectedItemId = isSelect
+        binding.navigation.selectedItemId = isSelect
 
         dl_main_tab?.addDrawerListener(object : DrawerLayout.DrawerListener {//添加开发者自己处理的监听者
 
@@ -464,7 +434,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
     @SuppressLint("RestrictedApi")
     private fun disableShiftMode() {
-        val menuView = navigation?.getChildAt(0) as BottomNavigationMenuView
+        val menuView = binding.navigationView.getChildAt(0) as BottomNavigationMenuView
         try {
             val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
             shiftingMode.isAccessible = true

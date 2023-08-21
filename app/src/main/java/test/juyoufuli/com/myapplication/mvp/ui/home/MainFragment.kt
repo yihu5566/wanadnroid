@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.airbnb.mvrx.fragmentViewModel
 import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
@@ -13,10 +14,10 @@ import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.databinding.FragmentMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
-import test.juyoufuli.com.myapplication.mvp.entity.BannerResponse
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
 import javax.inject.Inject
 
 /**
@@ -24,15 +25,13 @@ import javax.inject.Inject
  * Created Time : 2018-09-27  15:50
  * Description:
  */
-class MainFragment() : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnRefreshListener {
+class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnRefreshListener {
 
     @JvmField
     @Inject
     internal var mLayoutManager: RecyclerView.LayoutManager? = null
 
-    @JvmField
-    @Inject
-    internal var mUsers: ArrayList<ArticleBean>? = null
+    internal var mUsers = mutableListOf<ArticleBean>()
 
     @JvmField
     @Inject
@@ -42,6 +41,8 @@ class MainFragment() : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.O
     private var isLoadingMore: Boolean = false
     private var isFrist: Boolean = true
     var mmBannerList: ArrayList<BannerInfor>? = null
+
+    val viewModel: HomeDaggerViewModel by fragmentViewModel()
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
@@ -55,7 +56,6 @@ class MainFragment() : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.O
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
     }
 
     override fun attachBinding(): FragmentMainBinding {
@@ -131,7 +131,6 @@ class MainFragment() : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.O
     }
 
 
-
     /**
      * 下拉刷新的刷新
      */
@@ -150,6 +149,10 @@ class MainFragment() : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.O
         super.onDestroyView()
         mUsers?.clear()
         mmBannerList?.clear()
+    }
+
+    override fun invalidate() {
+
     }
 
 }

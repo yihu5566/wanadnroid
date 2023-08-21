@@ -52,6 +52,10 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
         return TabFragmentBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
+    override fun invalidate() {
+
+    }
+
     private fun initRecyclerView() {
         ArmsUtils.configRecyclerView(mRecyclerView!!, mLayoutManager)
 

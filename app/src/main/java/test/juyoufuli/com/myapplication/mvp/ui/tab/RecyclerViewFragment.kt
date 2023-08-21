@@ -2,7 +2,6 @@ package test.juyoufuli.com.myapplication.mvp.ui.tab
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.blankj.utilcode.util.LogUtils
@@ -11,10 +10,7 @@ import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ViewPagerItemBinding
-import test.juyoufuli.com.myapplication.mvp.contract.SystemDataDetailsItemContract
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
-import test.juyoufuli.com.myapplication.mvp.entity.ArticleResponse
-import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import javax.inject.Inject
 
 /**
@@ -22,8 +18,7 @@ import javax.inject.Inject
  * Created Time : 2018-10-17  16:33
  * Description:
  */
-class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>(),
-    SystemDataDetailsItemContract.View {
+class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
 
 
     @JvmField
@@ -46,10 +41,6 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>(),
     private var totalPage: Int = 0
 
     private var isFrist = true
-    var mBaseLoadService: LoadService<*>? = null
-
-    override val fragment: Fragment
-        get() = this
 
     override fun initData(savedInstanceState: Bundle?) {
         LogUtils.d("---initData---")
@@ -62,11 +53,15 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>(),
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun attachBinding(): ViewPagerItemBinding {
         return ViewPagerItemBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
+    override fun invalidate() {
+
     }
 
     private fun initPaginate() {
@@ -96,11 +91,11 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>(),
         }
     }
 
-    override fun refreshData(response: ArticleResponse) {
-        mBaseLoadService!!.showSuccess()
-        if (response.data.pageCount == 0) {
-            mBaseLoadService!!.showCallback(EmptyCallback::class.java)
-        }
-        page = response.data.curPage
-    }
+//    override fun refreshData(response: ArticleResponse) {
+//        mBaseLoadService!!.showSuccess()
+//        if (response.data.pageCount == 0) {
+//            mBaseLoadService!!.showCallback(EmptyCallback::class.java)
+//        }
+//        page = response.data.curPage
+//    }
 }

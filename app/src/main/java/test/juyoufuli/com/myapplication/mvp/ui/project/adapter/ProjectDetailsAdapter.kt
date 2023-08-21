@@ -16,12 +16,6 @@ class ProjectDetailsAdapter @Inject constructor(
     context: Context, mList: ArrayList<ProjectDatas>
 ) : CommonAdapter<ProjectDatas>(context, R.layout.item_project_details, mList) {
 
-    private var mChildClickListener: ProjectDetailsHolder.ChildClickListener? = null
-
-    fun setChildClickListener(mChildClickListener: ProjectDetailsHolder.ChildClickListener) {
-        this.mChildClickListener = mChildClickListener
-    }
-
     override fun convert(holder: ViewHolder?, t: ProjectDatas?, position: Int) {
         TODO("Not yet implemented")
     }

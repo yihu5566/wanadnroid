@@ -9,10 +9,6 @@ import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectData
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectDatas
-import test.juyoufuli.com.myapplication.mvp.entity.ProjectDetailsResponse
-import test.juyoufuli.com.myapplication.mvp.entity.ProjectResponse
-import test.juyoufuli.com.myapplication.mvp.presenter.ProjectPresenter
-import test.juyoufuli.com.myapplication.mvp.ui.callback.EmptyCallback
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAdapter
 
@@ -22,7 +18,7 @@ import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAda
  * Created Time : 2018-10-31  09:27
  * Description:
  */
-class ProjectFragment() : BaseFragment<ActivityProgectMainBinding>() {
+class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
 
     var mRecyclerView: RecyclerView? = null
     var rlvProjectContent: RecyclerView? = null
@@ -35,8 +31,6 @@ class ProjectFragment() : BaseFragment<ActivityProgectMainBinding>() {
     var cid: String = "0"
     var mPaginate: Paginate? = null
     var isLoadingMore: Boolean = false
-    var mPresenter: ProjectPresenter? = null
-
 
     override fun initData(savedInstanceState: Bundle?) {
 //        initRecyclerView()
@@ -50,6 +44,10 @@ class ProjectFragment() : BaseFragment<ActivityProgectMainBinding>() {
 
     override fun attachBinding(): ActivityProgectMainBinding {
         return ActivityProgectMainBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
+    override fun invalidate() {
+
     }
 
     var loadService: LoadService<*>? = null
@@ -133,7 +131,7 @@ class ProjectFragment() : BaseFragment<ActivityProgectMainBinding>() {
         if (mPaginate == null) {
             val callbacks = object : Paginate.Callbacks {
                 override fun onLoadMore() {
-                    mPresenter?.getProjectDetails(page = page.toString(), cid = cid)
+//                    mPresenter?.getProjectDetails(page = page.toString(), cid = cid)
                 }
 
                 override fun isLoading(): Boolean {
