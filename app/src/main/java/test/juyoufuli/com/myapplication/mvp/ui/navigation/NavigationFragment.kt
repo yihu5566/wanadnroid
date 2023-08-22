@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ExpandableListView
-import butterknife.BindView
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.kingja.loadsir.core.LoadService
-import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.FragmentNavigationBinding
 import test.juyoufuli.com.myapplication.mvp.entity.Article
@@ -25,9 +23,6 @@ import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 class NavigationFragment : BaseFragment<FragmentNavigationBinding>(),
     ExpandableListView.OnChildClickListener {
 
-    @JvmField
-    @BindView(R.id.rlv_navigation)
-    var mExpandableListView: ExpandableListView? = null
     var parentList = mutableListOf<String>()
     var childList = mutableListOf<List<Article>>()
     var mAdapter: NavigationAdapter? = null
@@ -42,12 +37,11 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding>(),
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun attachBinding(): FragmentNavigationBinding {
-        val rootView = FragmentNavigationBinding.inflate(LayoutInflater.from(requireContext()))
-        return rootView
+        return FragmentNavigationBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
     override fun invalidate() {
@@ -64,9 +58,8 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding>(),
             parentList as ArrayList<String>,
             childList as ArrayList<List<Article>>
         )
-        mExpandableListView!!.setOnChildClickListener(this)
-        mExpandableListView!!.setAdapter(mAdapter)
-
+        binding.rlvNavigation.setOnChildClickListener(this)
+        binding.rlvNavigation.setAdapter(mAdapter)
     }
 
 //    override fun refreshAdapterList(response: NavigationResponse) {

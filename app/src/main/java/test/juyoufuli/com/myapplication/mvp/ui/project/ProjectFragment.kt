@@ -1,16 +1,24 @@
 package test.juyoufuli.com.myapplication.mvp.ui.project
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.ActivityUtils
 import com.kingja.loadsir.core.LoadService
 import com.paginate.Paginate
+import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
+import test.juyoufuli.com.myapplication.app.recyclerview.MultiItemTypeAdapter
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectData
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectDatas
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAdapter
+import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
 /**
@@ -19,13 +27,10 @@ import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAda
  * Description:
  */
 class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
-
-    var mRecyclerView: RecyclerView? = null
-    var rlvProjectContent: RecyclerView? = null
-    var mList: ArrayList<ProjectData>? = null
+    var mList: ArrayList<ProjectData> = arrayListOf()
     var mAdapter: ProjectAdapter? = null
     var projectDetailsAdapter: ProjectDetailsAdapter? = null
-    var detailsList: ArrayList<ProjectDatas>? = null
+    var detailsList: ArrayList<ProjectDatas> = arrayListOf()
     var totalPage: Int = 0
     var page: Int = 0
     var cid: String = "0"
@@ -33,13 +38,12 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
     var isLoadingMore: Boolean = false
 
     override fun initData(savedInstanceState: Bundle?) {
-//        initRecyclerView()
+        initRecyclerView()
         initPaginate()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        mRecyclerView = binding?.rlvProject
-        rlvProjectContent = binding?.rlvProjectContent
+
     }
 
     override fun attachBinding(): ActivityProgectMainBinding {
@@ -52,53 +56,68 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
 
     var loadService: LoadService<*>? = null
 
-//    private fun initRecyclerView() {
-//        mList = ArrayList()
-//        mAdapter = ProjectAdapter(mList!!)
-//        mRecyclerView?.layoutManager = LinearLayoutManager(activity)
-////        mRecyclerView?.addItemDecoration(ProjectRecycerDecoration(context!!, ProjectRecycerDecoration.VERTICAL_LIST, R.drawable.item_left_decoration, 2))
-//        mRecyclerView?.adapter = mAdapter
+    private fun initRecyclerView() {
+
+        mAdapter = ProjectAdapter(requireContext(), mList)
+        binding.rlvProject.layoutManager = LinearLayoutManager(activity)
+        binding.rlvProject.addItemDecoration(
+            ProjectRecycerDecoration(
+                requireContext(),
+                ProjectRecycerDecoration.VERTICAL_LIST,
+                R.drawable.item_left_decoration,
+                2
+            )
+        )
+        binding.rlvProject.adapter = mAdapter
 //        mPresenter?.getProject()
-//        mAdapter?.setOnItemClickListener { view, viewType, data, position ->
-//            for (item in mList!!)
-//                item.isSelect = false
-//
-//            mList!![position].isSelect = true
-//            mAdapter?.notifyDataSetChanged()
-//            changeTab(data as ProjectData?)
-//        }
-//
-//        //初始化详情
-//        detailsList = ArrayList()
-//        projectDetailsAdapter = ProjectDetailsAdapter(detailsList!!)
-//        rlvProjectContent?.layoutManager = LinearLayoutManager(activity)
-//        rlvProjectContent?.addItemDecoration(
-//            ProjectRecycerDecoration(
-//                context!!,
-//                ProjectRecycerDecoration.VERTICAL_LIST,
-//                R.drawable.item_decoration,
-//                2
-//            )
-//        )
-//        rlvProjectContent?.adapter = projectDetailsAdapter
-//        projectDetailsAdapter?.setOnItemClickListener { view, viewType, data, position ->
-//
-//            val intent = Intent(activity, WebViewActivity::class.java)
-//            val date = data as ProjectDatas
-//            intent.putExtra("link", data.link)
-//            intent.putExtra("title", data.title)
-//            launchActivity(intent)
-//        }
-//
-//
-//        loadService = LoadSir.getDefault().register(rlvProjectContent) {
-//
-//        }
-//
-//
-//        projectDetailsAdapter?.setChildClickListener(object :
-//            ProjectDetailsHolder.ChildClickListener {
-//            override fun viewClick(viewid: Int, position: Int, data: ProjectDatas) {
+        mAdapter?.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+                for (item in mList) {
+                    item.isSelect = false
+                }
+                mList[position].isSelect = true
+
+                mAdapter?.notifyDataSetChanged()
+//                changeTab(data as ProjectData?)
+            }
+
+            override fun onItemLongClick(
+                view: View?,
+                holder: RecyclerView.ViewHolder?,
+                position: Int
+            ): Boolean {
+                return false
+            }
+        })
+
+        //初始化详情
+        detailsList = ArrayList()
+        projectDetailsAdapter = ProjectDetailsAdapter(requireContext(), detailsList)
+        binding.rlvProjectContent.layoutManager = LinearLayoutManager(activity)
+        binding.rlvProjectContent.addItemDecoration(
+            ProjectRecycerDecoration(
+                requireContext(),
+                ProjectRecycerDecoration.VERTICAL_LIST,
+                R.drawable.item_decoration,
+                2
+            )
+        )
+        binding.rlvProjectContent.adapter = projectDetailsAdapter
+        projectDetailsAdapter?.setOnItemClickListener(object :
+            MultiItemTypeAdapter.OnItemClickListener {
+            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+                val intent = Intent(activity, WebViewActivity::class.java)
+                val data = detailsList[position]
+                intent.putExtra("link", data.link)
+                intent.putExtra("title", data.title)
+                ActivityUtils.startActivity(intent)
+            }
+
+            override fun onItemLongClick(
+                view: View?,
+                holder: RecyclerView.ViewHolder?,
+                position: Int
+            ): Boolean {
 //                if (viewid == R.id.tv_project_details_collect) {
 //                    if (!data.collect) {
 //                        LogUtils.debugInfo(data.id.toString() + "--true--" + position)
@@ -112,9 +131,12 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
 ////                    mAdapter?.notifyItemChanged(position)
 //
 //                }
-//            }
-//        })
-//    }
+                return false
+            }
+        })
+
+
+    }
 
 
 //    private fun changeTab(data: ProjectData?) {
@@ -143,7 +165,7 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 }
             }
 
-            mPaginate = Paginate.with(rlvProjectContent, callbacks)
+            mPaginate = Paginate.with(binding.rlvProject, callbacks)
                 .setLoadingTriggerThreshold(0)
                 .build()
             mPaginate?.setHasMoreDataToLoad(false)

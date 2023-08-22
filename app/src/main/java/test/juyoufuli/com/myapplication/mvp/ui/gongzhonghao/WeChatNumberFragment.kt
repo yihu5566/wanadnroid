@@ -19,7 +19,6 @@ import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.FragmentWechatnumberBinding
 import test.juyoufuli.com.myapplication.mvp.ui.tab.RecyclerViewFragment
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
-import javax.inject.Inject
 
 /**
  * @Author : dongfang
@@ -28,13 +27,9 @@ import javax.inject.Inject
  */
 class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.OnClickListener {
 
-    @JvmField
-    @Inject
-    var tagNameList: ArrayList<String>? = null
+    var tagNameList: ArrayList<String> = arrayListOf()
 
-    @JvmField
-    @Inject
-    var fragmentList: ArrayList<RecyclerViewFragment>? = null
+    var fragmentList: ArrayList<RecyclerViewFragment> = arrayListOf()
 
     /**
      * 默认的公众号id
@@ -68,7 +63,7 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun attachBinding(): FragmentWechatnumberBinding {

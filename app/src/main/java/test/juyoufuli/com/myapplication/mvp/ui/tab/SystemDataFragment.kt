@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import com.kingja.loadsir.core.LoadService
-import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.app.recyclerview.MultiItemTypeAdapter.OnItemClickListener
 import test.juyoufuli.com.myapplication.app.utils.ArmsUtils
@@ -21,9 +18,6 @@ import javax.inject.Inject
  */
 class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
 
-    @JvmField
-    @BindView(R.id.recyclerView)
-    internal var mRecyclerView: RecyclerView? = null
 
     @JvmField
     @Inject
@@ -33,10 +27,7 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
     @Inject
     internal var mAdapter: SystemDataAdapter? = null
 
-    @JvmField
-    @Inject
-    internal var tagName: ArrayList<String>? = null
-    var mBaseLoadService: LoadService<*>? = null
+    internal var tagName: ArrayList<String> = arrayListOf()
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
@@ -57,7 +48,7 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
     }
 
     private fun initRecyclerView() {
-        ArmsUtils.configRecyclerView(mRecyclerView!!, mLayoutManager)
+        ArmsUtils.configRecyclerView(binding.recyclerView, mLayoutManager)
 
         mAdapter?.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {

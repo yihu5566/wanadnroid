@@ -46,7 +46,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnR
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
-        initPaginate()
+//        initPaginate()
 //        mPresenter?.requestBannerDataList()
 //        mPresenter?.mergeArticle(true)
 
@@ -102,7 +102,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnR
 
             override fun onItemClick(position: Int) {
                 if (position == 0) return
-                val data = mUsers!![position - 1]
+                val data = mUsers[position - 1]
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra("link", data.link)
                 intent.putExtra("title", data.title)
