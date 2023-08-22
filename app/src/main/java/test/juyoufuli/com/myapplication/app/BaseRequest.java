@@ -1,12 +1,11 @@
 package test.juyoufuli.com.myapplication.app;
 
 
-
 import com.google.common.base.Function;
+import com.we.jetpackmvvm.network.BaseResponse;
 
 import test.juyoufuli.com.myapplication.app.exception.OnHttpDataNullException;
 import test.juyoufuli.com.myapplication.app.exception.OnHttpServiceException;
-import test.juyoufuli.com.myapplication.mvp.entity.BaseResponse;
 
 /**
  * 作者: ludf
@@ -26,14 +25,14 @@ public class BaseRequest<T> implements Function<BaseResponse<T>, T> {
     @Override
     public T apply(BaseResponse<T> responseEntity) {
 //        LogUtils.d("call");
-        if (0 == responseEntity.getErrorCode()) {
-            if (responseEntity.getData() == null) {
-                throw new OnHttpDataNullException(responseEntity.getErrorCode() + "::" + "http response data not be null");
+        if (0 == responseEntity.getResponseCode()) {
+            if (responseEntity.getResponseData() == null) {
+                throw new OnHttpDataNullException(responseEntity.getResponseCode() + "::" + "http response data not be null");
             } else {
-                return responseEntity.getData();
+                return responseEntity.getResponseData();
             }
         } else {
-            throw new OnHttpServiceException(responseEntity.getErrorCode() + "::" + responseEntity.getErrorMsg());
+            throw new OnHttpServiceException(responseEntity.getResponseCode() + "::" + responseEntity.getResponseMsg());
         }
     }
 }

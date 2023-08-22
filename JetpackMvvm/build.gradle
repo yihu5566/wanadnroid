@@ -120,5 +120,7 @@ dependencies {
     testApi AndroidX.Junit
     androidTestApi AndroidX.TestExtJunit
     androidTestApi AndroidX.TestEspresso
+    // mvi
+    api 'com.airbnb.android:mavericks:3.0.2'
 
 }

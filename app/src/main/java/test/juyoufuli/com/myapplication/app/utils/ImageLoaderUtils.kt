@@ -19,14 +19,14 @@ object ImageLoaderUtils {
      * @param imageView
      * @param objUrl
      */
-    fun loadImage(imageView: ImageView?, objUrl: Any?, context: Context?) {
+    fun loadImage(imageView: ImageView, objUrl: String, context: Context) {
         val options = RequestOptions()
             .placeholder(R.drawable.loading) // 正在加载中的图片
             .error(R.drawable.error) // 加载失败的图片
             .diskCacheStrategy(DiskCacheStrategy.ALL) // 磁盘缓存策略
-        Glide.with(context!!)
+        Glide.with(context)
             .load(objUrl) // 图片地址
             .apply(options) // 参数
-            .into(imageView!!) // 需要显示的ImageView控件
+            .into(imageView) // 需要显示的ImageView控件
     }
 }

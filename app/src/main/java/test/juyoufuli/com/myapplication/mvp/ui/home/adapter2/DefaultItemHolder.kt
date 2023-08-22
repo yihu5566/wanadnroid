@@ -3,7 +3,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
+import test.juyoufuli.com.myapplication.mvp.entity.BannerInfo
 import java.util.*
 
 /**
@@ -25,7 +25,7 @@ abstract class DefaultItemHolder<T> constructor(itemVIew: View) : RecyclerView.V
 
     abstract fun getData(data: T)
 
-    abstract fun getDataHeader(any: ArrayList<BannerInfor>)
+    abstract fun getDataHeader(any: ArrayList<BannerInfo>)
 
 
     interface OnViewClickListener {
@@ -38,7 +38,7 @@ abstract class DefaultItemHolder<T> constructor(itemVIew: View) : RecyclerView.V
     }
 
     interface OnHeaderItemClickListener {
-        fun onHeaderItemClick(bannerInfor: BannerInfor)
+        fun onHeaderItemClick(bannerInfor: BannerInfo)
     }
 
     override fun onClick(view: View) {

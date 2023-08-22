@@ -3,10 +3,12 @@ package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.ImageView
 import cn.bingoogolapple.bgabanner.BGABanner
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.utils.ImageLoaderUtils
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
+import test.juyoufuli.com.myapplication.mvp.entity.BannerInfo
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 /**
@@ -16,7 +18,7 @@ import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
  */
 class HeaderItemHolderImp(
     itemVIew: View,
-    var mBannerList: List<BannerInfor>?,
+    var mBannerList: List<BannerInfo>?,
     var context: Context
 ) : DefaultItemHolder<ArticleBean>(itemVIew), View.OnClickListener {
     var bannerGuideContent: BGABanner? = null
@@ -29,7 +31,7 @@ class HeaderItemHolderImp(
     override fun getData(data: ArticleBean) {
     }
 
-    override fun getDataHeader(any: ArrayList<BannerInfor>) {
+    override fun getDataHeader(any: ArrayList<BannerInfo>) {
 //        LogUtils.d("我来到了头部的holder中啦")
         mBannerList = any
         if (mBannerList != null) {
@@ -37,7 +39,7 @@ class HeaderItemHolderImp(
         }
     }
 
-    private fun initBanner(mBannerList: List<BannerInfor>) {
+    private fun initBanner(mBannerList: List<BannerInfo>) {
         val imagePath = ArrayList<String>()
         val imageTitle = ArrayList<String>()
         for ((_, _, imagePath1, _, _, title) in mBannerList) {
@@ -53,8 +55,8 @@ class HeaderItemHolderImp(
             context.startActivity(intent)
         }
 
-        bannerGuideContent?.setAdapter { bgaBanner: BGABanner, view: View, model: Any?, i: Int ->
-//            ImageLoaderUtils.loadImage(view as ImageView?, model, context)
+        bannerGuideContent?.setAdapter { _: BGABanner, view: View, model: Any?, index: Int ->
+            ImageLoaderUtils.loadImage(view as ImageView, model as String, context)
         }
     }
 

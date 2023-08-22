@@ -181,7 +181,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 R.id.bottom_menu_wechat -> {
                     add(4, R.id.fl_content, "wechat")
-                    //                    navigation?.menu.getItem(2).isChecked = false
+                    //navigation?.menu.getItem(2).isChecked = false
                     toolbar_title?.text = ("公众号")
                     currentFragmentIndex = 4
                     true
@@ -368,8 +368,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
                         JsonUtils.fromJsonToBean(user, LoginResponse::class.java) as LoginResponse
                     isLogin = true
 
-                    tvPersonName?.text = fromJsonToBean.data.username
-                    tvPersonLogin?.text = "退出登录"
+                    tvPersonName.text = fromJsonToBean.data.username
+                    tvPersonLogin.text = "退出登录"
                     Glide.with(applicationContext)
                         .load(R.drawable.head_photo)
                         .apply(RequestOptions.bitmapTransform(CircleCrop()))
@@ -377,9 +377,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
 
                 } else {
                     isLogin = false
-                    tvPersonName?.text = "用户名"
-                    tvPersonLogin?.text = "登陆"
-                    ivPersonPhoto?.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
+                    tvPersonName.text = "用户名"
+                    tvPersonLogin.text = "登陆"
+                    ivPersonPhoto.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp));
 
                 }
                 SPUtils.put(applicationContext, "isLogin", isLogin)
@@ -423,7 +423,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-            switch?.isChecked = !mode
+            switch.isChecked = !mode
             LogUtils.d("onDrawerOpened..." + mode)
             SPUtils.put(applicationContext, "night_mode", !mode)
             isRecreat = true

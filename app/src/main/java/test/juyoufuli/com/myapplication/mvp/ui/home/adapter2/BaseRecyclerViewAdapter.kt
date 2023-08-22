@@ -1,16 +1,16 @@
 package test.juyoufuli.com.myapplication.mvp.ui.home.adapter2
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfor
-import java.util.*
+import androidx.recyclerview.widget.RecyclerView
+import test.juyoufuli.com.myapplication.mvp.entity.BannerInfo
 
-abstract class BaseRecyclerViewAdapter<T>(private var mContext: Context) : RecyclerView.Adapter<DefaultItemHolder<T>>() {
+abstract class BaseRecyclerViewAdapter<T>(private var mContext: Context) :
+    RecyclerView.Adapter<DefaultItemHolder<T>>() {
     var mList: ArrayList<T>? = ArrayList()
     var mLayoutInflater: LayoutInflater = LayoutInflater.from(mContext)
 
-    var mBannerList: ArrayList<BannerInfor>? = null
+    var mBannerList: ArrayList<BannerInfo>? = null
 
     var list: ArrayList<T>?
         get() = mList

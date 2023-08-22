@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:orientation="vertical">
@@ -7,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/item_circle_bg"
         android:padding="5dp">
 
@@ -15,7 +16,9 @@
             android:id="@+id/tv_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:lines="2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,11 +41,12 @@
                 android:id="@+id/tv_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:text="标题" />
+                tools:text="标题" />
 
             <CheckBox
                 android:id="@+id/iv_favorite_article"

@@ -10,7 +10,10 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
  * @Created Time : 2019-03-28  15:08
  * @Description:
  */
-class MainRecyclerViewAdapter constructor(var context: Context, articleBean: ArrayList<ArticleBean>) : BaseRecyclerViewAdapter<ArticleBean>(context) {
+class MainRecyclerViewAdapter constructor(
+    var context: Context,
+    articleBean: ArrayList<ArticleBean>
+) : BaseRecyclerViewAdapter<ArticleBean>(context) {
 
     private val TYPE_HEADER = 1001
 
@@ -18,10 +21,13 @@ class MainRecyclerViewAdapter constructor(var context: Context, articleBean: Arr
         mList = articleBean
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultItemHolder<ArticleBean> {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): DefaultItemHolder<ArticleBean> {
         return if (viewType == TYPE_HEADER) {
             var headerMainBanner = mLayoutInflater.inflate(R.layout.header_main_banner, null)
-            HeaderItemHolderImp(headerMainBanner, mBannerList,context)
+            HeaderItemHolderImp(headerMainBanner, mBannerList, context)
         } else {
             var inflate = mLayoutInflater.inflate(R.layout.article_item, parent, false)
             DefaultItemHolderImp(inflate)
