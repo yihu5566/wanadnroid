@@ -51,7 +51,7 @@ class DefaultItemHolderImp(itemView: View) : DefaultItemHolder<ArticleBean>(item
     }
 
 
-    override fun getDataHeader(any: ArrayList<BannerInfo>) {
+    override fun getDataHeader(any: List<BannerInfo>) {
     }
 
 

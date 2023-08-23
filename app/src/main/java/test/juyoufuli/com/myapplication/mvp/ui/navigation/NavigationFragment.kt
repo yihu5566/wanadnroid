@@ -32,12 +32,8 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding>(),
     var mBaseLoadService: LoadService<*>? = null
 
 
-    override fun initData(savedInstanceState: Bundle?) {
-        initRecyclerView()
-    }
-
     override fun initView(savedInstanceState: Bundle?) {
-
+        initRecyclerView()
     }
 
     override fun attachBinding(): FragmentNavigationBinding {

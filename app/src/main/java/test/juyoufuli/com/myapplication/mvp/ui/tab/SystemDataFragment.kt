@@ -29,14 +29,10 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
 
     internal var tagName: ArrayList<String> = arrayListOf()
 
-    override fun initData(savedInstanceState: Bundle?) {
+    override fun initView(savedInstanceState: Bundle?) {
         initRecyclerView()
 //        mRecyclerView!!.adapter = mAdapter
 //        mPresenter!!.requestSystemDataList()//打开 App 时自动加载列表
-    }
-
-    override fun initView(savedInstanceState: Bundle?) {
-
     }
 
     override fun attachBinding(): TabFragmentBinding {

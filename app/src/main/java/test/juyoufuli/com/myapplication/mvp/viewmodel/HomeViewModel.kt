@@ -21,8 +21,8 @@ import test.juyoufuli.com.myapplication.mvp.entity.WanApiResponse
  */
 
 data class HomeDaggerState(
-    val bannerList: List<BannerInfo> = mutableListOf(),
-    val artList: List<ArticleBean> = mutableListOf(),
+    val bannerList: List<BannerInfo> = listOf(),
+    val artList: List<ArticleBean> = listOf(),
     val isLoadingMore: Boolean = true,
     val pullToRefresh: Boolean = false,
     val pager: Int = 1,
@@ -38,6 +38,9 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
     }
 
     fun requestBannerDataList() {
+//        repository.requestBannerDataList().execute {
+//            copy(bannerList = it.invoke()!!.data)
+//        }
         request({ apiService.getBannerList() }, {
             setState {
                 copy(bannerList = it)
@@ -46,8 +49,7 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
     }
 
     fun requestTopDataList() {
-        request({ apiService.getTopArticle() }, {
-        })
+        request({ apiService.getTopArticle() }, {})
     }
 
     fun requestArtDataList(pager: Int) {
@@ -78,17 +80,14 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
                 wanApiResponseFlow1.transform {
                     emit(
                         WanApiResponse(
-                            errorCode = 0,
-                            errorMsg = "",
-                            data = wan1.data + it.data.datas
+                            errorCode = 0, errorMsg = "", data = wan1.data + it.data.datas
                         )
                     )
                 }
             }.collect {
                 setState {
                     copy(
-                        artList = it.data,
-                        pullToRefresh = false
+                        artList = it.data, pullToRefresh = false
                     )
                 }
             }

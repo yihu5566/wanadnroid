@@ -10,7 +10,7 @@ abstract class BaseRecyclerViewAdapter<T>(private var mContext: Context) :
     var mList: ArrayList<T>? = ArrayList()
     var mLayoutInflater: LayoutInflater = LayoutInflater.from(mContext)
 
-    var mBannerList: ArrayList<BannerInfo>? = null
+    var mBannerList: List<BannerInfo>? = null
 
     var list: ArrayList<T>?
         get() = mList

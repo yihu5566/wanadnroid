@@ -25,7 +25,7 @@ abstract class DefaultItemHolder<T> constructor(itemVIew: View) : RecyclerView.V
 
     abstract fun getData(data: T)
 
-    abstract fun getDataHeader(any: ArrayList<BannerInfo>)
+    abstract fun getDataHeader(any: List<BannerInfo>)
 
 
     interface OnViewClickListener {

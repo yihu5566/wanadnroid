@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.blankj.utilcode.util.LogUtils
-import com.kingja.loadsir.core.LoadService
 import com.paginate.Paginate
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
@@ -42,7 +41,7 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
 
     private var isFrist = true
 
-    override fun initData(savedInstanceState: Bundle?) {
+    override fun initView(savedInstanceState: Bundle?) {
         LogUtils.d("---initData---")
         if (isFrist) {
             isFrist = false
@@ -50,10 +49,6 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
             mRecyclerView!!.layoutManager = layoutManager
             initPaginate()
         }
-    }
-
-    override fun initView(savedInstanceState: Bundle?) {
-
     }
 
     override fun attachBinding(): ViewPagerItemBinding {

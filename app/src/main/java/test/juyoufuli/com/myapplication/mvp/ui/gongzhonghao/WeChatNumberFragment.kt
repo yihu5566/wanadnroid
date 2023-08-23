@@ -54,16 +54,11 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
 //
 //    }
 
-
-    override fun initData(savedInstanceState: Bundle?) {
+    override fun initView(savedInstanceState: Bundle?) {
         //获取公众号列表
 //        mPresenter?.requestSystemDataList()
 
         binding.fabWechatNumber.setOnClickListener(this@WeChatNumberFragment)
-    }
-
-    override fun initView(savedInstanceState: Bundle?) {
-
     }
 
     override fun attachBinding(): FragmentWechatnumberBinding {

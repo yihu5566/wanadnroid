@@ -36,7 +36,7 @@ interface MainService {
     suspend fun getArticleList(@Path("index") index: Int): WanApiResponse<WanPageResponse<ArticleBean>>
 
     @GET("banner/json")
-    suspend fun getBannerList(): WanApiResponse<MutableList<BannerInfo>>
+    suspend fun getBannerList(): WanApiResponse<List<BannerInfo>>
 
     @FormUrlEncoded
     @POST("article/query/{index}/json")

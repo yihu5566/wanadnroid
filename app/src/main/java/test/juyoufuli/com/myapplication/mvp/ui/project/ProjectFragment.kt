@@ -37,13 +37,9 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
     var mPaginate: Paginate? = null
     var isLoadingMore: Boolean = false
 
-    override fun initData(savedInstanceState: Bundle?) {
+    override fun initView(savedInstanceState: Bundle?) {
         initRecyclerView()
         initPaginate()
-    }
-
-    override fun initView(savedInstanceState: Bundle?) {
-
     }
 
     override fun attachBinding(): ActivityProgectMainBinding {

@@ -33,12 +33,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
     private var pager: Int = 1
     val viewModel: HomeDaggerViewModel by fragmentViewModel()
 
-    override fun initData(savedInstanceState: Bundle?) {
-        initRecyclerView()
-    }
-
     override fun initView(savedInstanceState: Bundle?) {
-
+        initRecyclerView()
     }
 
 
@@ -108,7 +104,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
             pager = it
         }
         viewModel.onEach(HomeDaggerState::bannerList) {
-            mAdapter.mBannerList = ArrayList(it)
+            mAdapter.mBannerList = it
             mAdapter.notifyItemChanged(0)
         }
         viewModel.onEach(HomeDaggerState::artList) {

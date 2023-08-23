@@ -23,13 +23,11 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(), MavericksView {
     ): View? {
         super.onCreate(savedInstanceState)
         binding = attachBinding()
-        initData(savedInstanceState)
         initView(savedInstanceState)
         return binding.root
 
     }
 
-    abstract fun initData(savedInstanceState: Bundle?)
 
     abstract fun initView(savedInstanceState: Bundle?)
 

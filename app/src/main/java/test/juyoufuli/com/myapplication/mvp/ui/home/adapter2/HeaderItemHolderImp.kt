@@ -31,7 +31,7 @@ class HeaderItemHolderImp(
     override fun getData(data: ArticleBean) {
     }
 
-    override fun getDataHeader(any: ArrayList<BannerInfo>) {
+    override fun getDataHeader(any: List<BannerInfo>) {
 //        LogUtils.d("我来到了头部的holder中啦")
         mBannerList = any
         if (mBannerList != null) {
