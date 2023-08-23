@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.fragmentViewModel
+import com.blankj.utilcode.util.ActivityUtils
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
@@ -56,24 +57,24 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
         mAdapter.setOnItemClickListener(object : DefaultItemHolder.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 if (position == 0) return
-                val data = articleBeans[position - 1]
+                val data = mAdapter.getItem(position - 1) as ArticleBean
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra("link", data.link)
                 intent.putExtra("title", data.title)
+                ActivityUtils.startActivity(intent)
             }
 
         })
-
 
         mAdapter.setChildClickListener(object : DefaultItemHolder.OnViewClickListener {
             override fun onViewClick(viewid: Int, position: Int, data: ArticleBean) {
                 if (viewid == R.id.iv_favorite_article) {
                     if (!data.collect) {
                         LogUtils.d(data.id.toString() + "--true--" + position)
-                        //                        mPresenter?.collectArticle(data.id.toString())
+                        viewModel.collectArticle(data.id.toString(), position)
                     } else {
                         LogUtils.d(data.id.toString() + "--false--" + position)
-                        //                        mPresenter?.cancelCollectArticle(data.id.toString())
+                        viewModel.cancelCollectArticle(data.id.toString(), position)
                     }
                     articleBeans[position].collect = !data.collect
                     mAdapter.notifyItemChanged(position)
@@ -94,7 +95,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
         viewModel.onEach(HomeDaggerState::isLoadingMore) {
             if (it) {
                 binding.swipeRefreshLayout.finishLoadMore()
-            }else{
+            } else {
                 binding.swipeRefreshLayout.finishLoadMoreWithNoMoreData()
             }
         }

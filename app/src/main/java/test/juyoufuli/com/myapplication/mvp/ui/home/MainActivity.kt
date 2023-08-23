@@ -70,7 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
     }
 
     @SuppressLint("ResourceAsColor")
-    override fun initData(savedInstanceState: Bundle?) {
+    override fun initView(savedInstanceState: Bundle?) {
         try {//避免重启太快 恢复
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             for (fragment in fragmentList) {
@@ -129,9 +129,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
         init()
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-
-    }
 
     override fun attachBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(LayoutInflater.from(this))

@@ -33,18 +33,16 @@ data class LoginResponse(
     val data: UserInfo,
     val errorCode: Int,
     val errorMsg: String
-) : Serializable {
+) : Serializable
 
-
-    data class UserInfo(
-        val chapterTops: List<Any>,
-        val collectIds: List<Int>,
-        val email: String,
-        val icon: String,
-        val id: Int,
-        val password: String,
-        val token: String,
-        val type: Int,
-        val username: String
-    )
-}
+data class UserInfo(
+    val chapterTops: List<Any>,
+    val collectIds: List<Int>,
+    val email: String,
+    val icon: String,
+    val id: Int,
+    val password: String,
+    val token: String,
+    val type: Int,
+    val username: String
+) : Serializable

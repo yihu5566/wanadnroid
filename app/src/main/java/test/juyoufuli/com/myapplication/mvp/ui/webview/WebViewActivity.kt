@@ -3,95 +3,72 @@ package test.juyoufuli.com.myapplication.mvp.ui.webview
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.just.agentweb.AgentWeb
-import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.BaseActivity
+import test.juyoufuli.com.myapplication.databinding.ActivityWebviewBinding
 
 /**
  * Author : ludf
  * Created Time : 2018-09-30  10:40
  * Description:
  */
-class WebViewActivity : AppCompatActivity() {
-    @JvmField
-    @BindView(R.id.fl_web)
-    internal var flWeb: FrameLayout? = null
-    @JvmField
-    @BindView(R.id.toolbar_back)
-    internal var toolbar_back: RelativeLayout? = null
-    @JvmField
-    @BindView(R.id.toolbar_share)
-    internal var toolbar_share: RelativeLayout? = null
+class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
 
-    @JvmField
-    @BindView(R.id.toolbar_title)
-    internal var toolbar_title: TextView? = null
-    private var mAgentWeb: AgentWeb? = null
+    private lateinit var mAgentWeb: AgentWeb
     private var link: String? = null
     private var title: String? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_webview)
-        ButterKnife.bind(this)
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val intent = intent
+    override fun initView(savedInstanceState: Bundle?) {
         link = intent.getStringExtra("link")
         title = intent.getStringExtra("title")
-        toolbar_back!!.visibility = View.VISIBLE
-        toolbar_share!!.visibility = View.VISIBLE
-        toolbar_title!!.text = title
-        toolbar_back!!.setOnClickListener { finish() }
+        binding.toolbar.toolbarBack.visibility = View.VISIBLE
+        binding.toolbar.toolbarShare.visibility = View.VISIBLE
+        binding.toolbar.toolbarTitle.text = title
+        binding.toolbar.toolbarBack.setOnClickListener { finish() }
 
-        toolbar_share!!.setOnClickListener {
+        binding.toolbar.toolbarShare.setOnClickListener {
             val wechatIntent = Intent(Intent.ACTION_SEND)
             wechatIntent.setPackage("com.tencent.mm")
             wechatIntent.setType("text/plain")
             wechatIntent.putExtra(Intent.EXTRA_TEXT, link)
             startActivity(wechatIntent)
-
         }
 
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(flWeb!!, LinearLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator()
-                .createAgentWeb()
-                .ready().go(link)
+            .setAgentWebParent(binding.flWeb, LinearLayout.LayoutParams(-1, -1))
+            .useDefaultIndicator()
+            .createAgentWeb()
+            .ready().go(link)
     }
 
+    override fun attachBinding(): ActivityWebviewBinding {
+        return ActivityWebviewBinding.inflate(LayoutInflater.from(this))
+    }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
 
-        return if (mAgentWeb!!.handleKeyEvent(keyCode, event)) {
+        return if (mAgentWeb.handleKeyEvent(keyCode, event)) {
             true
         } else super.onKeyDown(keyCode, event)
     }
 
     override fun onPause() {
-        mAgentWeb!!.webLifeCycle.onPause()
+        mAgentWeb.webLifeCycle.onPause()
         super.onPause()
 
     }
 
     override fun onResume() {
-        mAgentWeb!!.webLifeCycle.onResume()
+        mAgentWeb.webLifeCycle?.onResume()
         super.onResume()
     }
 
     override fun onDestroy() {
-        mAgentWeb!!.webLifeCycle.onDestroy()
+        mAgentWeb.webLifeCycle.onDestroy()
         super.onDestroy()
     }
 }

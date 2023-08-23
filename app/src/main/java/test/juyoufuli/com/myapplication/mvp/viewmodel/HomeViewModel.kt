@@ -2,6 +2,7 @@ package test.juyoufuli.com.myapplication.mvp.viewmodel
 
 import com.airbnb.mvrx.MavericksState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -63,6 +64,7 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
 
 
     //合并一次
+    @OptIn(FlowPreview::class)
     fun mergeArtList() {
         setState { copy(pullToRefresh = true) }
         viewModelScope.launch {
@@ -92,6 +94,25 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
             }
 
         }
+    }
+
+    fun collectArticle(id: String, position: Int) {
+        request({ apiService.collectArticle(id) }, {
+            setState {
+                artList[position].collect = true
+                copy(artList = artList)
+            }
+        })
+    }
+
+    fun cancelCollectArticle(id: String, position: Int) {
+        request({ apiService.cancelCollectArticle(id) }, {
+
+            setState {
+                artList[position].collect = false
+                copy(artList = artList)
+            }
+        })
     }
 
 }

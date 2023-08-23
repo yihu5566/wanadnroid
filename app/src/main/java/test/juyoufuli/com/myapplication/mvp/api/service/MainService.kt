@@ -14,17 +14,15 @@ interface MainService {
 
     @FormUrlEncoded
     @POST("lg/collect/{index}/json")
-    fun collectArticle(
+    suspend fun collectArticle(
         @Path("index") id: String,
-        @Field("index") index: String
-    ): Call<LoginResponse>
+    ): WanApiResponse<Any>
 
     @FormUrlEncoded
     @POST("lg/uncollect_originId/{id}/json")
     fun cancelCollectArticle(
         @Path("id") id: String,
-        @Field("originId") index: String
-    ): Call<LoginResponse>
+    ): WanApiResponse<Any>
 
     @FormUrlEncoded
     @POST("lg/uncollect/{id}/json")
