@@ -85,19 +85,19 @@ dependencies {
     //防崩溃
     api GitHub.crash
     //轮播图
-    api GitHub.bannerViewPager
+//    api GitHub.bannerViewPager
     //日历组件
-    api GitHub.calendarView
+//    api GitHub.calendarView
     //时间选择器
-    api GitHub.wheelPicker
+//    api GitHub.wheelPicker
     // 皮肤
-    api GitHub.reflex
-    api GitHub.paintedskin
-    api GitHub.skin_constraintlayout_compat
-    api GitHub.skin_standard_plugin
+//    api GitHub.reflex
+//    api GitHub.paintedskin
+//    api GitHub.skin_constraintlayout_compat
+//    api GitHub.skin_standard_plugin
     //更新
-    api GitHub.XUpdate
-    api GitHub.XUpdateAPI
+//    api GitHub.XUpdate
+//    api GitHub.XUpdateAPI
     //ali推送
 //    api GitHub.aliPush
     //弹窗
@@ -109,11 +109,11 @@ dependencies {
     //微信支付，登录，分享
 //    api GitHub.wchatPay
     //qq登录，分享
-    api GitHub.qq
+//    api GitHub.qq
     //html文件修改
-    api GitHub.Jsoup
+//    api GitHub.Jsoup
     //图片选择
-    api GitHub.pictureSelector
+//    api GitHub.pictureSelector
     //debugApi 'com.squareup.leakcanary:leakcanary-android:2.8.1'
     api AndroidX.MultiDex
     //test

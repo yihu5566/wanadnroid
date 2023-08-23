@@ -1,8 +1,10 @@
 package test.juyoufuli.com.myapplication.app;
 
 
-import com.google.common.base.Function;
 import com.we.jetpackmvvm.network.BaseResponse;
+
+
+import java.util.function.Function;
 
 import test.juyoufuli.com.myapplication.app.exception.OnHttpDataNullException;
 import test.juyoufuli.com.myapplication.app.exception.OnHttpServiceException;

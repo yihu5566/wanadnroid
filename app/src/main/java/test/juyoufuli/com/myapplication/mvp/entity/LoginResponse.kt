@@ -15,8 +15,6 @@
  */
 package test.juyoufuli.com.myapplication.mvp.entity
 
-import okhttp3.Response
-import test.juyoufuli.com.myapplication.mvp.api.Api
 import java.io.Serializable
 
 
@@ -32,21 +30,21 @@ import java.io.Serializable
  * ================================================
  */
 data class LoginResponse(
-        val data: Data,
-        val errorCode: Int,
-        val errorMsg: String
+    val data: UserInfo,
+    val errorCode: Int,
+    val errorMsg: String
 ) : Serializable {
 
 
-    data class Data(
-            val chapterTops: List<Any>,
-            val collectIds: List<Int>,
-            val email: String,
-            val icon: String,
-            val id: Int,
-            val password: String,
-            val token: String,
-            val type: Int,
-            val username: String
+    data class UserInfo(
+        val chapterTops: List<Any>,
+        val collectIds: List<Int>,
+        val email: String,
+        val icon: String,
+        val id: Int,
+        val password: String,
+        val token: String,
+        val type: Int,
+        val username: String
     )
 }

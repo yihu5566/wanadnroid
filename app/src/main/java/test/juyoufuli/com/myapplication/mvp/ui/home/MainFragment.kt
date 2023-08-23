@@ -4,20 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
-import com.paginate.Paginate
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.app.utils.ArmsUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.databinding.FragmentMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
-import test.juyoufuli.com.myapplication.mvp.entity.BannerInfo
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerState
 import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
 
 /**
@@ -25,24 +25,15 @@ import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
  * Created Time : 2018-09-27  15:50
  * Description:
  */
-class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnRefreshListener {
+class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnLoadMoreListener {
 
     internal var articleBeans = arrayListOf<ArticleBean>()
-
     internal lateinit var mAdapter: MainRecyclerViewAdapter
-
-    private lateinit var mPaginate: Paginate
-    private var isFrist: Boolean = true
-    private var isLoadingMore: Boolean = false
     private var pager: Int = 1
-
-    var mmBannerList: ArrayList<BannerInfo>? = null
-
     val viewModel: HomeDaggerViewModel by fragmentViewModel()
 
     override fun initData(savedInstanceState: Bundle?) {
         initRecyclerView()
-        initPaginate()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -54,35 +45,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnR
         return FragmentMainBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
-    private fun initPaginate() {
-        val callbacks = object : Paginate.Callbacks {
-            override fun onLoadMore() {
-                LogUtils.d("加载更多。。。$isFrist")
-                if (isFrist) {
-                    isFrist = false
-                } else {
-                    viewModel.requestArtDataList(pager)
-                }
-            }
-
-            override fun isLoading(): Boolean {
-                return isLoadingMore
-            }
-
-            override fun hasLoadedAllItems(): Boolean {
-                return false
-            }
-        }
-
-        mPaginate = Paginate.with(binding.recyclerView, callbacks)
-            .setLoadingTriggerThreshold(0)
-            .build()
-        mPaginate.setHasMoreDataToLoad(false)
-
-    }
-
     private fun initRecyclerView() {
         binding.swipeRefreshLayout.setOnRefreshListener(this)
+        binding.swipeRefreshLayout.setOnLoadMoreListener(this)
         ArmsUtils.configRecyclerView(binding.recyclerView, LinearLayoutManager(requireContext()))
         mAdapter = MainRecyclerViewAdapter(requireContext(), articleBeans)
         //我是分割线---------------------------------------
@@ -120,28 +85,46 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), SwipeRefreshLayout.OnR
     }
 
 
-    /**
-     * 下拉刷新的刷新
-     */
-    override fun onRefresh() {
-        viewModel.requestTopDataList()
-        viewModel.requestArtDataList(1)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         articleBeans.clear()
-        mmBannerList?.clear()
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
-        LogUtils.d("当前页数${state.pager}")
-        articleBeans.clear()
-        isLoadingMore = state.isLoadingMore
-        pager = state.pager
-        mAdapter.mBannerList = ArrayList(state.bannerList)
-        articleBeans = ArrayList(state.artList)
-        mAdapter.notifyDataSetChanged()
+    override fun invalidate() {
+        viewModel.onEach(HomeDaggerState::isLoadingMore) {
+            if (it) {
+                binding.swipeRefreshLayout.finishLoadMore()
+            }else{
+                binding.swipeRefreshLayout.finishLoadMoreWithNoMoreData()
+            }
+        }
+        viewModel.onEach(HomeDaggerState::pullToRefresh) {
+            if (!it) {
+                binding.swipeRefreshLayout.finishRefresh()
+            }
+        }
+        viewModel.onEach(HomeDaggerState::pager) {
+            pager = it
+        }
+        viewModel.onEach(HomeDaggerState::bannerList) {
+            mAdapter.mBannerList = ArrayList(it)
+            mAdapter.notifyItemChanged(0)
+        }
+        viewModel.onEach(HomeDaggerState::artList) {
+            LogUtils.d("当前条目----${it.size}")
+            articleBeans.clear()
+            mAdapter.mList = ArrayList(it)
+            mAdapter.notifyDataSetChanged()
+        }
+
     }
 
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.mergeArtList()
+    }
+
+    override fun onLoadMore(refreshLayout: RefreshLayout) {
+        viewModel.requestArtDataList(pager)
+    }
 }
