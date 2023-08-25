@@ -1,6 +1,10 @@
 package test.juyoufuli.com.myapplication.mvp.viewmodel
 
+import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MavericksState
+import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.Uninitialized
+import com.airbnb.mvrx.ViewModelContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flatMapMerge
@@ -8,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import test.juyoufuli.com.myapplication.app.MvRxViewModel
 import test.juyoufuli.com.myapplication.app.net.apiService
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
@@ -21,7 +26,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.WanApiResponse
  */
 
 data class HomeDaggerState(
-    val bannerList: List<BannerInfo> = listOf(),
+    val bannerList: Async<WanApiResponse<List<BannerInfo>>> = Uninitialized,
     val artList: List<ArticleBean> = listOf(),
     val isLoadingMore: Boolean = true,
     val pullToRefresh: Boolean = false,
@@ -29,7 +34,7 @@ data class HomeDaggerState(
 ) : MavericksState
 
 
-class HomeDaggerViewModel(state: HomeDaggerState) :
+class HomeDaggerViewModel(state: HomeDaggerState, val repository: HomeRepository) :
     MvRxViewModel<HomeDaggerState>(state) {
 
     init {
@@ -38,14 +43,14 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
     }
 
     fun requestBannerDataList() {
-//        repository.requestBannerDataList().execute {
-//            copy(bannerList = it.invoke()!!.data)
-//        }
-        request({ apiService.getBannerList() }, {
-            setState {
-                copy(bannerList = it)
-            }
-        })
+        repository.requestBannerDataList().execute {
+            copy(bannerList = it)
+        }
+//        request({ apiService.getBannerList() }, {
+//            setState {
+//                copy(bannerList = it)
+//            }
+//        })
     }
 
     fun requestTopDataList() {
@@ -112,6 +117,16 @@ class HomeDaggerViewModel(state: HomeDaggerState) :
                 copy(artList = artList)
             }
         })
+    }
+
+    companion object : MavericksViewModelFactory<HomeDaggerViewModel, HomeDaggerState> {
+        override fun create(
+            viewModelContext: ViewModelContext,
+            state: HomeDaggerState
+        ): HomeDaggerViewModel {
+            val api: HomeRepository by viewModelContext.activity.inject()
+            return HomeDaggerViewModel(state, api)
+        }
     }
 
 }

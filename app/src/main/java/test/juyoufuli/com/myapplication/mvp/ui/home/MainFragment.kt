@@ -3,6 +3,7 @@ package test.juyoufuli.com.myapplication.mvp.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.fragmentViewModel
 import com.blankj.utilcode.util.ActivityUtils
@@ -11,6 +12,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
+import test.juyoufuli.com.myapplication.app.ext.dismissLoadingExt
+import test.juyoufuli.com.myapplication.app.ext.showLoadingExt
 import test.juyoufuli.com.myapplication.app.utils.ArmsUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.databinding.FragmentMainBinding
@@ -28,15 +31,24 @@ import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
  */
 class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnLoadMoreListener {
 
-    internal var articleBeans = arrayListOf<ArticleBean>()
+
     internal lateinit var mAdapter: MainRecyclerViewAdapter
     private var pager: Int = 1
     val viewModel: HomeDaggerViewModel by fragmentViewModel()
 
     override fun initView(savedInstanceState: Bundle?) {
         initRecyclerView()
+        registorDefUIChange()
     }
 
+    private fun registorDefUIChange() {
+        viewModel.loadingChange.showDialog.observe(this, Observer {
+            showLoadingExt(it)
+        })
+        viewModel.loadingChange.dismissDialog.observe(this, Observer {
+            dismissLoadingExt()
+        })
+    }
 
     override fun attachBinding(): FragmentMainBinding {
         return FragmentMainBinding.inflate(LayoutInflater.from(requireContext()))
@@ -46,7 +58,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
         binding.swipeRefreshLayout.setOnRefreshListener(this)
         binding.swipeRefreshLayout.setOnLoadMoreListener(this)
         ArmsUtils.configRecyclerView(binding.recyclerView, LinearLayoutManager(requireContext()))
-        mAdapter = MainRecyclerViewAdapter(requireContext(), articleBeans)
+        mAdapter = MainRecyclerViewAdapter(requireContext(), arrayListOf())
         //我是分割线---------------------------------------
         binding.recyclerView.adapter = mAdapter
 
@@ -72,19 +84,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
                         LogUtils.d(data.id.toString() + "--false--" + position)
                         viewModel.cancelCollectArticle(data.id.toString(), position)
                     }
-                    articleBeans[position].collect = !data.collect
+                    mAdapter.getItem(position)?.collect = !data.collect
                     mAdapter.notifyItemChanged(position)
 
                 }
             }
         })
 
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        articleBeans.clear()
     }
 
     override fun invalidate() {
@@ -103,13 +109,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
         viewModel.onEach(HomeDaggerState::pager) {
             pager = it
         }
-        viewModel.onEach(HomeDaggerState::bannerList) {
-            mAdapter.mBannerList = it
+        viewModel.onAsync(HomeDaggerState::bannerList) {
+            mAdapter.mBannerList = it.data
             mAdapter.notifyItemChanged(0)
         }
         viewModel.onEach(HomeDaggerState::artList) {
             LogUtils.d("当前条目----${it.size}")
-            articleBeans.clear()
             mAdapter.mList = ArrayList(it)
             mAdapter.notifyDataSetChanged()
         }

@@ -14,7 +14,6 @@ class HomeRepository() : BaseRepository() {
         emit("Hello")
     }
 
-
     fun requestBannerDataList() = flow {
         emit(apiService.getBannerList())
     }.flowOn(Dispatchers.IO)
