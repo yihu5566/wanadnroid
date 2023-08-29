@@ -20,7 +20,7 @@ interface MainService {
 
     @FormUrlEncoded
     @POST("lg/uncollect_originId/{id}/json")
-    fun cancelCollectArticle(
+    suspend fun cancelCollectArticle(
         @Path("id") id: String,
     ): WanApiResponse<Any>
 
@@ -43,7 +43,7 @@ interface MainService {
     fun getArticleList(@Path("index") index: String, @Field("k") map: String): Call<ArticleResponse>
 
     @GET("tree/json")
-    fun getSystemDataList(): Call<SystemDataRespons>
+    suspend fun getSystemDataList(): WanApiResponse<List<SystemBean>>
 
     @GET("article/list/{index}/json")
     fun getSystemDataDetailsList(

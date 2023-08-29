@@ -8,6 +8,7 @@ import com.we.jetpackmvvm.network.BaseResponse
 import com.we.jetpackmvvm.network.ExceptionHandle
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 /**
@@ -16,6 +17,8 @@ import kotlinx.coroutines.launch
  * @Description:
  */
 open class BaseRepository {
+    private val mainScope = MainScope()
+
     /**
      * 过滤服务器结果，失败抛异常
      * @param block 请求体方法，必须要用suspend关键字修饰
@@ -30,7 +33,7 @@ open class BaseRepository {
         error: (AppException) -> Unit = {},
     ): Job {
         //如果需要弹窗 通知Activity/fragment弹窗
-        return GlobalScope.launch {
+        return mainScope.launch {
             runCatching {
                 //请求体
                 block()

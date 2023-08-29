@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -30,13 +31,12 @@ import test.juyoufuli.com.myapplication.app.BaseActivity
 import test.juyoufuli.com.myapplication.app.utils.JsonUtils
 import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
-import test.juyoufuli.com.myapplication.app.utils.ToastUtils.showToast
 import test.juyoufuli.com.myapplication.databinding.ActivityMainBinding
 import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
-import test.juyoufuli.com.myapplication.mvp.ui.tab.SystemDataFragment
+import test.juyoufuli.com.myapplication.mvp.ui.system.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
 
@@ -457,7 +457,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
             val tempTime = currentTime - lastClickTime
             if (tempTime > spaceTime || tempTime < 0) {
                 lastClickTime = currentTime
-                showToast(this, "再点击一次退出")
+                ToastUtils.showLong("再点击一次退出")
                 return true//禁用返回键
             } else {
                 ActivityUtils.finishAllActivities()

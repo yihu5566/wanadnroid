@@ -17,7 +17,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.FragmentWechatnumberBinding
-import test.juyoufuli.com.myapplication.mvp.ui.tab.RecyclerViewFragment
+import test.juyoufuli.com.myapplication.mvp.ui.system.RecyclerViewFragment
 import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
 
 /**
@@ -77,40 +77,40 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
     }
 
     private fun initDataList() {
-        for (ddd in (tagNameList)!!) {
+        for (ddd in (tagNameList)) {
             var recyclerViewFragment = RecyclerViewFragment()
             val bundle = Bundle()
             bundle.putString("cid", ddd.split("*").get(0))
 
             recyclerViewFragment.arguments = bundle
 
-            fragmentList!!.add(recyclerViewFragment)
+            fragmentList.add(recyclerViewFragment)
         }
         //初始化一下
-        cid = tagNameList!!.get(0).split("*").get(0)
+        cid = tagNameList.get(0).split("*").get(0)
 
 
         val supportFragmentManager = getChildFragmentManager()
 
-        val myPagerAdapter = MyPagerAdapter(fragmentList!!, supportFragmentManager)
+        val myPagerAdapter = MyPagerAdapter(fragmentList, supportFragmentManager)
         val commonNavigator = CommonNavigator(activity)
 
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
 
             override fun getCount(): Int {
-                return if (tagNameList == null) 0 else tagNameList!!.size
+                return if (tagNameList == null) 0 else tagNameList.size
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val colorTransitionPagerTitleView = ColorTransitionPagerTitleView(context)
                 colorTransitionPagerTitleView.normalColor = Color.GRAY
                 colorTransitionPagerTitleView.selectedColor = Color.BLACK
-                colorTransitionPagerTitleView.setText(tagNameList!!.get(index).split("*").get(1))
-                colorTransitionPagerTitleView.setOnClickListener(object : View.OnClickListener {
-                    override fun onClick(view: View) {
-                        binding.vpSystemDetailsContent.setCurrentItem(index)
-                    }
-                })
+                colorTransitionPagerTitleView.text = tagNameList[index].split("*").get(1)
+                colorTransitionPagerTitleView.setOnClickListener {
+                    binding.vpSystemDetailsContent.setCurrentItem(
+                        index
+                    )
+                }
 
                 return colorTransitionPagerTitleView
             }
@@ -123,7 +123,7 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
         }
 
 
-        binding.rivSystemDetailsTop.setNavigator(commonNavigator)
+        binding.rivSystemDetailsTop.navigator = commonNavigator
 
         ViewPagerHelper.bind(binding.rivSystemDetailsTop, binding.vpSystemDetailsContent)
 
@@ -141,13 +141,13 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
 
             override fun onPageSelected(position: Int) {
 //                toolbarTitle!!.setText(tagNameList!!.get(position).split("*").get(1))
-                var get = fragmentList?.get(position)
+                var get = fragmentList[position]
                 var value = Message()
                 var bundle = Bundle()
-                bundle.putString("cid", tagNameList!!.get(position).split("*").get(0))
+                bundle.putString("cid", tagNameList[position].split("*")[0])
                 value.data = bundle
 //                get.setData(value)
-                cid = tagNameList!!.get(position).split("*").get(0)
+                cid = tagNameList.get(position).split("*").get(0)
                 LogUtils.d("cid=" + cid)
             }
 

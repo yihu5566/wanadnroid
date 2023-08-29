@@ -58,7 +58,7 @@
             android:name=".mvp.ui.searchview.SearchViewActivity"
             android:exported="false" />
         <activity
-            android:name=".mvp.ui.tab.SystemDataDetailsActivity"
+            android:name=".mvp.ui.system.SystemDataDetailsActivity"
             android:exported="false" />
         <activity android:name=".mvp.ui.account.LoginActivity" />
         <activity

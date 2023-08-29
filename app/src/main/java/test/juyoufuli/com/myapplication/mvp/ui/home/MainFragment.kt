@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.fragmentViewModel
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
@@ -23,6 +24,8 @@ import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAda
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerState
 import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
+import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemState
+import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemViewModel
 
 /**
  * Author : ludf
@@ -109,10 +112,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), OnRefreshListener, OnL
         viewModel.onEach(HomeDaggerState::pager) {
             pager = it
         }
-        viewModel.onAsync(HomeDaggerState::bannerList) {
+        viewModel.onAsync(HomeDaggerState::bannerList, onSuccess = {
             mAdapter.mBannerList = it.data
             mAdapter.notifyItemChanged(0)
-        }
+        }, onFail = {
+            ToastUtils.showShort("接口失败")
+        })
+
         viewModel.onEach(HomeDaggerState::artList) {
             LogUtils.d("当前条目----${it.size}")
             mAdapter.mList = ArrayList(it)
