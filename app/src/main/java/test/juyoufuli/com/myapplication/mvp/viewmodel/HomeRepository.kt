@@ -23,4 +23,11 @@ class HomeRepository : BaseRepository() {
         emit(apiService.getSystemDataList())
     }.flowOn(Dispatchers.IO)
 
+    fun requestProjectCategory() = flow {
+        emit(apiService.getProjectList())
+    }.flowOn(Dispatchers.IO)
+
+    fun requestProjectCategoryDetails(page: Int, cid: Int) = flow {
+        emit(apiService.getProjectDetailsList(page, cid))
+    }.flowOn(Dispatchers.IO)
 }

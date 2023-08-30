@@ -10,17 +10,17 @@
         android:background="@color/backgroundColor"
         android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/rlv_project"
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/rlv_project_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_deep"
-            android:paddingLeft="5dp" />
+            android:paddingStart="5dp" />
     </LinearLayout>
 
 

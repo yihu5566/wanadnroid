@@ -14,12 +14,16 @@
 
     <color name="green_deep_color">#22dddd</color>
     <color name="white">#eeeeee</color>
+    <color name="white_fff">#ffffff</color>
     <color name="black_deep">#999999</color>
 
     <color name="textColor">#FFFFFF</color>
     <color name="backgroundColor">#3b3b3b</color>
     <color name="transparent">#00ffffff</color>
+
     <color name="main_background_gray">#999999</color>
     <color name="main_background_tab_gray">#666666</color>
+    <color name="main_background_gray_bbb">#bbbbbb</color>
+
 
 </resources>

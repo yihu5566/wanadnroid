@@ -20,13 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/main_background_gray" />
+            android:background="@color/main_background_gray_bbb" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/main_background_tab_gray"
+            android:background="@color/white"
             app:itemTextColor="@drawable/main_tab_text_color"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_navigation_main" />

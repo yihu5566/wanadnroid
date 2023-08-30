@@ -5,24 +5,6 @@ package test.juyoufuli.com.myapplication.mvp.entity
  * Created Time : 2018-10-31  10:55
  * Description:
  */
-
-
-data class ProjectDetailsResponse(
-    val data: ProjectDetailsData,
-    val errorCode: Int,
-    val errorMsg: String
-)
-
-data class ProjectDetailsData(
-    val curPage: Int,
-    val datas: List<ProjectDatas>,
-    val offset: Int,
-    val over: Boolean,
-    val pageCount: Int,
-    val size: Int,
-    val total: Int
-)
-
 data class ProjectDatas(
     val apkLink: String,
     val author: String,

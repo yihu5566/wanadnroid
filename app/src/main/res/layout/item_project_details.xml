@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:background="@color/black_deep"
+        android:background="@color/white_fff"
         android:padding="5dp">
 
         <ImageView
@@ -34,7 +33,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/iv_project_details_icon"
+            android:layout_toEndOf="@+id/iv_project_details_icon"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="标题头标题头标题头标题头标题头标题头标题头标题头标题头" />
@@ -69,5 +68,4 @@
             android:button="@drawable/main_favorite_icon_select" />
     </RelativeLayout>
 
-
-</RelativeLayout>
+</merge>

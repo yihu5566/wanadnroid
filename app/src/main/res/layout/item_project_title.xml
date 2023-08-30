@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_back"
     android:layout_width="match_parent"
     android:layout_height="40dp"
@@ -9,7 +9,7 @@
     <View
         android:id="@+id/tag"
         android:layout_width="2dp"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
         android:background="@color/colorPrimary"
         android:visibility="invisible" />
 
@@ -17,9 +17,9 @@
         android:id="@+id/tv_project_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:gravity="center"
         android:text="条目"
         android:textColor="@color/textColor" />
 
-</LinearLayout>
+</merge>

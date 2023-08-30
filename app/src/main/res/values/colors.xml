@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <color name="colorPrimary">#3FA862</color>
     <color name="colorPrimaryDark">#3FA862</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="black">#222222</color>
     <color name="gray">#999999</color>
     <color name="light_gray">#bbbbbb</color>
@@ -15,6 +14,7 @@
 
     <color name="green_deep_color">#22dddd</color>
     <color name="white">#eeeeee</color>
+    <color name="white_fff">#ffffff</color>
     <color name="black_deep">#999999</color>
 
     <color name="textColor">#FF000000</color>
@@ -23,5 +23,6 @@
 
     <color name="main_background_gray">#999999</color>
     <color name="main_background_tab_gray">#666666</color>
+    <color name="main_background_gray_bbb">#bbbbbb</color>
 
 </resources>

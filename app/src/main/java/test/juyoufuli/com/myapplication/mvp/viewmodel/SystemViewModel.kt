@@ -28,15 +28,10 @@ class SystemViewModel(state: SystemState, private val repository: HomeRepository
         getSystemDataList()
     }
 
-    fun getSystemDataList() {
+    private fun getSystemDataList() {
         repository.getSystemDataList().execute {
             copy(systemBean = it)
         }
-//        request({ apiService.getSystemDataList() }, {
-//            setState {
-//                copy(responseAsync = it)
-//            }
-//        })
     }
 
     companion object : MavericksViewModelFactory<SystemViewModel, SystemState> {

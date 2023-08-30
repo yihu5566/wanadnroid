@@ -3,22 +3,21 @@ package test.juyoufuli.com.myapplication.mvp.ui.project
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.view.View.OnClickListener
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.EpoxyRecyclerView
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.blankj.utilcode.util.ActivityUtils
-import com.kingja.loadsir.core.LoadService
-import com.paginate.Paginate
+import com.blankj.utilcode.util.ToastUtils
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
-import test.juyoufuli.com.myapplication.app.recyclerview.MultiItemTypeAdapter
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
-import test.juyoufuli.com.myapplication.mvp.entity.ProjectData
-import test.juyoufuli.com.myapplication.mvp.entity.ProjectDatas
-import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectAdapter
-import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectDetailsAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.views.loadingRow
+import test.juyoufuli.com.myapplication.mvp.views.projectCategory
+import test.juyoufuli.com.myapplication.mvp.views.projectCategoryDetails
 
 
 /**
@@ -27,35 +26,9 @@ import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
  * Description:
  */
 class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
-    var mList: ArrayList<ProjectData> = arrayListOf()
-    var mAdapter: ProjectAdapter? = null
-    var projectDetailsAdapter: ProjectDetailsAdapter? = null
-    var detailsList: ArrayList<ProjectDatas> = arrayListOf()
-    var totalPage: Int = 0
-    var page: Int = 0
-    var cid: String = "0"
-    var mPaginate: Paginate? = null
-    var isLoadingMore: Boolean = false
+    val viewModel: ProjectViewModel by fragmentViewModel()
 
     override fun initView(savedInstanceState: Bundle?) {
-        initRecyclerView()
-        initPaginate()
-    }
-
-    override fun attachBinding(): ActivityProgectMainBinding {
-        return ActivityProgectMainBinding.inflate(LayoutInflater.from(requireContext()))
-    }
-
-    override fun invalidate() {
-
-    }
-
-    var loadService: LoadService<*>? = null
-
-    private fun initRecyclerView() {
-
-        mAdapter = ProjectAdapter(requireContext(), mList)
-        binding.rlvProject.layoutManager = LinearLayoutManager(requireContext())
         binding.rlvProject.addItemDecoration(
             ProjectRecycerDecoration(
                 requireContext(),
@@ -64,32 +37,6 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 2
             )
         )
-        binding.rlvProject.adapter = mAdapter
-//        mPresenter?.getProject()
-        mAdapter?.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
-            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
-                for (item in mList) {
-                    item.isSelect = false
-                }
-                mList[position].isSelect = true
-
-                mAdapter?.notifyDataSetChanged()
-//                changeTab(data as ProjectData?)
-            }
-
-            override fun onItemLongClick(
-                view: View?,
-                holder: RecyclerView.ViewHolder?,
-                position: Int
-            ): Boolean {
-                return false
-            }
-        })
-
-        //初始化详情
-        detailsList = ArrayList()
-        projectDetailsAdapter = ProjectDetailsAdapter(requireContext(), detailsList)
-        binding.rlvProjectContent.layoutManager = LinearLayoutManager(requireContext())
         binding.rlvProjectContent.addItemDecoration(
             ProjectRecycerDecoration(
                 requireContext(),
@@ -98,99 +45,89 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 2
             )
         )
-        binding.rlvProjectContent.adapter = projectDetailsAdapter
-        projectDetailsAdapter?.setOnItemClickListener(object :
-            MultiItemTypeAdapter.OnItemClickListener {
-            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
-                val intent = Intent(activity, WebViewActivity::class.java)
-                val data = detailsList[position]
-                intent.putExtra("link", data.link)
-                intent.putExtra("title", data.title)
-                ActivityUtils.startActivity(intent)
-            }
-
-            override fun onItemLongClick(
-                view: View?,
-                holder: RecyclerView.ViewHolder?,
-                position: Int
-            ): Boolean {
-//                if (viewid == R.id.tv_project_details_collect) {
-//                    if (!data.collect) {
-//                        LogUtils.debugInfo(data.id.toString() + "--true--" + position)
-//                        mPresenter?.collectArticle(data.id.toString())
-//                    } else {
-//                        LogUtils.debugInfo(data.id.toString() + "--false--" + position)
-//                        mPresenter?.cancelCollectArticle(data.id.toString())
-//
-//                    }
-//                    detailsList!![position].collect = !data.collect
-////                    mAdapter?.notifyItemChanged(position)
-//
-//                }
-                return false
+        binding.rlvProject.buildModelsWith(object : EpoxyRecyclerView.ModelBuilderCallback {
+            override fun buildModels(controller: EpoxyController) {
+                controller.buildModels()
             }
         })
 
-
-    }
-
-
-//    private fun changeTab(data: ProjectData?) {
-////        ArmsUtils.makeText(activity, data?.id.toString())
-//        cid = data?.id.toString()
-//        page = 0
-//        detailsList?.clear()
-//        projectDetailsAdapter?.notifyDataSetChanged()
-//        mPresenter?.getProjectDetails(page.toString(), cid)
-//    }
-
-
-    private fun initPaginate() {
-        if (mPaginate == null) {
-            val callbacks = object : Paginate.Callbacks {
-                override fun onLoadMore() {
-//                    mPresenter?.getProjectDetails(page = page.toString(), cid = cid)
-                }
-
-                override fun isLoading(): Boolean {
-                    return isLoadingMore
-                }
-
-                override fun hasLoadedAllItems(): Boolean {
-                    return totalPage == page || totalPage == 0
-                }
+        binding.rlvProjectContent.buildModelsWith(object : EpoxyRecyclerView.ModelBuilderCallback {
+            override fun buildModels(controller: EpoxyController) {
+                controller.buildModelsContext()
             }
+        })
 
-            mPaginate = Paginate.with(binding.rlvProject, callbacks)
-                .setLoadingTriggerThreshold(0)
-                .build()
-            mPaginate?.setHasMoreDataToLoad(false)
+        //cid 变化需要刷新列表
+        viewModel.onEach(ProjectState::cid) {
+            viewModel.requestProjectCategoryDetailsList(1, it)
         }
     }
 
-//    override fun refreshAdapterList(response: ProjectResponse) {
-//        cid = response.data[0].id.toString()
-//        response.data[0].isSelect = true
-//        mList?.addAll(response.data)
-//        mAdapter?.notifyDataSetChanged()
-//        mPresenter?.getProjectDetails(page = page.toString(), cid = cid)
-//
-//    }
-//
-//    override fun refreshDetailsAdapterList(response: ProjectDetailsResponse) {
-//        loadService?.showSuccess()
-//        totalPage = response.data.pageCount
-//        if (totalPage == 0) {
-//            loadService?.showCallback(EmptyCallback::class.java)
-//            return
-//        }
-//        page = response.data.curPage + 1
-//
-//        if (response.data.curPage == 0) {
-//            detailsList?.clear()
-//        }
-//        detailsList?.addAll(response.data.datas)
-//        projectDetailsAdapter?.notifyDataSetChanged()
-//        isLoadingMore = false
-//    }
+    override fun attachBinding(): ActivityProgectMainBinding {
+        return ActivityProgectMainBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
+    override fun invalidate() {
+        binding.rlvProject.requestModelBuild()
+        binding.rlvProjectContent.requestModelBuild()
+    }
+
+    private fun EpoxyController.buildModels() = withState(viewModel) { state ->
+        if (state.projectTitle.complete) {
+            state.projectTitle.invoke()?.data?.forEachIndexed { position, it ->
+                projectCategory {
+                    id(it.id)
+                    title(it.name)
+                    tagVisibility(
+                        if (state.selectIndex == position) {
+                            "1"
+                        } else {
+                            "0"
+                        }
+                    )
+                    clickListener { it1 ->
+                        ToastUtils.showLong("点击条目了${it.id}")
+                        viewModel.changeTab(position, it)
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun EpoxyController.buildModelsContext() = withState(viewModel) { state ->
+        state.projectDetailsList.forEach {
+            projectCategoryDetails {
+                id(it.id)
+                title(it.title)
+                des(it.desc)
+                time(it.niceDate)
+                author(it.author)
+                isCollect(
+                    when (it.collect) {
+                        true -> "1"
+                        false -> "0"
+                    }
+                )
+                imageUrl(it.envelopePic)
+                OnClickListener { it1 ->
+                    val intent = Intent(activity, WebViewActivity::class.java)
+                    intent.putExtra("link", it.link)
+                    intent.putExtra("title", it.title)
+                    ActivityUtils.startActivity(intent)
+                }
+            }
+        }
+        loadingRow {
+            // Changing the ID will force it to rebind when new data is loaded even if it is
+            // still on screen which will ensure that we trigger loading again.
+            id("loading${state.projectDetailsList.size}")
+            onBind { _, _, _ ->
+                viewModel.requestProjectCategoryDetailsList(
+                    state.pager,
+                    state.cid,
+                )
+            }
+        }
+    }
 }

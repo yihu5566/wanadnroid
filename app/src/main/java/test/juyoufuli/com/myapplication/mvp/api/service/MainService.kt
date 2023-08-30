@@ -66,13 +66,13 @@ interface MainService {
     fun getArticleCollectList(@Path("index") index: String): Call<ArticleResponse>
 
     @GET("project/tree/json")
-    fun getProjectList(): Call<ProjectResponse>
+    suspend fun getProjectList(): WanApiResponse<List<ProjectData>>
 
     @GET("project/list/{index}/json")
-    fun getProjectDetailsList(
-        @Path("index") page: String,
-        @Query("cid") cid: String
-    ): Call<ProjectDetailsResponse>
+    suspend fun getProjectDetailsList(
+        @Path("index") page: Int,
+        @Query("cid") cid: Int
+    ): WanApiResponse<WanPageResponse<ProjectDatas>>
 
     @GET("navi/json")
     fun getNavigation(): Call<NavigationResponse>
