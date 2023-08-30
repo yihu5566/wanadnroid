@@ -21,7 +21,7 @@ data class SystemState(
 ) : MavericksState
 
 
-class SystemViewModel(state: SystemState, val repository: HomeRepository) :
+class SystemViewModel(state: SystemState, private val repository: HomeRepository) :
     MvRxViewModel<SystemState>(state) {
 
     init {

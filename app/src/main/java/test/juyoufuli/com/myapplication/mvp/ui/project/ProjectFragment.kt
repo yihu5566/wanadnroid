@@ -55,7 +55,7 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
     private fun initRecyclerView() {
 
         mAdapter = ProjectAdapter(requireContext(), mList)
-        binding.rlvProject.layoutManager = LinearLayoutManager(activity)
+        binding.rlvProject.layoutManager = LinearLayoutManager(requireContext())
         binding.rlvProject.addItemDecoration(
             ProjectRecycerDecoration(
                 requireContext(),
@@ -89,7 +89,7 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
         //初始化详情
         detailsList = ArrayList()
         projectDetailsAdapter = ProjectDetailsAdapter(requireContext(), detailsList)
-        binding.rlvProjectContent.layoutManager = LinearLayoutManager(activity)
+        binding.rlvProjectContent.layoutManager = LinearLayoutManager(requireContext())
         binding.rlvProjectContent.addItemDecoration(
             ProjectRecycerDecoration(
                 requireContext(),

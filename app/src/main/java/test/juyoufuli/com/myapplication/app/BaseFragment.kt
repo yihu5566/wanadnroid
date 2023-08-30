@@ -25,7 +25,6 @@ abstract class BaseFragment<V : ViewBinding> : Fragment(), MavericksView {
         binding = attachBinding()
         initView(savedInstanceState)
         return binding.root
-
     }
 
 

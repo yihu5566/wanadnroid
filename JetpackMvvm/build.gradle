@@ -121,6 +121,8 @@ dependencies {
     androidTestApi AndroidX.TestExtJunit
     androidTestApi AndroidX.TestEspresso
     // mvi
-    api 'com.airbnb.android:mavericks:3.0.2'
+    api 'com.airbnb.android:mavericks:3.0.6'
+    api 'com.airbnb.android:epoxy:5.0.0'
+    kapt 'com.airbnb.android:epoxy-processor:5.0.0'
 
 }

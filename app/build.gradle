@@ -79,5 +79,7 @@ dependencies {
     implementation 'com.github.markomilos:paginate:0.5.1'
     implementation 'com.jakewharton:butterknife:10.2.3'
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
+    kapt 'com.airbnb.android:epoxy-processor:5.0.0'
+
 
 }
