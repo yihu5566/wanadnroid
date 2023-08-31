@@ -26,12 +26,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.donkingliang.labels.LabelsView
+        <test.juyoufuli.com.myapplication.app.view.LabelsView
             android:id="@+id/lbv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="@dimen/dp_10"
+            android:background="@color/light_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>

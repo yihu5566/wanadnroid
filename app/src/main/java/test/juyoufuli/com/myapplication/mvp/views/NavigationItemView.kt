@@ -48,7 +48,8 @@ class NavigationItemView @JvmOverloads constructor(
     @ModelProp
     fun setLabsView(listText: List<String>) {
         LogUtils.d("lab size--》${listText.size}")
-        binding.lbvSearch.setLabels(listText)
+        binding.lbvSearch.setModel(LabelsView.Model.CLICK)
+        binding.lbvSearch.setTextList(listText)
         LogUtils.d("lab height -<>${binding.lbvSearch.height} ")
 
     }

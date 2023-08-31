@@ -146,8 +146,12 @@ public class LabelsView extends ViewGroup {
         int startLayoutWidth = 0;
         //一行中子控件最高的高度，用于决定下一行高度应该在目前基础上累加多少
         int maxChildHeight = 0;
+        //一共几行
+        int lineCount = 0;
+        int paddingHeight = 0;
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
+            paddingHeight = child.getPaddingBottom() + child.getPaddingTop();
             LogUtil.i("onLayout--getPaddingRight:" +
                     child.getPaddingRight() +
                     "getPaddingLeft：" + child.getPaddingLeft());
@@ -164,15 +168,18 @@ public class LabelsView extends ViewGroup {
                 // 初始化为0
                 maxChildHeight = 0;
                 startLayoutWidth = 0;
+                lineCount++;
 
             }
             if (childMeasureHeight > maxChildHeight) {
                 maxChildHeight = childMeasureHeight;
             }
-            //获取总的高度
-            contentHeight += maxChildHeight + margiVertical;
             //获取最长的行总的宽度
             maxLineWidth = Math.max(maxLineWidth, startLayoutWidth);
+        }
+        for (int i = 0; i < lineCount; i++) {
+            //获取总的高度
+            contentHeight += maxChildHeight + margiVertical + paddingHeight;
         }
 
         //如果没有子元素，就设置宽高都为0（简化处理）
@@ -189,6 +196,8 @@ public class LabelsView extends ViewGroup {
             }
             //如果高度是wrap_content，则高度为第一个子元素的高度
             else if (heightMode == MeasureSpec.AT_MOST) {
+                setMeasuredDimension(widthSize, contentHeight);
+            } else {
                 setMeasuredDimension(widthSize, contentHeight);
             }
 
