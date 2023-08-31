@@ -75,7 +75,7 @@ interface MainService {
     ): WanApiResponse<WanPageResponse<ProjectDatas>>
 
     @GET("navi/json")
-    fun getNavigation(): Call<NavigationResponse>
+    suspend fun getNavigation(): WanApiResponse<List<NavigationBean>>
 
     @GET("hotkey/json")
     fun getHotWord(): Call<BaseResponse<List<HotWordData>>>

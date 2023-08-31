@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.mvp.viewmodel
+package test.juyoufuli.com.myapplication.mvp.ui.home
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MavericksState
@@ -16,6 +16,7 @@ import test.juyoufuli.com.myapplication.app.utils.LogUtils
 import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.entity.BannerInfo
 import test.juyoufuli.com.myapplication.mvp.entity.WanApiResponse
+import test.juyoufuli.com.myapplication.mvp.repository.HomeRepository
 
 /**
  * @Author : dongfang

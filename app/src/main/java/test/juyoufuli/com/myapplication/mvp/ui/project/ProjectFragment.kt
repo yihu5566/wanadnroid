@@ -78,13 +78,7 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 projectCategory {
                     id(it.id)
                     title(it.name)
-                    tagVisibility(
-                        if (state.selectIndex == position) {
-                            "1"
-                        } else {
-                            "0"
-                        }
-                    )
+                    tagVisibility(state.selectIndex == position)
                     clickListener { it1 ->
                         ToastUtils.showLong("点击条目了${it.id}")
                         viewModel.changeTab(position, it)

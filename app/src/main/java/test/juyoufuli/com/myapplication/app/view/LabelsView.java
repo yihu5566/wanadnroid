@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
-
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -32,26 +31,50 @@ import test.juyoufuli.com.myapplication.R;
  */
 public class LabelsView extends ViewGroup {
 
-
+    Paint mPaint;
     private Context context;
     private Paint mainPaint;
     private TextPaint textPaint;
     private List<String> textList;
     private List<String> selectList;
     private List<String> tempSelectList;
-
     private String[] textDefault = {""};
     private LayoutInflater inflater;
     private List<TextView> textViewList;
     private ChildSelectListener childSelectListener;
     private MyChildClickListener childClickListener;
     private int maxWidth;
-
     private Model model;
+    /**
+     * 默认的标签间距
+     */
+    private int margiHorizontal = 10;
+    /**
+     * 默认的行间距
+     */
+    private int margiVertical = 10;
 
-    public static enum Model {
-        CLICK, SELECT, SINGLE_SELECT
+    public LabelsView(@NonNull Context context) {
+        this(context, null);
+    }
 
+    public LabelsView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+        this.context = context;
+        init(context);
+    }
+
+    public LabelsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    private static ColorStateList createColorStateList(String selected, String normal) {
+        int[] colors = new int[]{Color.parseColor(selected), Color.parseColor(normal)};
+        int[][] states = new int[2][];
+        states[0] = new int[]{android.R.attr.state_selected};
+        states[1] = new int[]{};
+        ColorStateList colorList = new ColorStateList(states, colors);
+        return colorList;
     }
 
     public void setModel(Model model) {
@@ -65,16 +88,8 @@ public class LabelsView extends ViewGroup {
         //绘制每一个小的textView
         drawTextView();
         invalidate();
+        requestLayout();
     }
-
-    /**
-     * 默认的标签间距
-     */
-    private int margiHorizontal = 10;
-    /**
-     * 默认的行间距
-     */
-    private int margiVertical = 10;
 
     public void setChildClickListener(MyChildClickListener childClickListener) {
         this.childClickListener = childClickListener;
@@ -82,16 +97,6 @@ public class LabelsView extends ViewGroup {
 
     public void setChildSelectListener(ChildSelectListener childSelectListener) {
         this.childSelectListener = childSelectListener;
-    }
-
-    public LabelsView(@NonNull Context context) {
-        this(context, null);
-    }
-
-    public LabelsView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-        this.context = context;
-        init(context);
     }
 
     private void init(Context context) {
@@ -118,18 +123,11 @@ public class LabelsView extends ViewGroup {
         mPaint.setColor(Color.BLACK);
     }
 
-    Paint mPaint;
-
-    public LabelsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //由于布局非常规，所以要自己测量
         measureMyChild(widthMeasureSpec, heightMeasureSpec);
-
     }
 
     private void measureMyChild(int widthMeasureSpec, int heightMeasureSpec) {
@@ -208,15 +206,6 @@ public class LabelsView extends ViewGroup {
             addView(label);
         }
 
-    }
-
-    private static ColorStateList createColorStateList(String selected, String normal) {
-        int[] colors = new int[]{Color.parseColor(selected), Color.parseColor(normal)};
-        int[][] states = new int[2][];
-        states[0] = new int[]{android.R.attr.state_selected};
-        states[1] = new int[]{};
-        ColorStateList colorList = new ColorStateList(states, colors);
-        return colorList;
     }
 
     @Override
@@ -316,7 +305,11 @@ public class LabelsView extends ViewGroup {
         });
     }
 
-    public interface MyChildClickListener {
+    public static enum Model {
+        CLICK, SELECT, SINGLE_SELECT
+    }
+
+    interface MyChildClickListener {
         /**
          * @param view
          * @param string

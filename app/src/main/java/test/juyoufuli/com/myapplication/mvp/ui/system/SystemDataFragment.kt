@@ -6,12 +6,9 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.google.android.material.snackbar.Snackbar
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.TabFragmentBinding
-import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemState
-import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemViewModel
-import test.juyoufuli.com.myapplication.mvp.views.basicRow
+import test.juyoufuli.com.myapplication.mvp.views.systemItem
 
 /**
  * Author : ludf
@@ -24,13 +21,13 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
 
     //    private val bindingg: TabFragmentBinding by viewBinding()
     override fun initView(savedInstanceState: Bundle?) {
-        viewModel.onAsync(
-            SystemState::systemBean, uniqueOnly(),
-            onFail = {
-                Snackbar.make(binding.root, "Jokes request failed.", Snackbar.LENGTH_INDEFINITE)
-                    .show()
-            }
-        )
+//        viewModel.onAsync(
+//            SystemState::systemBean, uniqueOnly(),
+//            onFail = {
+//                Snackbar.make(binding.root, "Jokes request failed.", Snackbar.LENGTH_INDEFINITE)
+//                    .show()
+//            }
+//        )
         binding.recyclerView.buildModelsWith(object : EpoxyRecyclerView.ModelBuilderCallback {
             override fun buildModels(controller: EpoxyController) {
                 controller.buildModels()
@@ -44,7 +41,7 @@ class SystemDataFragment : BaseFragment<TabFragmentBinding>() {
             system.children.forEach {
                 stringName += it.name + ","
             }
-            basicRow {
+            systemItem {
                 id(system.id)
                 title(system.name)
                 des(stringName)

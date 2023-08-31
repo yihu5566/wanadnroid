@@ -22,10 +22,6 @@ import test.juyoufuli.com.myapplication.mvp.entity.ArticleBean
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.DefaultItemHolder
 import test.juyoufuli.com.myapplication.mvp.ui.home.adapter2.MainRecyclerViewAdapter
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
-import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerState
-import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeDaggerViewModel
-import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemState
-import test.juyoufuli.com.myapplication.mvp.viewmodel.SystemViewModel
 
 /**
  * Author : ludf

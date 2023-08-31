@@ -11,7 +11,7 @@ import com.we.jetpackmvvm.ext.viewBinding
 import test.juyoufuli.com.myapplication.databinding.ArticleSystemItemBinding
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
-class BasicRow @JvmOverloads constructor(
+class SystemItem @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

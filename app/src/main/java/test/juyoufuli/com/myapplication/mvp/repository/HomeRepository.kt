@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.mvp.viewmodel
+package test.juyoufuli.com.myapplication.mvp.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow

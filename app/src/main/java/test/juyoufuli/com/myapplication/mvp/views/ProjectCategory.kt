@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.airbnb.epoxy.CallbackProp
+import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.we.jetpackmvvm.ext.viewBinding
@@ -28,10 +29,10 @@ class ProjectCategory @JvmOverloads constructor(
         binding.tvProjectTitle.text = title
     }
 
-    @TextProp
-    fun setTagVisibility(isVisibility: CharSequence?) {
+    @ModelProp
+    fun setTagVisibility(isVisibility: Boolean?) {
         binding.tag.visibility = when (isVisibility) {
-            "1" -> View.VISIBLE
+            true -> View.VISIBLE
             else -> View.INVISIBLE
         }
     }

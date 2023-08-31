@@ -10,7 +10,7 @@ import test.juyoufuli.com.myapplication.app.MvRxViewModel
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectData
 import test.juyoufuli.com.myapplication.mvp.entity.ProjectDatas
 import test.juyoufuli.com.myapplication.mvp.entity.WanApiResponse
-import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeRepository
+import test.juyoufuli.com.myapplication.mvp.repository.HomeRepository
 
 /**
  * @Author : dongfang

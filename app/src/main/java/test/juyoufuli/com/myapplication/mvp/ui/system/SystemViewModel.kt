@@ -1,4 +1,4 @@
-package test.juyoufuli.com.myapplication.mvp.viewmodel
+package test.juyoufuli.com.myapplication.mvp.ui.system
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MavericksState
@@ -9,6 +9,7 @@ import org.koin.android.ext.android.inject
 import test.juyoufuli.com.myapplication.app.MvRxViewModel
 import test.juyoufuli.com.myapplication.mvp.entity.SystemBean
 import test.juyoufuli.com.myapplication.mvp.entity.WanApiResponse
+import test.juyoufuli.com.myapplication.mvp.repository.HomeRepository
 
 /**
  * @Author : dongfang

@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
 
-    <ExpandableListView
-        android:id="@+id/rlv_navigation"
+    <com.airbnb.epoxy.EpoxyRecyclerView
+        android:id="@+id/epoxy_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:groupIndicator="@null" />
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

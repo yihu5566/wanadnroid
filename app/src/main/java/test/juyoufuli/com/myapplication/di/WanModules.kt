@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import test.juyoufuli.com.myapplication.app.AppViewModel
 import test.juyoufuli.com.myapplication.app.net.NetworkApi
-import test.juyoufuli.com.myapplication.mvp.viewmodel.HomeRepository
+import test.juyoufuli.com.myapplication.mvp.repository.HomeRepository
 
 /**
  * @Author : dongfang
