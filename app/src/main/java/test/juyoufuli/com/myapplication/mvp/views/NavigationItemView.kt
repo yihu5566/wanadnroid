@@ -37,8 +37,6 @@ class NavigationItemView @JvmOverloads constructor(
         if (isExpand) {
             binding.tvIcon.setImageResource(R.drawable.ic_expand_less_black_24dp)
             binding.lbvSearch.visibility = View.VISIBLE
-            LogUtils.d("lab height -<>${binding.lbvSearch.layoutParams.height} ")
-
         } else {
             binding.tvIcon.setImageResource(R.drawable.ic_expand_more_black_24dp)
             binding.lbvSearch.visibility = View.GONE
@@ -48,10 +46,8 @@ class NavigationItemView @JvmOverloads constructor(
     @ModelProp
     fun setLabsView(listText: List<String>) {
         LogUtils.d("lab size--》${listText.size}")
-        binding.lbvSearch.setModel(LabelsView.Model.CLICK)
-        binding.lbvSearch.setTextList(listText)
-        LogUtils.d("lab height -<>${binding.lbvSearch.height} ")
-
+//        binding.lbvSearch.setModel(LabelsView.Model.CLICK)
+        binding.lbvSearch.setLabels(listText)
     }
 
     @CallbackProp

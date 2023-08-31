@@ -42,18 +42,20 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding>() {
 
     private fun EpoxyController.buildModels() = withState(viewModel) {
         it.navigationData.invoke()?.data?.forEachIndexed { position, data ->
-            navigationItemView {
-                id(data.cid)
-                title(data.name)
-                val labText = mutableListOf<String>()
-                data.articles.forEach { it1 ->
-                    labText.add(it1.title)
+            if (data.articles.isNotEmpty()) {
+                navigationItemView {
+                    id(data.cid)
+                    title(data.name)
+                    val labText = mutableListOf<String>()
+                    data.articles.forEach { it1 ->
+                        labText.add(it1.title)
+                    }
+                    labsView(labText)
+                    tagVisibility(position == it.selectPosition)
+                    clickVisListener(OnClickListener {
+                        viewModel.selectPositionItem(position)
+                    })
                 }
-                labsView(labText)
-                tagVisibility(position == it.selectPosition)
-                clickVisListener(OnClickListener {
-                    viewModel.selectPositionItem(position)
-                })
             }
         }
     }
