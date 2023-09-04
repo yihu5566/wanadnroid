@@ -1,64 +1,34 @@
 package test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
-import android.view.View
-import androidx.viewpager.widget.ViewPager
-import com.blankj.utilcode.util.LogUtils
-import net.lucode.hackware.magicindicator.ViewPagerHelper
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import com.airbnb.mvrx.fragmentViewModel
+import com.blankj.utilcode.util.ToastUtils
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.FragmentWechatnumberBinding
-import test.juyoufuli.com.myapplication.mvp.ui.system.RecyclerViewFragment
-import test.juyoufuli.com.myapplication.mvp.ui.tab.adapter.MyPagerAdapter
 
 /**
  * @Author : dongfang
  * @Created Time : 2019-03-14  10:24
  * @Description:
  */
-class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.OnClickListener {
+class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>() {
 
-    var tagNameList: ArrayList<String> = arrayListOf()
+    private val viewModel: WeChatPublishViewModel by fragmentViewModel()
 
-    var fragmentList: ArrayList<RecyclerViewFragment> = arrayListOf()
+    val tagNameList = mutableListOf<String>()
 
     /**
      * 默认的公众号id
      */
     lateinit var cid: String
 
-
-//    override fun refreshData(response: WeChatNumberResponse) {
-//        tagNameList!!.clear()
-//        val children = response.data
-//        var stringb: StringBuffer
-//        for (i in 0 until children.size) {
-//            stringb = StringBuffer()
-//            stringb.append(children[i].id)
-//            stringb.append("*")
-//            stringb.append(children[i].name)
-//
-//            tagNameList!!.add(stringb.toString())
-//        }
-//
-//        initDataList()
-//
-//    }
-
     override fun initView(savedInstanceState: Bundle?) {
-        //获取公众号列表
-//        mPresenter?.requestSystemDataList()
-
-        binding.fabWechatNumber.setOnClickListener(this@WeChatNumberFragment)
+        binding.fabWechatNumber.setOnClickListener { v -> ToastUtils.showLong("搜索") }
     }
 
     override fun attachBinding(): FragmentWechatnumberBinding {
@@ -66,94 +36,41 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>(), View.O
     }
 
     override fun invalidate() {
-
-    }
-
-
-    override fun onClick(v: View?) {
-//        val intent = Intent(activity, WeChatSearchHistoryActivity::class.java)
-//        intent.putExtra("cid", cid)
-//        launchActivity(intent)
+        viewModel.onAsync(WeChatPublishState::WeChatPublishBean) {
+            tagNameList.clear()
+            val children = it.data
+            var stringb: StringBuffer
+            for (i in children.indices) {
+                stringb = StringBuffer()
+                stringb.append(children[i].id)
+                stringb.append("*")
+                stringb.append(children[i].name)
+                tagNameList.add(stringb.toString())
+            }
+            initDataList()
+        }
     }
 
     private fun initDataList() {
-        for (ddd in (tagNameList)) {
-            var recyclerViewFragment = RecyclerViewFragment()
-            val bundle = Bundle()
-            bundle.putString("cid", ddd.split("*").get(0))
-
-            recyclerViewFragment.arguments = bundle
-
-            fragmentList.add(recyclerViewFragment)
-        }
         //初始化一下
-        cid = tagNameList.get(0).split("*").get(0)
+        cid = tagNameList[0].split("*")[0]
+        binding.vpSystemDetailsContent.adapter = ScreenSlidePagerAdapter(parentFragmentManager)
+        binding.rivSystemDetailsTop.setupWithViewPager(binding.vpSystemDetailsContent)
+    }
 
+    private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
+        FragmentStatePagerAdapter(fm) {
+        override fun getCount(): Int = tagNameList.size
 
-        val supportFragmentManager = getChildFragmentManager()
-
-        val myPagerAdapter = MyPagerAdapter(fragmentList, supportFragmentManager)
-        val commonNavigator = CommonNavigator(activity)
-
-        commonNavigator.adapter = object : CommonNavigatorAdapter() {
-
-            override fun getCount(): Int {
-                return if (tagNameList == null) 0 else tagNameList.size
-            }
-
-            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val colorTransitionPagerTitleView = ColorTransitionPagerTitleView(context)
-                colorTransitionPagerTitleView.normalColor = Color.GRAY
-                colorTransitionPagerTitleView.selectedColor = Color.BLACK
-                colorTransitionPagerTitleView.text = tagNameList[index].split("*").get(1)
-                colorTransitionPagerTitleView.setOnClickListener {
-                    binding.vpSystemDetailsContent.setCurrentItem(
-                        index
-                    )
-                }
-
-                return colorTransitionPagerTitleView
-            }
-
-            override fun getIndicator(context: Context): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_WRAP_CONTENT
-                return indicator
-            }
+        override fun getItem(position: Int): Fragment {
+            val fragment = RecyclerViewFragment()
+            val cid = tagNameList[position].split("*")[0]
+            fragment.arguments = bundleOf(Pair("cid", cid))
+            return fragment
         }
 
-
-        binding.rivSystemDetailsTop.navigator = commonNavigator
-
-        ViewPagerHelper.bind(binding.rivSystemDetailsTop, binding.vpSystemDetailsContent)
-
-        binding.vpSystemDetailsContent.adapter = myPagerAdapter
-
-        binding.vpSystemDetailsContent.addOnPageChangeListener(object :
-            ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-//                toolbarTitle!!.setText(tagNameList!!.get(position).split("*").get(1))
-                var get = fragmentList[position]
-                var value = Message()
-                var bundle = Bundle()
-                bundle.putString("cid", tagNameList[position].split("*")[0])
-                value.data = bundle
-//                get.setData(value)
-                cid = tagNameList.get(position).split("*").get(0)
-                LogUtils.d("cid=" + cid)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-        })
+        override fun getPageTitle(position: Int): CharSequence? {
+            return tagNameList[position].split("*")[1]
+        }
     }
 }

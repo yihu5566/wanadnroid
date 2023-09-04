@@ -7,12 +7,6 @@ package test.juyoufuli.com.myapplication.mvp.entity
  */
 
 
-data class WeChatNumberResponse(
-        val `data`: List<WeChatData>,
-        val errorCode: Int,
-        val errorMsg: String
-)
-
 data class WeChatData(
         val children: List<Any>,
         val courseId: Int,

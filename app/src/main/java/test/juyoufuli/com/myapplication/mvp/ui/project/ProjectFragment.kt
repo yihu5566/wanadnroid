@@ -15,6 +15,7 @@ import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
 import test.juyoufuli.com.myapplication.mvp.views.projectCategory
 import test.juyoufuli.com.myapplication.mvp.views.projectCategoryDetails
@@ -26,7 +27,7 @@ import test.juyoufuli.com.myapplication.mvp.views.projectCategoryDetails
  * Description:
  */
 class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
-    val viewModel: ProjectViewModel by fragmentViewModel()
+    private val viewModel: ProjectViewModel by fragmentViewModel()
 
     override fun initView(savedInstanceState: Bundle?) {
         binding.rlvProject.addItemDecoration(
@@ -112,6 +113,13 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 }
             }
         }
+        if (state.isLoadFinish) {
+            loadFinishView {
+                id("load_finish")
+            }
+            return@withState
+        }
+
         loadingRow {
             // Changing the ID will force it to rebind when new data is loaded even if it is
             // still on screen which will ensure that we trigger loading again.

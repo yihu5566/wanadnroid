@@ -40,16 +40,19 @@ interface MainService {
 
     @FormUrlEncoded
     @POST("article/query/{index}/json")
-    fun getArticleList(@Path("index") index: String, @Field("k") map: String): Call<ArticleResponse>
+    fun getArticleList(
+        @Path("index") index: String,
+        @Field("k") map: String
+    ): WanApiResponse<WanPageResponse<ArticleBean>>
 
     @GET("tree/json")
     suspend fun getSystemDataList(): WanApiResponse<List<SystemBean>>
 
-    @GET("article/list/{index}/json")
+    @GET("article/list/{cid}/{page}/json?page_size=20}")
     fun getSystemDataDetailsList(
-        @Path("index") index: String,
-        @Query("cid") cid: String
-    ): Call<ArticleResponse>
+        @Path("page") index: Int,
+        @Path("cid") cid: String
+    ): WanApiResponse<WanPageResponse<ArticleBean>>
 
     @FormUrlEncoded
     @POST("user/login")
@@ -63,7 +66,7 @@ interface MainService {
     fun loginOut(): Call<LoginResponse>
 
     @GET("lg/collect/list/{index}/json")
-    fun getArticleCollectList(@Path("index") index: String): Call<ArticleResponse>
+    fun getArticleCollectList(@Path("index") index: String): WanApiResponse<WanPageResponse<ArticleBean>>
 
     @GET("project/tree/json")
     suspend fun getProjectList(): WanApiResponse<List<ProjectData>>
@@ -81,7 +84,7 @@ interface MainService {
     fun getHotWord(): Call<BaseResponse<List<HotWordData>>>
 
     @GET("wxarticle/chapters/json")
-    fun getWeChatArticle(): Call<WeChatNumberResponse>
+    suspend fun getWeChatArticle(): WanApiResponse<List<WeChatData>>
 
 
     /**
@@ -92,7 +95,7 @@ interface MainService {
         @Path("id") id: String,
         @Path("page") page: String,
         @Query("k") k: String
-    ): Call<ArticleResponse>
+    ): WanApiResponse<WanPageResponse<ArticleBean>>
 
     /**
      * 获取置顶的文章

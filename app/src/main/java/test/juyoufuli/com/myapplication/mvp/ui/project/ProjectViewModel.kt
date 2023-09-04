@@ -24,6 +24,7 @@ data class ProjectState(
     val pager: Int = 1,
     val cid: Int = 0,
     val selectIndex: Int = 0,
+    val isLoadFinish: Boolean = false
 ) : MavericksState
 
 class ProjectViewModel(state: ProjectState, private val repository: HomeRepository) :
@@ -42,7 +43,7 @@ class ProjectViewModel(state: ProjectState, private val repository: HomeReposito
     fun requestProjectCategoryDetailsList(pager: Int, cid: Int) {
         repository.requestProjectCategoryDetails(pager, cid).execute {
             val listData = it.invoke()?.data?.datas
-//            val pageCount = it.invoke()?.data?.pageCount
+            val pageCount = it.invoke()?.data?.pageCount
             if (it.complete) {
                 copy(
                     projectDetailsList = when (pager) {
@@ -50,6 +51,7 @@ class ProjectViewModel(state: ProjectState, private val repository: HomeReposito
                         else -> projectDetailsList + (listData ?: emptyList())
                     },
                     pager = pager + 1,
+                    isLoadFinish = pager > (pageCount ?: 0)
                 )
             } else {
                 copy()

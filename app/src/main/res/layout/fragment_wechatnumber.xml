@@ -13,10 +13,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <net.lucode.hackware.magicindicator.MagicIndicator
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/riv_system_details_top"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            app:tabMode="scrollable"
             android:background="@color/backgroundColor" />
 
         <androidx.viewpager.widget.ViewPager
