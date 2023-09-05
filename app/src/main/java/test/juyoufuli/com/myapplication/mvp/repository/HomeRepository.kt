@@ -23,8 +23,8 @@ class HomeRepository : BaseRepository() {
         emit(apiService.getSystemDataList())
     }.flowOn(Dispatchers.IO)
 
-    fun getArticleListDetailsList(page: Int, cid: String) = flow {
-        emit(apiService.getSystemDataDetailsList(page, cid))
+    fun getArticleListDetailsList(cid: Int, page: Int) = flow {
+        emit(apiService.getSystemDataDetailsList(cid, page))
     }.flowOn(Dispatchers.IO)
 
     fun requestProjectCategory() = flow {

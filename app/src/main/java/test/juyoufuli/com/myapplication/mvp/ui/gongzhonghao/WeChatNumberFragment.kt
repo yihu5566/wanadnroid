@@ -2,12 +2,12 @@ package test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.airbnb.mvrx.fragmentViewModel
-import com.blankj.utilcode.util.ToastUtils
+import com.google.android.material.tabs.TabLayoutMediator
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.FragmentWechatnumberBinding
 
@@ -25,10 +25,9 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>() {
     /**
      * 默认的公众号id
      */
-    lateinit var cid: String
+    var cid: String = "0"
 
     override fun initView(savedInstanceState: Bundle?) {
-        binding.fabWechatNumber.setOnClickListener { v -> ToastUtils.showLong("搜索") }
     }
 
     override fun attachBinding(): FragmentWechatnumberBinding {
@@ -54,23 +53,40 @@ class WeChatNumberFragment : BaseFragment<FragmentWechatnumberBinding>() {
     private fun initDataList() {
         //初始化一下
         cid = tagNameList[0].split("*")[0]
-        binding.vpSystemDetailsContent.adapter = ScreenSlidePagerAdapter(parentFragmentManager)
-        binding.rivSystemDetailsTop.setupWithViewPager(binding.vpSystemDetailsContent)
+        binding.vpSystemDetailsContent.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+        binding.vpSystemDetailsContent.adapter =
+            object : FragmentStateAdapter(childFragmentManager, lifecycle) {
+                override fun getItemCount(): Int {
+                    return tagNameList.size
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    var cid = tagNameList[position].split("*")[0]
+                    return RecyclerViewFragment(cid)
+                }
+
+            }
+
+        val mediator = TabLayoutMediator(
+            binding.rivSystemDetailsTop, binding.vpSystemDetailsContent
+        ) { tab, position ->
+            run {
+                var index = if (position >= tagNameList.size) {
+                    tagNameList.size - 1
+                } else {
+                    position
+                }
+                tab.text = tagNameList[index].split("*")[1]
+            }
+        }
+        mediator.attach()
+        binding.vpSystemDetailsContent.registerOnPageChangeCallback(object :
+            OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+            }
+        })
     }
 
-    private inner class ScreenSlidePagerAdapter(fm: FragmentManager) :
-        FragmentStatePagerAdapter(fm) {
-        override fun getCount(): Int = tagNameList.size
-
-        override fun getItem(position: Int): Fragment {
-            val fragment = RecyclerViewFragment()
-            val cid = tagNameList[position].split("*")[0]
-            fragment.arguments = bundleOf(Pair("cid", cid))
-            return fragment
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return tagNameList[position].split("*")[1]
-        }
-    }
 }

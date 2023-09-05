@@ -10,10 +10,13 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
+import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ViewPagerItemBinding
+import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 import test.juyoufuli.com.myapplication.mvp.views.articleItemView
+import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
 
 /**
@@ -21,18 +24,20 @@ import test.juyoufuli.com.myapplication.mvp.views.loadingRow
  * Created Time : 2018-10-17  16:33
  * Description: wiewpager 用的fragment
  */
-class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
-    private val viewModel: WeChatPublishDetailsViewModel by fragmentViewModel()
-    private var cid: String = ""
-    private var frist = true
-    override fun initView(savedInstanceState: Bundle?) {
-        if (frist) {
-            frist = false
-            cid = arguments?.getString("cid").toString()
-//            viewModel.getArticleListDetailsList(1, cid)
-        }
-        LogUtils.d("---initData---$cid")
+class RecyclerViewFragment(private var cid: String) : BaseFragment<ViewPagerItemBinding>() {
 
+    private val viewModel: WeChatPublishDetailsViewModel by fragmentViewModel()
+
+    override fun initView(savedInstanceState: Bundle?) {
+        LogUtils.d("---initData---$cid")
+        binding.epoxyRecyclerView.addItemDecoration(
+            ProjectRecycerDecoration(
+                requireContext(),
+                ProjectRecycerDecoration.VERTICAL_LIST,
+                R.drawable.item_left_decoration,
+                2
+            )
+        )
         binding.epoxyRecyclerView.buildModelsWith(object :
             EpoxyRecyclerView.ModelBuilderCallback {
             override fun buildModels(controller: EpoxyController) {
@@ -49,9 +54,9 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
         binding.epoxyRecyclerView.requestModelBuild()
     }
 
-    private fun EpoxyController.buildModels() = withState(viewModel)
-    {
-        it.WeChatPublishArticleData.invoke()?.data?.datas?.forEach { data ->
+    private fun EpoxyController.buildModels() = withState(viewModel) {
+
+        it.articleBeanList.forEach { data ->
             articleItemView {
                 id(data.id)
                 title(data.chapterName)
@@ -66,22 +71,28 @@ class RecyclerViewFragment : BaseFragment<ViewPagerItemBinding>() {
             }
         }
 
+        if (it.isLoadFinish) {
+            loadFinishView {
+                id("load_finish")
+            }
+            return@withState
+        }
+
         loadingRow {
             id("loading_article")
             onBind { _, _, _ ->
                 viewModel.getArticleListDetailsList(
-                    it.WeChatPublishArticleData.invoke()?.data?.curPage ?: 1,
-                    cid,
+                    cid.toInt(),
+                    it.page,
                 )
             }
         }
 
     }
 
-    fun setData(data: Bundle?) {
-        if (data != null) {
-            cid = data.getString("cid") ?: ""
-            viewModel.getArticleListDetailsList(0, cid)
-        }
+    fun setData(cid: String) {
+        this.cid = cid
+        binding.epoxyRecyclerView.requestModelBuild()
     }
+
 }

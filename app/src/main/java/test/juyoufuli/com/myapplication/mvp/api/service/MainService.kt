@@ -12,6 +12,18 @@ import test.juyoufuli.com.myapplication.mvp.entity.*
  */
 interface MainService {
 
+
+    @FormUrlEncoded
+    @POST("user/login")
+    fun login(@Field("username") index: String, @Field("password") map: String): Call<LoginResponse>
+
+    @FormUrlEncoded
+    @POST("user/register")
+    fun register(@FieldMap map: Map<String, String>): Call<LoginResponse>
+
+    @GET("user/logout/json")
+    fun loginOut(): Call<LoginResponse>
+
     @FormUrlEncoded
     @POST("lg/collect/{index}/json")
     suspend fun collectArticle(
@@ -48,22 +60,11 @@ interface MainService {
     @GET("tree/json")
     suspend fun getSystemDataList(): WanApiResponse<List<SystemBean>>
 
-    @GET("article/list/{cid}/{page}/json?page_size=20}")
-    fun getSystemDataDetailsList(
-        @Path("page") index: Int,
-        @Path("cid") cid: String
+    @GET("wxarticle/list/{cid}/{page}/json")
+    suspend fun getSystemDataDetailsList(
+        @Path("cid") cid: Int,
+        @Path("page") page: Int
     ): WanApiResponse<WanPageResponse<ArticleBean>>
-
-    @FormUrlEncoded
-    @POST("user/login")
-    fun login(@Field("username") index: String, @Field("password") map: String): Call<LoginResponse>
-
-    @FormUrlEncoded
-    @POST("user/register")
-    fun register(@FieldMap map: Map<String, String>): Call<LoginResponse>
-
-    @GET("user/logout/json")
-    fun loginOut(): Call<LoginResponse>
 
     @GET("lg/collect/list/{index}/json")
     fun getArticleCollectList(@Path("index") index: String): WanApiResponse<WanPageResponse<ArticleBean>>
@@ -91,10 +92,10 @@ interface MainService {
      * 搜索公众号历史
      */
     @GET("wxarticle/list/{id}/{page}/json")
-    fun getWeChatHistoryArticle(
+    suspend fun getWeChatHistoryArticle(
         @Path("id") id: String,
         @Path("page") page: String,
-        @Query("k") k: String
+        @Query("k") k: String? = null
     ): WanApiResponse<WanPageResponse<ArticleBean>>
 
     /**
