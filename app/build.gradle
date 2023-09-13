@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.android'//添加
+apply plugin: "com.peakmain.plugin"
+
 kapt {
     generateStubs = true
 }
@@ -81,5 +83,15 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
     kapt 'com.airbnb.android:epoxy-processor:5.0.0'
     implementation 'com.github.donkingliang:LabelsView:1.6.5'
+    implementation 'com.github.Peakmain:AsmActualCombat:1.1.4'
 
 }
+monitorPlugin {
+    whiteList = [//设置白名单
+                 "com.peakmain.asmactualcombat.utils.TestUtils",
+                 "com.peakmain.plugin"
+    ]
+    methodStatus = 1//1代表方法体替换，其他都是正常情况
+    enableLog=true//是否开启日志打印，默认不打印
+}
+

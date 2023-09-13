@@ -36,6 +36,7 @@ import test.juyoufuli.com.myapplication.mvp.entity.LoginResponse
 import test.juyoufuli.com.myapplication.mvp.ui.gongzhonghao.WeChatNumberFragment
 import test.juyoufuli.com.myapplication.mvp.ui.navigation.NavigationFragment
 import test.juyoufuli.com.myapplication.mvp.ui.project.ProjectFragment
+import test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewActivity
 import test.juyoufuli.com.myapplication.mvp.ui.system.SystemDataFragment
 import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
 
@@ -234,12 +235,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), CompoundButton.OnCheck
             dl_main_tab?.openDrawer(Gravity.LEFT)
         }
         toolbar_search?.setOnClickListener {
-//            ActivityUtils.startActivity(
-//                Intent(
-//                    this,
-//                    SearchViewActivity::class.java
-//                )
-//            )
+            ActivityUtils.startActivity(
+                Intent(
+                    this,
+                    SearchViewActivity::class.java
+                )
+            )
         }
 
         tvPersonLogin.setOnClickListener {

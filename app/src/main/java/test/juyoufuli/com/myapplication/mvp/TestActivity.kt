@@ -1,7 +1,13 @@
 package test.juyoufuli.com.myapplication.mvp
 
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.LogUtils
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withTimeout
 import org.jetbrains.annotations.TestOnly
 
@@ -11,7 +17,7 @@ import org.jetbrains.annotations.TestOnly
  * @Description:
  */
 
-class TestActivity {
+class TestActivity : ComponentActivity() {
     @TestOnly
     suspend fun text() {
 
@@ -23,5 +29,12 @@ class TestActivity {
         }
         LogUtils.d(withTimeout)
         LogUtils.d("end")
+    }
+
+    fun shareFlowTest() {
+        val stateIn = flowOf("p", 'P').stateIn(lifecycleScope, SharingStarted.Eagerly, "d")
+        stateIn.onEach {
+
+        }
     }
 }
