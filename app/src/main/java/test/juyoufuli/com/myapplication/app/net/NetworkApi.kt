@@ -5,6 +5,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.GsonBuilder
 import com.we.jetpackmvvm.base.appContext
+import com.we.jetpackmvvm.network.BaseNetworkApi
 import com.we.jetpackmvvm.network.interceptor.CacheInterceptor
 import com.we.jetpackmvvm.network.interceptor.logging.LogInterceptor
 

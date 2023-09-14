@@ -1,7 +1,5 @@
 package com.we.jetpackmvvm.network
 
-import com.we.jetpackmvvm.network.Error
-
 /**
  * 作者　: hegaojian
  * 时间　: 2019/12/17
@@ -14,7 +12,12 @@ class AppException : Exception {
     var errorLog: String? //错误日志
     var throwable: Throwable? = null
 
-    constructor(errCode: Int, error: String?, errorLog: String? = "", throwable: Throwable? = null) : super(error) {
+    constructor(
+        errCode: Int,
+        error: String?,
+        errorLog: String? = "",
+        throwable: Throwable? = null
+    ) : super(error) {
         this.errorMsg = error ?: "请求失败，请稍后再试"
         this.errCode = errCode
         this.errorLog = errorLog ?: this.errorMsg

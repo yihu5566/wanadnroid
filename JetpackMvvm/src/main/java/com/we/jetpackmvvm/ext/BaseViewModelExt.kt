@@ -2,8 +2,6 @@ package com.we.jetpackmvvm.ext
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.GsonUtils
-import kotlinx.coroutines.*
 import com.we.jetpackmvvm.base.activity.BaseVmActivity
 import com.we.jetpackmvvm.base.fragment.BaseVmFragment
 import com.we.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -14,6 +12,12 @@ import com.we.jetpackmvvm.network.ExceptionHandle
 import com.we.jetpackmvvm.state.ResultState
 import com.we.jetpackmvvm.state.paresException
 import com.we.jetpackmvvm.state.paresResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
