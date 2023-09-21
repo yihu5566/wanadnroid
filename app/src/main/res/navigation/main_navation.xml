@@ -13,7 +13,7 @@
 
         <action
             android:id="@+id/action_homeFragment_to_searchView"
-            app:destination="@id/action_to_searchViewFragment"
+            app:destination="@id/searchViewFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

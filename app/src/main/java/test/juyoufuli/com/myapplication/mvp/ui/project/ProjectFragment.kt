@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.mvp.ui.project
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
@@ -9,7 +8,6 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.we.jetpackmvvm.ext.nav
 import com.we.jetpackmvvm.ext.navigateAction
@@ -17,7 +15,6 @@ import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewFragment
 import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
 import test.juyoufuli.com.myapplication.mvp.views.projectCategory

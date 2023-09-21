@@ -42,4 +42,8 @@ class HomeRepository : BaseRepository() {
     fun getHotWord() = flow {
         emit(apiService.getHotWord())
     }.flowOn(Dispatchers.IO)
+
+    fun getSearchArtList(index: Int, result: String) = flow {
+        emit(apiService.getArticleList(index, result))
+    }.flowOn(Dispatchers.IO)
 }

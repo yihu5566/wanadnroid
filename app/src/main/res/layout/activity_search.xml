@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/include_title" />
+    <include
+        android:id="@+id/included_title"
+        layout="@layout/include_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +32,7 @@
             android:text="搜索" />
     </LinearLayout>
 
-    <test.juyoufuli.com.myapplication.app.view.LabelsView
+    <com.donkingliang.labels.LabelsView
         android:id="@+id/lbv_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +41,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="5dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/rlv_search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,7 +49,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:visibility="gone" />
-
 
     <RelativeLayout
         android:id="@+id/tv_search_finish"

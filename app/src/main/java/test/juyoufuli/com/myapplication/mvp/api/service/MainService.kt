@@ -52,7 +52,7 @@ interface MainService {
     @FormUrlEncoded
     @POST("article/query/{index}/json")
     fun getArticleList(
-        @Path("index") index: String,
+        @Path("index") index: Int,
         @Field("k") map: String
     ): WanApiResponse<WanPageResponse<ArticleBean>>
 

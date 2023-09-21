@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.mvp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
-import com.blankj.utilcode.util.ActivityUtils
 import com.we.jetpackmvvm.ext.nav
 import com.we.jetpackmvvm.ext.navigateAction
 import test.juyoufuli.com.myapplication.R
@@ -18,7 +16,6 @@ import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.app.ext.initMain
 import test.juyoufuli.com.myapplication.app.utils.SPUtils
 import test.juyoufuli.com.myapplication.databinding.FragmentMainBinding
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewFragment
 import test.juyoufuli.com.myapplication.mvp.views.CustomTabView
 
 /**
@@ -136,7 +133,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(), CustomTabView.OnTabChe
             binding.dlMainTab.openDrawer(Gravity.LEFT)
         }
         binding.includedTitle.toolbarSearch.setOnClickListener {
-            nav().navigateAction(R.id.action_to_searchViewFragment)
+            nav().navigateAction(R.id.action_homeFragment_to_searchView)
         }
 
         tvPersonLogin.setOnClickListener {
