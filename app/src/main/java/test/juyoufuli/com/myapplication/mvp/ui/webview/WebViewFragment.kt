@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.just.agentweb.AgentWeb
-import test.juyoufuli.com.myapplication.app.BaseActivity
+import com.we.jetpackmvvm.ext.nav
+import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ActivityWebviewBinding
 
 /**
@@ -15,20 +16,22 @@ import test.juyoufuli.com.myapplication.databinding.ActivityWebviewBinding
  * Created Time : 2018-09-30  10:40
  * Description:
  */
-class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
-
+class WebViewFragment : BaseFragment<ActivityWebviewBinding>() {
     private lateinit var mAgentWeb: AgentWeb
     private var link: String? = null
     private var title: String? = null
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        link = intent.getStringExtra("link")
-        title = intent.getStringExtra("title")
+        arguments.let {
+            link = it?.getString("link")
+            title = it?.getString("title")
+
+        }
         binding.toolbar.toolbarBack.visibility = View.VISIBLE
         binding.toolbar.toolbarShare.visibility = View.VISIBLE
         binding.toolbar.toolbarTitle.text = title
-        binding.toolbar.toolbarBack.setOnClickListener { finish() }
+        binding.toolbar.toolbarBack.setOnClickListener { nav().popBackStack() }
 
         binding.toolbar.toolbarShare.setOnClickListener {
             val wechatIntent = Intent(Intent.ACTION_SEND)
@@ -46,15 +49,15 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
     }
 
     override fun attachBinding(): ActivityWebviewBinding {
-        return ActivityWebviewBinding.inflate(LayoutInflater.from(this))
+        return ActivityWebviewBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-
-        return if (mAgentWeb.handleKeyEvent(keyCode, event)) {
-            true
-        } else super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+//
+//        return if (mAgentWeb.handleKeyEvent(keyCode, event)) {
+//            true
+//        } else super.onKeyDown(keyCode, event)
+//    }
 
     override fun onPause() {
         mAgentWeb.webLifeCycle.onPause()
@@ -70,5 +73,9 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>() {
     override fun onDestroy() {
         mAgentWeb.webLifeCycle.onDestroy()
         super.onDestroy()
+    }
+
+    override fun invalidate() {
+
     }
 }

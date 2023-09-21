@@ -9,7 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import test.juyoufuli.com.myapplication.R
-import test.juyoufuli.com.myapplication.mvp.ui.home.MainActivity
+import test.juyoufuli.com.myapplication.mvp.ui.MainActivity
 
 /**
  * @Author : dongfang

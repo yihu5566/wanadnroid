@@ -4,17 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
+import androidx.core.os.bundleOf
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
+import com.we.jetpackmvvm.ext.nav
+import com.we.jetpackmvvm.ext.navigateAction
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ViewPagerItemBinding
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewFragment
 import test.juyoufuli.com.myapplication.mvp.views.articleItemView
 import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
@@ -24,7 +26,7 @@ import test.juyoufuli.com.myapplication.mvp.views.loadingRow
  * Created Time : 2018-10-17  16:33
  * Description: wiewpager 用的fragment
  */
-class RecyclerViewFragment(private var cid: String) : BaseFragment<ViewPagerItemBinding>() {
+class RecyclerViewFragment(private var cid: String = "1") : BaseFragment<ViewPagerItemBinding>() {
 
     private val viewModel: WeChatPublishDetailsViewModel by fragmentViewModel()
 
@@ -63,10 +65,10 @@ class RecyclerViewFragment(private var cid: String) : BaseFragment<ViewPagerItem
                 des(Html.fromHtml(data.title))
                 time(data.niceDate)
                 clickListener { v ->
-                    val intent = Intent(activity, WebViewActivity::class.java)
-                    intent.putExtra("link", data.link)
-                    intent.putExtra("title", data.title)
-                    ActivityUtils.startActivity(intent)
+                    nav().navigateAction(
+                        R.id.action_to_webViewFragmentFragment,
+                        bundleOf("title" to data.title, "link" to data.link)
+                    )
                 }
             }
         }

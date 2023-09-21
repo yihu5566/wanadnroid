@@ -25,4 +25,9 @@
     <color name="main_background_tab_gray">#666666</color>
     <color name="main_background_gray_bbb">#bbbbbb</color>
 
+    <color name="main_background_tab_color_start">#ffffff</color>
+    <color name="main_background_tab_color_end">#ccffffff</color>
+    <color name="main_login_get_code_background">#96dce7e5</color>
+
+
 </resources>

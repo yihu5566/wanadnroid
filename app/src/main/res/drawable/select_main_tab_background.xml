@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Button正常状态下的背景 -->
+    <item android:drawable="@drawable/main_tab_bg_normal" android:state_selected="false"/>
+    <!-- Button按下时的背景 -->
+    <item android:drawable="@drawable/main_tab_bg_select" android:state_selected="true"/>
+
+</selector>

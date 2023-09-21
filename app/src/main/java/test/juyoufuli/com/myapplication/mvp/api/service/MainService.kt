@@ -1,6 +1,5 @@
 package test.juyoufuli.com.myapplication.mvp.api.service
 
-import com.we.jetpackmvvm.network.BaseResponse
 import retrofit2.Call
 import retrofit2.http.*
 import test.juyoufuli.com.myapplication.mvp.entity.*
@@ -82,7 +81,7 @@ interface MainService {
     suspend fun getNavigation(): WanApiResponse<List<NavigationBean>>
 
     @GET("hotkey/json")
-    fun getHotWord(): Call<BaseResponse<List<HotWordData>>>
+    suspend fun getHotWord(): WanApiResponse<List<HotWordData>>
 
     @GET("wxarticle/chapters/json")
     suspend fun getWeChatArticle(): WanApiResponse<List<WeChatData>>

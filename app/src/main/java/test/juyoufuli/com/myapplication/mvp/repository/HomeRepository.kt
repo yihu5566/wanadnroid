@@ -38,4 +38,8 @@ class HomeRepository : BaseRepository() {
     fun getWeChatPublishDataList() = flow {
         emit(apiService.getWeChatArticle())
     }.flowOn(Dispatchers.IO)
+
+    fun getHotWord() = flow {
+        emit(apiService.getHotWord())
+    }.flowOn(Dispatchers.IO)
 }

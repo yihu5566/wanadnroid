@@ -4,17 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.OnClickListener
+import androidx.core.os.bundleOf
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.we.jetpackmvvm.ext.nav
+import com.we.jetpackmvvm.ext.navigateAction
 import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.databinding.ActivityProgectMainBinding
 import test.juyoufuli.com.myapplication.mvp.ui.project.adapter.ProjectRecycerDecoration
-import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewActivity
+import test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewFragment
 import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
 import test.juyoufuli.com.myapplication.mvp.views.projectCategory
@@ -106,10 +109,10 @@ class ProjectFragment : BaseFragment<ActivityProgectMainBinding>() {
                 )
                 imageUrl(it.envelopePic)
                 OnClickListener { it1 ->
-                    val intent = Intent(activity, WebViewActivity::class.java)
-                    intent.putExtra("link", it.link)
-                    intent.putExtra("title", it.title)
-                    ActivityUtils.startActivity(intent)
+                    nav().navigateAction(
+                        R.id.action_to_webViewFragmentFragment,
+                        bundleOf("title" to it.title, "link" to it.link)
+                    )
                 }
             }
         }

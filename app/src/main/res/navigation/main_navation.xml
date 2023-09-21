@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navation"
+    app:startDestination="@id/mainfragment">
+
+    <fragment
+        android:id="@+id/mainfragment"
+        android:name="test.juyoufuli.com.myapplication.mvp.ui.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_homeFragment_to_searchView"
+            app:destination="@id/action_to_searchViewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <!--    单独action-->
+    <action
+        android:id="@+id/action_to_searchViewFragment"
+        app:destination="@id/searchViewFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/searchViewFragment"
+        android:name="test.juyoufuli.com.myapplication.mvp.ui.searchview.SearchViewFragment"
+        android:label="SearchViewFragment"
+        tools:layout="@layout/activity_search" />
+
+    <action
+        android:id="@+id/action_to_webViewFragmentFragment"
+        app:destination="@id/webViewFragmentFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/webViewFragmentFragment"
+        android:name="test.juyoufuli.com.myapplication.mvp.ui.webview.WebViewFragment"
+        android:label="SettingCenterFragment"
+        tools:layout="@layout/activity_webview" />
+
+
+    <action
+        android:id="@+id/action_to_activeDetailsFragment"
+        app:destination="@id/activeDetailsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/activeDetailsFragment"
+        android:name="com.we.westarry.ui.active.ActiveDetailsFragment"
+        android:label="ActiveDetailsFragment"
+        tools:layout="@layout/fragment_active_details" />
+
+
+</navigation>

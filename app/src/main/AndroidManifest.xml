@@ -49,13 +49,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mvp.ui.home.MainActivity"
+            android:name=".mvp.ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".mvp.ui.webview.WebViewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".mvp.ui.searchview.SearchViewActivity"
+            android:name=".mvp.ui.searchview.SearchViewFragment"
             android:exported="false" />
         <activity
             android:name=".mvp.ui.system.SystemDataDetailsActivity"
