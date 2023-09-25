@@ -1,6 +1,7 @@
 package test.juyoufuli.com.myapplication.mvp.ui.searchview
 
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,9 @@ import test.juyoufuli.com.myapplication.R
 import test.juyoufuli.com.myapplication.app.BaseFragment
 import test.juyoufuli.com.myapplication.app.listener.CustomSearchListener
 import test.juyoufuli.com.myapplication.databinding.ActivitySearchBinding
+import test.juyoufuli.com.myapplication.mvp.views.articleItemView
 import test.juyoufuli.com.myapplication.mvp.views.loadFinishView
 import test.juyoufuli.com.myapplication.mvp.views.loadingRow
-import test.juyoufuli.com.myapplication.mvp.views.projectCategoryDetails
 
 /**
  * @Author : dongfang
@@ -28,7 +29,7 @@ import test.juyoufuli.com.myapplication.mvp.views.projectCategoryDetails
 class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
     private val viewModel: SearchViewModel by fragmentViewModel()
     private var hotWordList = mutableListOf<String>()
-
+    var searchWord: String = ""
 
     override fun initView(savedInstanceState: Bundle?) {
         binding.includedTitle.toolbarTitle.text = "搜索"
@@ -42,21 +43,15 @@ class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
         }
         binding.etSearchWord.setCustomSearchListener(object : CustomSearchListener {
             override fun OnContentChangeListener(s: String?) {
-                val searchWord = if (TextUtils.isEmpty(s)) " " else s!!
+                searchWord = if (TextUtils.isEmpty(s)) "" else s!!
                 LogUtils.d("搜索--$searchWord")
-//                viewModel.changeSearchWord(searchWord)
             }
 
             override fun OnSearchButtonPressListener(b: Boolean?) {
-
+                viewModel.changeSearchWord(searchWord)
             }
         })
-
-
-        //关键词变化需要刷新列表
-        viewModel.onEach(SearchState::searchWord) {
-            viewModel.getSearchArtList(1, it)
-        }
+        binding.btnSearchWord.setOnClickListener { viewModel.changeSearchWord(searchWord) }
 
         binding.rlvSearchResult.buildModelsWith(object : EpoxyRecyclerView.ModelBuilderCallback {
             override fun buildModels(controller: EpoxyController) {
@@ -66,24 +61,27 @@ class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
     }
 
     private fun EpoxyController.buildModels() = withState(viewModel) { state ->
-        state.searchArtList.forEach {
-            projectCategoryDetails {
-                id(it.id)
-                title(it.title)
-                des(it.desc)
-                time(it.niceDate)
-                author(it.author)
-                isCollect(
-                    when (it.collect) {
-                        true -> "1"
-                        false -> "0"
-                    }
-                )
-                imageUrl(it.envelopePic)
+        if (state.pager == 2) {
+            binding.lbvSearch.visibility = View.GONE
+            if (state.searchArtList.isNotEmpty()) {
+                binding.rlvSearchResult.visibility = View.VISIBLE
+                binding.tvSearchFinish.visibility = View.GONE
+            } else {
+                binding.rlvSearchResult.visibility = View.GONE
+                binding.tvSearchFinish.visibility = View.VISIBLE
+            }
+        }
+
+        state.searchArtList.forEach { data ->
+            articleItemView {
+                id(data.id)
+                title(data.chapterName)
+                des(Html.fromHtml(data.title))
+                time(data.niceDate)
                 View.OnClickListener { _ ->
                     nav().navigateAction(
                         R.id.action_to_webViewFragmentFragment,
-                        bundleOf("title" to it.title, "link" to it.link)
+                        bundleOf("title" to data.title, "link" to data.link)
                     )
                 }
             }
@@ -94,7 +92,6 @@ class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
             }
             return@withState
         }
-
         loadingRow {
             id("loading${state.searchArtList.size}")
             onBind { _, _, _ ->
@@ -104,7 +101,6 @@ class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
                 )
             }
         }
-
     }
 
 
@@ -119,7 +115,8 @@ class SearchViewFragment : BaseFragment<ActivitySearchBinding>() {
                 hotWordList.add(item.name)
             }
             binding.lbvSearch.setLabels(hotWordList)
-
         }
+        binding.rlvSearchResult.requestModelBuild()
+
     }
 }

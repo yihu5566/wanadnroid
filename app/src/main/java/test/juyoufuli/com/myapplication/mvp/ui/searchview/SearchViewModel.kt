@@ -34,7 +34,11 @@ class SearchViewModel(state: SearchState, private val repository: HomeRepository
     }
 
     fun changeSearchWord(searchKey: String) {
-        setState { copy(searchWord = searchKey, pager = 1) }
+        if (searchKey.isEmpty()) {
+            setState { copy(searchArtList = emptyList(), pager = 1) }
+        } else {
+            getSearchArtList(1, searchKey)
+        }
     }
 
     private fun requestSearchCategory() {
@@ -47,18 +51,14 @@ class SearchViewModel(state: SearchState, private val repository: HomeRepository
         repository.getSearchArtList(pager, result).execute {
             val listData = it.invoke()?.data?.datas
             val pageCount = it.invoke()?.data?.pageCount
-            if (it.complete) {
-                copy(
-                    searchArtList = when (pager) {
-                        1 -> (listData ?: emptyList())
-                        else -> searchArtList + (listData ?: emptyList())
-                    },
-                    pager = pager + 1,
-                    isLoadFinish = pager > (pageCount ?: 0)
-                )
-            } else {
-                copy()
-            }
+            copy(
+                searchArtList = when (pager) {
+                    1 -> (listData ?: emptyList())
+                    else -> searchArtList + (listData ?: emptyList())
+                },
+                pager = pager + 1,
+                isLoadFinish = pager > (pageCount ?: 0)
+            )
         }
     }
 
