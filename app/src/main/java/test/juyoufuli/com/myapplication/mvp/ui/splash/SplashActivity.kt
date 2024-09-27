@@ -6,8 +6,7 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.app.BaseActivity
 import test.juyoufuli.com.myapplication.databinding.ActivitySplashBinding
 import test.juyoufuli.com.myapplication.mvp.ui.MainActivity
 
@@ -16,22 +15,24 @@ import test.juyoufuli.com.myapplication.mvp.ui.MainActivity
  * @Created Time : 2019-03-14  17:52
  * @Description:
  */
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     var mianIntent: Intent? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ActivitySplashBinding.inflate(layoutInflater)
+
+    override fun initView(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN) //隐藏状态栏
         setContentView(binding.root)
         mianIntent = Intent(this@SplashActivity, MainActivity::class.java)
         transparencyAnimation(binding.ivSplash)
-
     }
 
-    fun transparencyAnimation(view: ImageView) {
+    override fun attachBinding(): ActivitySplashBinding {
+        return ActivitySplashBinding.inflate(layoutInflater)
+    }
+
+    private fun transparencyAnimation(view: ImageView) {
         //初始化操作，参数传入0和1，即由透明度0变化到透明度为1
-        var alphaAnimation = AlphaAnimation(1f, 0f)
+        val alphaAnimation = AlphaAnimation(1f, 0f)
 
         view.startAnimation(alphaAnimation)
         alphaAnimation.fillAfter = true
