@@ -7,8 +7,8 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_splash.*
 import test.juyoufuli.com.myapplication.R
+import test.juyoufuli.com.myapplication.databinding.ActivitySplashBinding
 import test.juyoufuli.com.myapplication.mvp.ui.MainActivity
 
 /**
@@ -21,10 +21,11 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val binding = ActivitySplashBinding.inflate(layoutInflater)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN) //隐藏状态栏
-        setContentView(R.layout.activity_splash)
+        setContentView(binding.root)
         mianIntent = Intent(this@SplashActivity, MainActivity::class.java)
-        transparencyAnimation(iv_splash)
+        transparencyAnimation(binding.ivSplash)
 
     }
 
