@@ -9,3 +9,5 @@
 /captures
 .externalNativeBuild
 /.idea/
+/builsSrc
+JetpackMvvm/build
